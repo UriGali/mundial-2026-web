@@ -1,0 +1,726 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import AdSlot from '../../components/AdSlot.astro';
+
+const title       = 'Guía Completa del Mundial 2026: Fechas, Sedes, Entradas y Más';
+const description = 'Todo lo que necesitas saber sobre el Mundial FIFA 2026: cuándo empieza, dónde se juega, cómo comprar entradas, equipos clasificados, horarios y la guía de viaje definitiva.';
+const keywords    = 'guia completa mundial 2026, copa del mundo 2026, cuando es el mundial 2026, donde se juega el mundial 2026, entradas mundial 2026 como comprar, sedes mundial 2026, equipos clasificados mundial 2026, horarios mundial 2026, final mundial 2026';
+const canonicalURL = 'https://mundial2026guia.com/blog/guia-completa';
+
+const datePublished = '2026-05-13';
+const dateModified  = '2026-05-13';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://mundial2026guia.com/' },
+        { '@type': 'ListItem', position: 2, name: 'Blog',   item: 'https://mundial2026guia.com/blog' },
+        { '@type': 'ListItem', position: 3, name: 'Guía Completa del Mundial 2026', item: canonicalURL },
+      ],
+    },
+    {
+      '@type': 'Article',
+      headline: title,
+      description,
+      datePublished,
+      dateModified,
+      url: canonicalURL,
+      image: 'https://mundial2026guia.com/og-image.jpg',
+      author: { '@type': 'Organization', name: 'Mundial 2026 Guía', url: 'https://mundial2026guia.com' },
+      publisher: { '@type': 'Organization', name: 'Mundial 2026 Guía', url: 'https://mundial2026guia.com' },
+      inLanguage: 'es',
+      about: { '@type': 'SportsEvent', name: 'Copa Mundial de Fútbol FIFA 2026', startDate: '2026-06-11', endDate: '2026-07-19' },
+    },
+    {
+      '@type': 'FAQPage',
+      mainEntity: [
+        { '@type': 'Question', name: '¿Cuándo empieza el Mundial 2026?',                     acceptedAnswer: { '@type': 'Answer', text: 'El Mundial FIFA 2026 comienza el jueves 11 de junio de 2026 con el partido inaugural México vs Ecuador en el Estadio Azteca de Ciudad de México.' } },
+        { '@type': 'Question', name: '¿Cuánto duran los partidos del Mundial 2026?',          acceptedAnswer: { '@type': 'Answer', text: 'Cada partido del Mundial dura 90 minutos reglamentarios más descuentos. En eliminatorias, si hay empate, se juegan 2 tiempos de 15 minutos extra y, si persiste, tanda de penaltis.' } },
+        { '@type': 'Question', name: '¿Dónde se juega la Final del Mundial 2026?',            acceptedAnswer: { '@type': 'Answer', text: 'La Gran Final se celebra el domingo 19 de julio de 2026 en el MetLife Stadium de East Rutherford, Nueva Jersey (área metropolitana de Nueva York), a las 22:00 UTC.' } },
+        { '@type': 'Question', name: '¿Cuántos equipos juegan el Mundial 2026?',              acceptedAnswer: { '@type': 'Answer', text: '48 selecciones nacionales, agrupadas en 12 grupos de 4 equipos. Clasifican los dos primeros de cada grupo más los ocho mejores terceros a una Ronda de 32 (eliminatorias directas).' } },
+        { '@type': 'Question', name: '¿Cómo comprar entradas para el Mundial 2026?',          acceptedAnswer: { '@type': 'Answer', text: 'Solo a través del portal oficial FIFA.com. Pasos: 1) Crea tu FIFA ID, 2) Selecciona los partidos deseados, 3) Elige la categoría de asiento, 4) Paga con tarjeta de crédito. Las entradas son nominales e intransferibles.' } },
+        { '@type': 'Question', name: '¿En qué países se juega el Mundial 2026?',              acceptedAnswer: { '@type': 'Answer', text: 'En tres países simultáneamente: Estados Unidos (11 sedes), México (3 sedes: Ciudad de México, Guadalajara y Monterrey) y Canadá (2 sedes: Toronto y Vancouver).' } },
+      ],
+    },
+  ],
+};
+
+// Tabla de contenidos
+const toc = [
+  { id: 'fechas',    label: '¿Cuándo es el Mundial 2026?' },
+  { id: 'donde',     label: '¿Dónde se juega?' },
+  { id: 'sedes',     label: 'Las 16 sedes oficiales' },
+  { id: 'formato',   label: 'Formato: 48 equipos y 12 grupos' },
+  { id: 'entradas',  label: 'Cómo comprar entradas' },
+  { id: 'horarios',  label: 'Horarios por zona horaria' },
+  { id: 'final',     label: 'La Gran Final: Nueva York 2026' },
+  { id: 'favoritos', label: 'Equipos favoritos al título' },
+  { id: 'faq',       label: 'Preguntas frecuentes' },
+];
+---
+
+<Layout {title} {description} {keywords} {canonicalURL} {jsonLd}>
+
+  <!-- ═══════════════════════════════════════════════════
+       HERO
+  ════════════════════════════════════════════════════ -->
+  <section
+    class="relative text-white py-14 sm:py-20 px-4 overflow-hidden"
+    style="background:linear-gradient(160deg,#020617 0%,#0a1628 50%,#020617 100%);"
+  >
+    <div
+      class="absolute inset-0 opacity-[0.03] pointer-events-none"
+      style="background-image:linear-gradient(rgba(212,175,55,0.8) 1px,transparent 1px),linear-gradient(90deg,rgba(212,175,55,0.8) 1px,transparent 1px);background-size:40px 40px;"
+      aria-hidden="true"
+    ></div>
+    <div class="max-w-4xl mx-auto relative z-10">
+      <!-- Breadcrumb -->
+      <nav class="mb-6 text-xs font-mono text-slate-600 flex" aria-label="Migas de pan">
+        <ol class="flex items-center gap-1.5 flex-wrap">
+          <li><a href="/" class="hover:text-gold transition-colors">Inicio</a></li>
+          <li aria-hidden="true" class="text-slate-700">/</li>
+          <li class="text-slate-400" aria-current="page">Guía Completa</li>
+        </ol>
+      </nav>
+
+      <!-- Meta info -->
+      <div class="flex flex-wrap items-center gap-3 mb-5">
+        <span class="bg-gold/20 text-gold border border-gold/30 font-oswald text-[10px] tracking-[0.2em] uppercase px-3 py-1 rounded-full">
+          Guía Oficial
+        </span>
+        <span class="text-slate-500 font-mono text-xs">Actualizado: 13 mayo 2026</span>
+        <span class="text-slate-600 font-mono text-xs">· 12 min de lectura</span>
+      </div>
+
+      <h1
+        class="font-oswald font-bold text-white leading-tight mb-5"
+        style="font-size:clamp(1.9rem,5.5vw,3.2rem);"
+      >
+        Guía Completa del Mundial FIFA 2026:<br class="hidden sm:block" />
+        <span
+          class="bg-clip-text text-transparent"
+          style="background-image:linear-gradient(105deg,#b8922a 0%,#d4af37 40%,#f5d97a 60%,#d4af37 80%,#b8922a 100%);"
+        > Todo lo que Necesitas Saber</span>
+      </h1>
+      <p class="text-slate-300 text-lg leading-relaxed max-w-3xl">
+        Fechas, sedes, equipos clasificados, cómo comprar entradas y los horarios convertidos a tu zona horaria. La guía más completa en español para el torneo de fútbol más grande de la historia.
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════
+       CONTENIDO + SIDEBAR
+  ════════════════════════════════════════════════════ -->
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="lg:grid lg:grid-cols-[1fr_280px] lg:gap-12">
+
+      <!-- ── ARTÍCULO ────────────────────────────────────────────────── -->
+      <article class="min-w-0 prose-invert" aria-label="Guía completa del Mundial 2026">
+
+        <!-- ── TABLA DE CONTENIDOS (mobile) ───────────────────── -->
+        <nav
+          class="lg:hidden bg-slate-900/60 border border-slate-700/60 rounded-2xl p-5 mb-10"
+          aria-label="Tabla de contenidos"
+        >
+          <p class="font-oswald text-xs tracking-[0.2em] uppercase text-gold mb-3">En este artículo</p>
+          <ol class="space-y-1.5">
+            {toc.map((item, i) => (
+              <li>
+                <a href={`#${item.id}`} class="flex items-center gap-2 text-slate-400 hover:text-gold text-sm transition-colors group">
+                  <span class="font-mono text-[10px] text-slate-600 group-hover:text-gold/60 w-5 shrink-0">{String(i+1).padStart(2,'0')}</span>
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+
+        <!-- ════════════════════════════════════════════════════
+             1. FECHAS
+        ════════════════════════════════════════════════════ -->
+        <section id="fechas" class="mb-12 scroll-mt-24">
+          <h2 class="font-oswald font-bold text-white text-2xl sm:text-3xl mb-4 flex items-center gap-2">
+            <span class="w-1 h-7 rounded" style="background:linear-gradient(180deg,#f5d97a,#d4af37);" aria-hidden="true"></span>
+            ¿Cuándo es el Mundial 2026? Fechas Oficiales
+          </h2>
+          <p class="text-slate-300 leading-relaxed mb-4">
+            El <strong class="text-white">Mundial FIFA 2026</strong> se celebra del <strong class="text-gold">11 de junio al 19 de julio de 2026</strong>, con un total de 39 días de competición. Es el torneo de fútbol más largo y con más equipos de la historia.
+          </p>
+
+          <!-- Key dates card -->
+          <div class="grid sm:grid-cols-2 gap-3 my-6">
+            {[
+              { icon:'🟢', label:'Partido inaugural',     date:'11 jun 2026', detalle:'México vs Ecuador — Estadio Azteca' },
+              { icon:'⚔️', label:'Inicio Fase de Grupos', date:'11 jun 2026', detalle:'Primeros 8 días: 3 partidos/día' },
+              { icon:'🔥', label:'Ronda de 32',           date:'4 jul 2026',  detalle:'Primera eliminatoria directa' },
+              { icon:'🏆', label:'Gran Final',             date:'19 jul 2026', detalle:'MetLife Stadium — 22:00 UTC' },
+            ].map(d => (
+              <div class="flex gap-3 bg-slate-900/60 border border-slate-800 rounded-xl p-4">
+                <span class="text-xl shrink-0" aria-hidden="true">{d.icon}</span>
+                <div>
+                  <p class="text-xs font-oswald tracking-wider text-slate-500 uppercase mb-0.5">{d.label}</p>
+                  <p class="font-mono font-bold text-green-400 text-sm">{d.date}</p>
+                  <p class="text-slate-500 text-xs mt-0.5">{d.detalle}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <h3 class="font-oswald font-semibold text-white text-lg mb-2 mt-6">
+            ¿Cuándo empieza el Mundial 2026?
+          </h3>
+          <p class="text-slate-400 leading-relaxed mb-4">
+            El torneo comienza el <strong class="text-white">jueves 11 de junio de 2026</strong> a las 19:00 UTC (14:00 CDT en México y EE. UU. central) con el partido inaugural <strong class="text-white">México vs Ecuador</strong> en el Estadio Azteca de Ciudad de México, el templo del fútbol latinoamericano. Es la tercera vez en la historia que el Azteca acoge un Mundial.
+          </p>
+
+          <h3 class="font-oswald font-semibold text-white text-lg mb-2 mt-6">
+            ¿Cuándo es la Final del Mundial 2026?
+          </h3>
+          <p class="text-slate-400 leading-relaxed">
+            La <strong class="text-white">Gran Final del Mundial 2026</strong> se juega el <strong class="text-gold">domingo 19 de julio de 2026</strong> a las 22:00 UTC en el <strong class="text-white">MetLife Stadium</strong> (East Rutherford, Nueva Jersey), estadio más cercano a Manhattan y con capacidad para más de 82.000 espectadores. Consulta <a href="/horarios/mexico/ciudad-de-mexico" class="text-gold hover:underline">a qué hora es la final en tu ciudad</a>.
+          </p>
+        </section>
+
+        <!-- ════════════════════════════════════════════════════
+             2. DÓNDE SE JUEGA
+        ════════════════════════════════════════════════════ -->
+        <section id="donde" class="mb-12 scroll-mt-24">
+          <h2 class="font-oswald font-bold text-white text-2xl sm:text-3xl mb-4 flex items-center gap-2">
+            <span class="w-1 h-7 rounded" style="background:linear-gradient(180deg,#f5d97a,#d4af37);" aria-hidden="true"></span>
+            ¿Dónde se Juega el Mundial 2026? Los 3 Países Sede
+          </h2>
+          <p class="text-slate-300 leading-relaxed mb-6">
+            Por primera vez en la historia, el Mundial de Fútbol se celebra en <strong class="text-white">tres países simultáneamente</strong>: Estados Unidos, México y Canadá. La candidatura conjunta UNITED 2026 fue aprobada por FIFA en junio de 2018, superando a Marruecos.
+          </p>
+
+          <div class="space-y-4">
+            <!-- USA -->
+            <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-5">
+              <div class="flex items-center gap-3 mb-3">
+                <span class="text-3xl" aria-hidden="true">🇺🇸</span>
+                <div>
+                  <h3 class="font-oswald font-bold text-white text-xl">Estados Unidos — 11 sedes</h3>
+                  <p class="text-slate-500 text-sm">El país anfitrión principal · 60 de los 104 partidos</p>
+                </div>
+              </div>
+              <p class="text-slate-400 text-sm leading-relaxed mb-3">
+                EE. UU. alberga la mayor parte del torneo con estadios en ambas costas y el sur. Los 11 estadios son todos recintos de la NFL adaptados para el fútbol, con aforos que oscilan entre 45.000 y 82.500 espectadores.
+              </p>
+              <div class="flex flex-wrap gap-2">
+                {['Nueva York','Los Ángeles','Dallas','San Francisco','Seattle','Miami','Atlanta','Boston','Kansas City','Filadelfia','Houston'].map(c => (
+                  <a href={`/sedes/${c.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,'-').replace('á','a').replace('é','e').replace('ó','o')}`} class="bg-slate-800 hover:bg-gold/10 hover:text-gold text-slate-400 text-xs font-mono px-2.5 py-1 rounded-lg border border-slate-700 hover:border-gold/40 transition-all">
+                    {c}
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            <!-- México -->
+            <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-5">
+              <div class="flex items-center gap-3 mb-3">
+                <span class="text-3xl" aria-hidden="true">🇲🇽</span>
+                <div>
+                  <h3 class="font-oswald font-bold text-white text-xl">México — 3 sedes</h3>
+                  <p class="text-slate-500 text-sm">Tercer Mundial en México · El Azteca hace historia por tercera vez</p>
+                </div>
+              </div>
+              <p class="text-slate-400 text-sm leading-relaxed mb-3">
+                México se convierte en el único país en albergar tres Mundiales (1970, 1986 y 2026). El Estadio Azteca de Ciudad de México es el único recinto en la historia que ha sido sede de dos finales mundialistas. Guadalajara (Estadio Akron) y Monterrey (Estadio BBVA) completan la terna mexicana.
+              </p>
+              <div class="flex flex-wrap gap-2">
+                {[
+                  { nombre: 'Ciudad de México', slug: 'ciudad-de-mexico' },
+                  { nombre: 'Guadalajara',      slug: 'guadalajara'      },
+                  { nombre: 'Monterrey',        slug: 'monterrey'        },
+                ].map(c => (
+                  <a href={`/sedes/${c.slug}`} class="bg-slate-800 hover:bg-gold/10 hover:text-gold text-slate-400 text-xs font-mono px-2.5 py-1 rounded-lg border border-slate-700 hover:border-gold/40 transition-all">
+                    {c.nombre}
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            <!-- Canadá -->
+            <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-5">
+              <div class="flex items-center gap-3 mb-3">
+                <span class="text-3xl" aria-hidden="true">🇨🇦</span>
+                <div>
+                  <h3 class="font-oswald font-bold text-white text-xl">Canadá — 2 sedes</h3>
+                  <p class="text-slate-500 text-sm">Primer Mundial en Canadá · Toronto y Vancouver</p>
+                </div>
+              </div>
+              <p class="text-slate-400 text-sm leading-relaxed mb-3">
+                Canadá debuta como país sede de un Mundial con Toronto (BMO Field, 45.736 espectadores) y Vancouver (BC Place, con techo retráctil, 54.500 espectadores). Ambas ciudades acogerán partidos de Fase de Grupos.
+              </p>
+              <div class="flex flex-wrap gap-2">
+                {[
+                  { nombre: 'Toronto',   slug: 'toronto'   },
+                  { nombre: 'Vancouver', slug: 'vancouver' },
+                ].map(c => (
+                  <a href={`/sedes/${c.slug}`} class="bg-slate-800 hover:bg-gold/10 hover:text-gold text-slate-400 text-xs font-mono px-2.5 py-1 rounded-lg border border-slate-700 hover:border-gold/40 transition-all">
+                    {c.nombre}
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <AdSlot slot="3344556677" format="horizontal" label="Publicidad" />
+
+        <!-- ════════════════════════════════════════════════════
+             3. SEDES
+        ════════════════════════════════════════════════════ -->
+        <section id="sedes" class="mb-12 scroll-mt-24">
+          <h2 class="font-oswald font-bold text-white text-2xl sm:text-3xl mb-4 flex items-center gap-2">
+            <span class="w-1 h-7 rounded" style="background:linear-gradient(180deg,#f5d97a,#d4af37);" aria-hidden="true"></span>
+            Sedes del Mundial 2026: Los 16 Estadios Oficiales
+          </h2>
+          <p class="text-slate-300 leading-relaxed mb-6">
+            Los <strong class="text-white">16 estadios del Mundial 2026</strong> tienen una capacidad combinada de más de un millón de espectadores. Todos cumplen con los estándares FIFA para estadios de Categoría 1 (la más alta). A continuación, los más importantes:
+          </p>
+
+          <!-- Top sedes table -->
+          <div class="overflow-x-auto rounded-2xl border border-slate-800 mb-6" style="background:#0a0f1e;">
+            <table class="w-full text-sm border-collapse">
+              <caption class="sr-only">Estadios del Mundial 2026 con capacidad y fase asignada</caption>
+              <thead>
+                <tr class="border-b border-slate-800">
+                  <th scope="col" class="px-4 py-3 text-left font-oswald text-[10px] tracking-[0.2em] text-slate-500 uppercase">Estadio</th>
+                  <th scope="col" class="px-4 py-3 text-left font-oswald text-[10px] tracking-[0.2em] text-slate-500 uppercase hidden sm:table-cell">Ciudad</th>
+                  <th scope="col" class="px-4 py-3 text-right font-oswald text-[10px] tracking-[0.2em] text-slate-500 uppercase">Aforo</th>
+                  <th scope="col" class="px-4 py-3 text-left font-oswald text-[10px] tracking-[0.2em] text-slate-500 uppercase hidden md:table-cell">Fase</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { estadio:'Estadio Azteca',        ciudad:'Ciudad de México', flag:'🇲🇽', aforo:'87,523', fase:'Cuartos de Final', slug:'ciudad-de-mexico', highlight: false },
+                  { estadio:'MetLife Stadium',        ciudad:'Nueva York',       flag:'🇺🇸', aforo:'82,500', fase:'⭐ Gran Final',     slug:'nueva-york',       highlight: true  },
+                  { estadio:'AT&T Stadium',           ciudad:'Dallas',           flag:'🇺🇸', aforo:'80,000', fase:'Octavos de Final', slug:'dallas',           highlight: false },
+                  { estadio:'Arrowhead Stadium',      ciudad:'Kansas City',      flag:'🇺🇸', aforo:'76,416', fase:'Fase de Grupos',   slug:'kansas-city',      highlight: false },
+                  { estadio:'Mercedes-Benz Stadium',  ciudad:'Atlanta',          flag:'🇺🇸', aforo:'71,000', fase:'Cuartos de Final', slug:'atlanta',          highlight: false },
+                  { estadio:'NRG Stadium',            ciudad:'Houston',          flag:'🇺🇸', aforo:'72,220', fase:'Semifinal',        slug:'houston',          highlight: false },
+                  { estadio:'SoFi Stadium',           ciudad:'Los Ángeles',      flag:'🇺🇸', aforo:'70,240', fase:'Semifinal',        slug:'los-angeles',      highlight: false },
+                  { estadio:'Estadio BBVA',           ciudad:'Monterrey',        flag:'🇲🇽', aforo:'53,500', fase:'Fase de Grupos',   slug:'monterrey',        highlight: false },
+                ].map((s, i) => (
+                  <tr class={`border-b border-slate-800/60 transition-colors ${s.highlight ? 'bg-gold/5' : i%2===0 ? '' : 'bg-slate-900/40'} hover:bg-slate-800/40`}>
+                    <td class="px-4 py-3">
+                      <a href={`/sedes/${s.slug}`} class="text-white hover:text-gold font-semibold text-sm transition-colors">
+                        {s.estadio}
+                      </a>
+                    </td>
+                    <td class="px-4 py-3 font-mono text-slate-400 text-xs hidden sm:table-cell">
+                      {s.flag} {s.ciudad}
+                    </td>
+                    <td class="px-4 py-3 text-right font-mono text-green-400 font-bold text-sm">{s.aforo}</td>
+                    <td class="px-4 py-3 hidden md:table-cell">
+                      <span class={`text-[10px] font-oswald tracking-wider px-2 py-0.5 rounded ${s.highlight ? 'bg-gold/20 text-gold' : 'bg-slate-800 text-slate-400'}`}>
+                        {s.fase}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p class="text-slate-500 text-xs font-mono">
+            → <a href="/sedes" class="text-gold hover:underline">Ver las 16 sedes completas con guía de transporte y hoteles</a>
+          </p>
+        </section>
+
+        <!-- ════════════════════════════════════════════════════
+             4. FORMATO
+        ════════════════════════════════════════════════════ -->
+        <section id="formato" class="mb-12 scroll-mt-24">
+          <h2 class="font-oswald font-bold text-white text-2xl sm:text-3xl mb-4 flex items-center gap-2">
+            <span class="w-1 h-7 rounded" style="background:linear-gradient(180deg,#f5d97a,#d4af37);" aria-hidden="true"></span>
+            Formato del Mundial 2026: 48 Equipos y 12 Grupos
+          </h2>
+          <p class="text-slate-300 leading-relaxed mb-6">
+            El Mundial 2026 estrena el <strong class="text-white">nuevo formato de 48 selecciones</strong>, ampliado desde los 32 equipos del torneo anterior. Esto supone <strong class="text-white">104 partidos</strong> en total, frente a los 64 del formato clásico.
+          </p>
+
+          <h3 class="font-oswald font-semibold text-white text-xl mb-3 mt-6">
+            ¿Cuántos Equipos Participan en el Mundial 2026?
+          </h3>
+          <p class="text-slate-400 leading-relaxed mb-4">
+            Participan <strong class="text-white">48 selecciones nacionales</strong> distribuidas en <strong class="text-white">12 grupos de 4 equipos</strong>. La distribución de plazas por confederación es:
+          </p>
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6">
+            {[
+              { conf:'UEFA (Europa)',   plazas:'16', flag:'🏆' },
+              { conf:'CONMEBOL (S. Am.)',plazas:'6',  flag:'⚽' },
+              { conf:'CAF (África)',    plazas:'9',  flag:'🌍' },
+              { conf:'AFC (Asia)',      plazas:'8',  flag:'🌏' },
+              { conf:'CONCACAF (N/C Am.)',plazas:'6', flag:'🌎' },
+              { conf:'OFC (Oceanía)',   plazas:'1',  flag:'🏝️' },
+            ].map(c => (
+              <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-3 text-center">
+                <div class="text-xl mb-1" aria-hidden="true">{c.flag}</div>
+                <div class="font-mono font-bold text-green-400 text-lg">{c.plazas}</div>
+                <div class="text-slate-500 text-xs leading-tight mt-0.5">{c.conf}</div>
+              </div>
+            ))}
+          </div>
+
+          <h3 class="font-oswald font-semibold text-white text-xl mb-3 mt-6">
+            Las Fases del Torneo: De Grupos a la Final
+          </h3>
+          <div class="space-y-2">
+            {[
+              { fase:'Fase de Grupos',  fechas:'11 jun — 2 jul',  partidos:'48',  detalle:'12 grupos × 6 partidos. Clasifican los dos primeros + 8 mejores terceros.' },
+              { fase:'Ronda de 32',     fechas:'4 — 7 jul',       partidos:'16',  detalle:'Primera eliminatoria directa. Nueva en la historia del Mundial.' },
+              { fase:'Octavos de Final',fechas:'9 — 12 jul',      partidos:'8',   detalle:'Los 16 clasificados de la Ronda de 32 se enfrentan.' },
+              { fase:'Cuartos de Final',fechas:'13 — 16 jul',     partidos:'4',   detalle:'Los últimos 8 equipos batallan por una plaza en semis.' },
+              { fase:'Semifinales',     fechas:'14 — 17 jul',     partidos:'2',   detalle:'Los cuatro mejores se juegan la gran final.' },
+              { fase:'Gran Final',      fechas:'19 jul',          partidos:'1',   detalle:'MetLife Stadium, Nueva York. 22:00 UTC.' },
+            ].map((f, i) => (
+              <div class={`flex gap-4 bg-slate-900/60 border rounded-xl px-4 py-3 ${f.fase === 'Gran Final' ? 'border-gold/30 bg-gold/5' : 'border-slate-800'}`}>
+                <div class="font-mono text-xs text-slate-600 w-20 shrink-0 pt-0.5">{f.fechas}</div>
+                <div class="flex-1">
+                  <div class="flex items-center gap-2">
+                    <span class={`font-oswald font-bold text-sm ${f.fase === 'Gran Final' ? 'text-gold' : 'text-white'}`}>{f.fase}</span>
+                    <span class="font-mono text-[10px] text-slate-600">{f.partidos} partido{Number(f.partidos) > 1 ? 's' : ''}</span>
+                  </div>
+                  <p class="text-slate-500 text-xs mt-0.5 leading-relaxed">{f.detalle}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <p class="text-slate-500 text-xs font-mono mt-4">
+            → <a href="/grupos" class="text-gold hover:underline">Ver los 12 grupos del Mundial 2026</a> ·
+            <a href="/calendario" class="text-gold hover:underline ml-2">Calendario completo de partidos</a>
+          </p>
+        </section>
+
+        <AdSlot slot="4455667788" format="rectangle" label="Publicidad" class="max-w-xl mx-auto" />
+
+        <!-- ════════════════════════════════════════════════════
+             5. ENTRADAS
+        ════════════════════════════════════════════════════ -->
+        <section id="entradas" class="mb-12 scroll-mt-24">
+          <h2 class="font-oswald font-bold text-white text-2xl sm:text-3xl mb-4 flex items-center gap-2">
+            <span class="w-1 h-7 rounded" style="background:linear-gradient(180deg,#f5d97a,#d4af37);" aria-hidden="true"></span>
+            Cómo Comprar Entradas para el Mundial 2026
+          </h2>
+          <p class="text-slate-300 leading-relaxed mb-5">
+            Las <strong class="text-white">entradas del Mundial 2026 solo se venden a través del portal oficial de FIFA</strong>. No existen canales de venta autorizados de terceros. Cualquier entrada comprada fuera de FIFA.com puede ser inválida en los torniquetes del estadio.
+          </p>
+
+          <div
+            class="border border-orange-800/40 bg-orange-950/20 rounded-xl p-4 flex gap-3 mb-6"
+          >
+            <span class="text-lg shrink-0" aria-hidden="true">⚠️</span>
+            <p class="text-orange-300 text-sm leading-relaxed">
+              <strong>Advertencia:</strong> Los revendedores no autorizados (Viagogo, StubHub, etc.) no tienen licencia FIFA para estas entradas. FIFA puede invalidarlas al acceder al estadio. Compra <em>solo</em> en <strong>FIFA.com</strong>.
+            </p>
+          </div>
+
+          <h3 class="font-oswald font-semibold text-white text-xl mb-3 mt-6">
+            ¿Cuánto Cuestan las Entradas del Mundial 2026?
+          </h3>
+          <p class="text-slate-400 leading-relaxed mb-4">
+            FIFA establece cuatro categorías de precio. Las entradas para <strong class="text-white">residentes en los países sede</strong> (con acreditación de residencia) tienen un precio reducido. Los precios varían según la fase y el estadio:
+          </p>
+          <div class="overflow-x-auto rounded-2xl border border-slate-800 mb-6" style="background:#0a0f1e;">
+            <table class="w-full text-sm border-collapse">
+              <thead>
+                <tr class="border-b border-slate-800">
+                  <th scope="col" class="px-4 py-3 text-left font-oswald text-[10px] tracking-[0.2em] text-slate-500 uppercase">Categoría</th>
+                  <th scope="col" class="px-4 py-3 text-right font-oswald text-[10px] tracking-[0.2em] text-slate-500 uppercase">Grupos (est.)</th>
+                  <th scope="col" class="px-4 py-3 text-right font-oswald text-[10px] tracking-[0.2em] text-slate-500 uppercase">Final (est.)</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { cat:'Residentes locales',     grupos:'$35 USD',  final:'$105 USD' },
+                  { cat:'Categoría 1 (general)',  grupos:'$70 USD',  final:'$350 USD' },
+                  { cat:'Categoría 2 (premium)',  grupos:'$105 USD', final:'$525 USD' },
+                  { cat:'Categoría 3 (VIP)',      grupos:'$210 USD', final:'$1.050 USD' },
+                ].map((r, i) => (
+                  <tr class={`border-b border-slate-800/60 ${i%2===0 ? '' : 'bg-slate-900/40'}`}>
+                    <td class="px-4 py-3 text-white text-sm font-semibold">{r.cat}</td>
+                    <td class="px-4 py-3 text-right font-mono text-green-400 text-sm">{r.grupos}</td>
+                    <td class="px-4 py-3 text-right font-mono text-gold text-sm">{r.final}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p class="text-slate-600 text-xs font-mono mb-4">* Precios estimados. Sujetos a confirmación oficial de FIFA.</p>
+
+          <h3 class="font-oswald font-semibold text-white text-xl mb-3 mt-6">
+            Pasos para Comprar Entradas en FIFA.com
+          </h3>
+          <ol class="space-y-3">
+            {[
+              { n:'01', titulo:'Crea tu FIFA ID',          desc:'Regístrate en FIFA.com con nombre legal, email y fecha de nacimiento. Necesitarás verificar el correo electrónico.' },
+              { n:'02', titulo:'Accede al portal de entradas', desc:'Ve a tickets.fifa.com durante los períodos de venta. Hay varias fases: sorteo inicial, venta directa y ventanilla de último minuto.' },
+              { n:'03', titulo:'Selecciona partidos',       desc:'Elige los partidos por fecha, fase o sede. Puedes solicitar hasta 4 entradas por partido por cuenta.' },
+              { n:'04', titulo:'Completa el pago',          desc:'Se acepta tarjeta Visa (patrocinador oficial). Las entradas son nominales: el nombre en la entrada debe coincidir con el del comprador.' },
+              { n:'05', titulo:'Recibe tu confirmación',    desc:'Recibirás un email con el código QR. Activa las entradas en la app FIFA Tickets antes del evento.' },
+            ].map(s => (
+              <li class="flex gap-4 bg-slate-900/60 border border-slate-800 rounded-xl px-4 py-3">
+                <span class="font-mono font-bold text-gold text-base shrink-0 w-7">{s.n}</span>
+                <div>
+                  <p class="font-semibold text-white text-sm">{s.titulo}</p>
+                  <p class="text-slate-500 text-xs mt-0.5 leading-relaxed">{s.desc}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+          <p class="text-slate-500 text-xs font-mono mt-4">
+            → <a href="/entradas" class="text-gold hover:underline">Guía completa de entradas del Mundial 2026</a>
+          </p>
+        </section>
+
+        <!-- ════════════════════════════════════════════════════
+             6. HORARIOS
+        ════════════════════════════════════════════════════ -->
+        <section id="horarios" class="mb-12 scroll-mt-24">
+          <h2 class="font-oswald font-bold text-white text-2xl sm:text-3xl mb-4 flex items-center gap-2">
+            <span class="w-1 h-7 rounded" style="background:linear-gradient(180deg,#f5d97a,#d4af37);" aria-hidden="true"></span>
+            Horarios del Mundial 2026 por Zona Horaria
+          </h2>
+          <p class="text-slate-300 leading-relaxed mb-6">
+            Los partidos del Mundial 2026 se transmiten en cuatro franjas horarias UTC. Dependiendo de dónde vivas, la experiencia de ver el Mundial será muy diferente.
+          </p>
+
+          <!-- Reference table -->
+          <div class="overflow-x-auto rounded-2xl border border-slate-800 mb-6" style="background:#0a0f1e;">
+            <table class="w-full text-sm border-collapse">
+              <thead>
+                <tr class="border-b border-slate-800">
+                  <th scope="col" class="px-4 py-3 text-left font-oswald text-[10px] tracking-[0.2em] text-slate-500 uppercase">Hora UTC</th>
+                  <th scope="col" class="px-4 py-3 text-center font-oswald text-[10px] tracking-[0.2em] text-slate-500 uppercase">España (CEST)</th>
+                  <th scope="col" class="px-4 py-3 text-center font-oswald text-[10px] tracking-[0.2em] text-slate-500 uppercase">México (CDT)</th>
+                  <th scope="col" class="px-4 py-3 text-center font-oswald text-[10px] tracking-[0.2em] text-slate-500 uppercase">Argentina (ART)</th>
+                  <th scope="col" class="px-4 py-3 text-center font-oswald text-[10px] tracking-[0.2em] text-slate-500 uppercase hidden sm:table-cell">Franja</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { utc:'17:00', es:'19:00', mx:'12:00', ar:'14:00', franja:'Matinal' },
+                  { utc:'19:00', es:'21:00', mx:'14:00', ar:'16:00', franja:'Vespertino' },
+                  { utc:'22:00', es:'00:00', mx:'17:00', ar:'19:00', franja:'Estelar' },
+                  { utc:'01:00', es:'03:00', mx:'20:00', ar:'22:00', franja:'Nocturno' },
+                ].map((r, i) => (
+                  <tr class={`border-b border-slate-800/60 ${i%2===0 ? '' : 'bg-slate-900/40'}`}>
+                    <td class="px-4 py-3 font-mono font-bold text-slate-300">{r.utc} UTC</td>
+                    <td class="px-4 py-3 text-center font-mono font-bold text-green-400">{r.es}</td>
+                    <td class="px-4 py-3 text-center font-mono font-bold text-green-400">{r.mx}</td>
+                    <td class="px-4 py-3 text-center font-mono font-bold text-green-400">{r.ar}</td>
+                    <td class="px-4 py-3 text-center hidden sm:table-cell">
+                      <span class="text-slate-500 text-xs font-oswald tracking-wider">{r.franja}</span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <h3 class="font-oswald font-semibold text-white text-xl mb-2 mt-6">
+            ¿A Qué Hora son los Partidos del Mundial 2026 en México?
+          </h3>
+          <p class="text-slate-400 leading-relaxed mb-4">
+            Desde Ciudad de México (CDT, UTC−5), los partidos de la Fase de Grupos se transmiten a las <strong class="text-white">12:00, 14:00 y 17:00 horas</strong>. Los partidos nocturnos americanos (22:00 UTC) comienzan a las <strong class="text-white">17:00 CDT</strong>. La final (22:00 UTC del 19 jul) es a las <strong class="text-green-400">17:00 CDT</strong> — horario perfecto para México.
+          </p>
+
+          <h3 class="font-oswald font-semibold text-white text-xl mb-2 mt-6">
+            ¿A Qué Hora se Ven los Partidos del Mundial 2026 en España?
+          </h3>
+          <p class="text-slate-400 leading-relaxed mb-4">
+            España está en CEST (UTC+2) durante el verano. Los partidos estelares (22:00 UTC) empiezan a <strong class="text-white">las 00:00 CEST</strong> — madrugada española. Los matinales (17:00 UTC) se ven a las <strong class="text-white">19:00 CEST</strong>. La final del 19 de julio comienza a <strong class="text-green-400">las 00:00 CEST del 20 de julio</strong>.
+          </p>
+
+          <h3 class="font-oswald font-semibold text-white text-xl mb-2 mt-6">
+            ¿A Qué Hora son los Partidos del Mundial 2026 en Argentina?
+          </h3>
+          <p class="text-slate-400 leading-relaxed">
+            Argentina opera en ART (UTC−3) durante el Mundial, sin cambio de horario en julio. Los partidos estelares (22:00 UTC) empiezan a las <strong class="text-white">19:00 ART</strong>. La final es a las <strong class="text-green-400">19:00 ART</strong>.
+          </p>
+          <p class="text-slate-500 text-xs font-mono mt-4">
+            → Ver horarios en:
+            <a href="/horarios/mexico/ciudad-de-mexico" class="text-gold hover:underline ml-1">México</a> ·
+            <a href="/horarios/espana/madrid"           class="text-gold hover:underline ml-1">España</a> ·
+            <a href="/horarios/argentina/buenos-aires"  class="text-gold hover:underline ml-1">Argentina</a> ·
+            <a href="/horarios/colombia/bogota"         class="text-gold hover:underline ml-1">Colombia</a>
+          </p>
+        </section>
+
+        <AdSlot slot="5566778890" format="horizontal" label="Publicidad" />
+
+        <!-- ════════════════════════════════════════════════════
+             7. FINAL
+        ════════════════════════════════════════════════════ -->
+        <section id="final" class="mb-12 scroll-mt-24">
+          <h2 class="font-oswald font-bold text-white text-2xl sm:text-3xl mb-4 flex items-center gap-2">
+            <span class="w-1 h-7 rounded" style="background:linear-gradient(180deg,#f5d97a,#d4af37);" aria-hidden="true"></span>
+            La Gran Final del Mundial 2026: MetLife Stadium
+          </h2>
+          <p class="text-slate-300 leading-relaxed mb-4">
+            El <strong class="text-gold">19 de julio de 2026</strong>, el mundo mirará hacia el MetLife Stadium de East Rutherford, Nueva Jersey, a tan solo 20 minutos de Manhattan en tren. El recinto comparte instalaciones entre los New York Giants y los New York Jets de la NFL, y se convierte en la sede mundialista más cercana a una gran metrópoli de toda la historia del torneo.
+          </p>
+          <div class="bg-gold/5 border border-gold/20 rounded-2xl p-5 mb-4">
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+              {[
+                { v:'82,500',      l:'capacidad'       },
+                { v:'19 jul',      l:'fecha de la final'},
+                { v:'22:00 UTC',   l:'hora del pitido'  },
+                { v:'NJ/New York', l:'área metropolitana'},
+              ].map(s => (
+                <div>
+                  <div class="font-oswald font-bold text-gold text-xl">{s.v}</div>
+                  <div class="text-slate-500 text-xs mt-0.5">{s.l}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <p class="text-slate-400 leading-relaxed">
+            El estadio ya acogió la <strong class="text-white">Super Bowl XLVIII</strong> en 2014 (el único Super Bowl en campo abierto con frío). Para el Mundial, FIFA instalará césped natural y ampliará la zona de fanzone en los alrededores del MetLife Entertainment District. <a href="/sedes/nueva-york" class="text-gold hover:underline">Ver guía completa del MetLife Stadium →</a>
+          </p>
+        </section>
+
+        <!-- ════════════════════════════════════════════════════
+             8. FAVORITOS
+        ════════════════════════════════════════════════════ -->
+        <section id="favoritos" class="mb-12 scroll-mt-24">
+          <h2 class="font-oswald font-bold text-white text-2xl sm:text-3xl mb-4 flex items-center gap-2">
+            <span class="w-1 h-7 rounded" style="background:linear-gradient(180deg,#f5d97a,#d4af37);" aria-hidden="true"></span>
+            Equipos Favoritos para Ganar el Mundial 2026
+          </h2>
+          <p class="text-slate-300 leading-relaxed mb-6">
+            Los <strong class="text-white">equipos clasificados para el Mundial 2026</strong> incluyen a las grandes potencias del fútbol mundial. Estos son los grandes aspirantes al título según los rankings FIFA y el historial reciente:
+          </p>
+          <div class="space-y-3">
+            {[
+              { flag:'🇪🇸', equipo:'España',         razon:'Campeona defensora (2022). Generación dorada con Yamal, Pedri y Morata. Estilo de posesión dominante.',       ranking:'1' },
+              { flag:'🇫🇷', equipo:'Francia',         razon:'Finalista en Qatar 2022. Mbappé en su mejor momento. Plantilla más completa del mundo en papel.',            ranking:'2' },
+              { flag:'🇧🇷', equipo:'Brasil',           razon:'5 veces campeona del mundo. Vinicius Jr. y Rodrygo como estandartes de una nueva generación verdeamarela.', ranking:'5' },
+              { flag:'🇦🇷', equipo:'Argentina',        razon:'Campeona del mundo en Qatar 2022. Messi ya no estará, pero Di María, De Paul y Lautaro siguen en pie.',      ranking:'3' },
+              { flag:'🏴󠁧󠁢󠁥󠁮󠁧󠁿', equipo:'Inglaterra', razon:'Subcampeona de Europa en 2024. Kane, Bellingham y Saka como trío de ataque de primer nivel mundial.',       ranking:'4' },
+              { flag:'🇩🇪', equipo:'Alemania',         razon:'Sede del Mundial 2006. Nueva generación con Müller fuera y Musiala-Wirtz como dupla creativa.',              ranking:'6' },
+            ].map(e => (
+              <div class="flex gap-4 bg-slate-900/60 border border-slate-800 rounded-xl px-4 py-3 hover:border-slate-700 transition-colors">
+                <span class="text-3xl shrink-0" aria-hidden="true">{e.flag}</span>
+                <div class="flex-1">
+                  <div class="flex items-center gap-2 mb-0.5">
+                    <span class="font-oswald font-bold text-white text-base">{e.equipo}</span>
+                    <span class="font-mono text-[10px] text-slate-600">FIFA #{e.ranking}</span>
+                  </div>
+                  <p class="text-slate-500 text-xs leading-relaxed">{e.razon}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <p class="text-slate-500 text-xs font-mono mt-4">
+            → <a href="/equipos" class="text-gold hover:underline">Ver todos los equipos clasificados al Mundial 2026</a>
+          </p>
+        </section>
+
+        <!-- ════════════════════════════════════════════════════
+             9. FAQ
+        ════════════════════════════════════════════════════ -->
+        <section id="faq" class="mb-10 scroll-mt-24">
+          <h2 class="font-oswald font-bold text-white text-2xl sm:text-3xl mb-6 flex items-center gap-2">
+            <span class="w-1 h-7 rounded" style="background:linear-gradient(180deg,#f5d97a,#d4af37);" aria-hidden="true"></span>
+            Preguntas Frecuentes sobre el Mundial 2026
+          </h2>
+          <dl class="space-y-3">
+            {[
+              { q:'¿Cuándo empieza el Mundial 2026?',
+                a:'El 11 de junio de 2026 con México vs Ecuador en el Estadio Azteca de Ciudad de México (19:00 UTC). La competición termina el 19 de julio con la Gran Final en el MetLife Stadium de Nueva York.' },
+              { q:'¿Cuántos partidos hay en el Mundial 2026?',
+                a:'104 partidos en total: 48 en Fase de Grupos + 16 en Ronda de 32 + 8 Octavos + 4 Cuartos + 2 Semifinales + 1 tercer puesto + 1 Gran Final.' },
+              { q:'¿Dónde se juega la Final del Mundial 2026?',
+                a:'En el MetLife Stadium, East Rutherford (Nueva Jersey), área metropolitana de Nueva York. El domingo 19 de julio de 2026 a las 22:00 UTC / 18:00 EDT.' },
+              { q:'¿Cuánto duran los partidos del Mundial 2026?',
+                a:'90 minutos reglamentarios + tiempo de descuento. En eliminatorias: si hay empate tras la prórroga (2×15 min), se decide en tanda de penaltis.' },
+              { q:'¿Cómo se clasifica para el Mundial 2026?',
+                a:'Cada confederación tiene su propio proceso de clasificación. UEFA disputó 54 plazas + el repechaje intercontinental. Las eliminatorias sudamericanas (CONMEBOL) otorgaron 6 plazas directas + 1 en repechaje.' },
+              { q:'¿En qué canal se transmite el Mundial 2026 en México?',
+                a:'Las transmisiones oficiales en México corresponden a Televisa/Canal 5 y TDN. En España, TVE y Mediapro tienen los derechos. En Argentina, TyC Sports y TV Pública.' },
+            ].map(({ q, a }) => (
+              <div class="bg-slate-800/30 border border-slate-700/50 rounded-2xl overflow-hidden">
+                <dt class="px-5 py-4 font-semibold text-white text-sm">{q}</dt>
+                <dd class="px-5 pb-4 text-slate-400 text-sm leading-relaxed border-t border-slate-700/40">{a}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+
+        <!-- Conclusión -->
+        <div class="bg-gold/5 border border-gold/20 rounded-2xl p-6 mb-6">
+          <h3 class="font-oswald font-bold text-gold text-lg mb-2">¿Listo para el Mundial 2026?</h3>
+          <p class="text-slate-300 text-sm leading-relaxed mb-4">
+            El Mundial FIFA 2026 promete ser el torneo más grande, emocionante y global de la historia del fútbol. Con 48 selecciones, 16 sedes en 3 países y 104 partidos, cada fan del mundo tendrá su momento.
+          </p>
+          <div class="flex flex-wrap gap-3">
+            <a href="/entradas"  class="inline-flex items-center gap-1.5 text-sm font-semibold text-slate-950 px-5 py-2.5 rounded-full transition-all hover:scale-105" style="background-image:linear-gradient(105deg,#b8922a,#d4af37,#f5d97a,#d4af37,#b8922a);">
+              Comprar entradas
+            </a>
+            <a href="/horarios/mexico/ciudad-de-mexico" class="inline-flex items-center gap-1.5 text-sm font-medium text-white border border-white/20 hover:border-gold/40 px-5 py-2.5 rounded-full transition-all">
+              Ver horarios
+            </a>
+            <a href="/sedes" class="inline-flex items-center gap-1.5 text-sm font-medium text-white border border-white/20 hover:border-gold/40 px-5 py-2.5 rounded-full transition-all">
+              Explorar sedes
+            </a>
+          </div>
+        </div>
+
+      </article>
+
+      <!-- ── SIDEBAR (desktop) ─────────────────────────────────────── -->
+      <aside class="hidden lg:block" aria-label="Contenido relacionado">
+        <div class="sticky top-24 space-y-6">
+
+          <!-- TOC -->
+          <nav class="bg-slate-900/60 border border-slate-700/60 rounded-2xl p-5" aria-label="Tabla de contenidos">
+            <p class="font-oswald text-xs tracking-[0.2em] uppercase text-gold mb-4">En este artículo</p>
+            <ol class="space-y-2">
+              {toc.map((item, i) => (
+                <li>
+                  <a href={`#${item.id}`} class="flex items-start gap-2 text-slate-400 hover:text-gold text-xs transition-colors group leading-snug">
+                    <span class="font-mono text-[9px] text-slate-700 group-hover:text-gold/50 w-4 shrink-0 mt-0.5">{String(i+1).padStart(2,'0')}</span>
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+
+          <!-- Quick links -->
+          <div class="bg-slate-900/60 border border-slate-700/60 rounded-2xl p-5">
+            <p class="font-oswald text-xs tracking-[0.2em] uppercase text-gold mb-4">Páginas clave</p>
+            <ul class="space-y-2">
+              {[
+                { href:'/sedes',                           label:'🏟️ Las 16 sedes' },
+                { href:'/equipos',                         label:'⚽ Equipos clasificados' },
+                { href:'/entradas',                        label:'🎫 Guía de entradas' },
+                { href:'/calendario',                      label:'📅 Calendario completo' },
+                { href:'/grupos',                          label:'🔢 Grupos A–L' },
+                { href:'/horarios/mexico/ciudad-de-mexico',label:'🕐 Horarios en México' },
+                { href:'/horarios/espana/madrid',          label:'🕐 Horarios en España' },
+                { href:'/horarios/argentina/buenos-aires', label:'🕐 Horarios en Argentina' },
+              ].map(l => (
+                <li>
+                  <a href={l.href} class="text-slate-400 hover:text-gold text-xs transition-colors flex items-center gap-1">
+                    {l.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <!-- AdSlot sidebar -->
+          <AdSlot slot="6677889901" format="rectangle" label="Publicidad" />
+        </div>
+      </aside>
+
+    </div>
+  </div>
+
+</Layout>
