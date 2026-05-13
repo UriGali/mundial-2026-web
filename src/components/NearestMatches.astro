@@ -1,0 +1,181 @@
+---
+// NearestMatches.astro — client-side widget, no server props needed
+---
+
+<section class="py-16 px-4 sm:px-6 lg:px-8" aria-labelledby="proximos-heading">
+  <div class="max-w-5xl mx-auto">
+
+    <div class="text-center mb-10">
+      <p class="font-oswald text-xs tracking-[0.2em] text-gold uppercase mb-2">CUENTA REGRESIVA EN VIVO</p>
+      <h2
+        id="proximos-heading"
+        class="font-oswald font-bold text-white mb-3"
+        style="font-size: clamp(1.6rem, 4vw, 2.5rem);"
+      >
+        Próximos Partidos del Mundial 2026
+      </h2>
+      <p id="nxt-tz" class="text-slate-500 text-sm font-mono h-5"></p>
+    </div>
+
+    <!-- Match cards rendered by JS -->
+    <div
+      id="nxt-grid"
+      class="grid gap-4 sm:grid-cols-3"
+      aria-live="polite"
+      aria-label="Próximos partidos del Mundial 2026"
+    >
+      <div class="sm:col-span-3 flex items-center justify-center py-14 text-slate-700">
+        <span class="font-mono text-sm animate-pulse">Cargando partidos...</span>
+      </div>
+    </div>
+
+    <div class="text-center mt-10">
+      <a
+        href="/calendario"
+        class="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-gold transition-colors font-mono border border-slate-700 hover:border-gold/40 px-5 py-2.5 rounded-full"
+      >
+        Ver calendario completo →
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  type Match = {
+    id: string; utc: string;
+    e1: string; f1: string;
+    e2: string; f2: string;
+    fase: string; sedeSlug: string;
+  };
+
+  const MATCHES: Match[] = [
+    { id:'g01', utc:'2026-06-11T19:00:00Z', e1:'México',       f1:'🇲🇽', e2:'Ecuador',      f2:'🇪🇨', fase:'Grupo A · J1',  sedeSlug:'ciudad-de-mexico' },
+    { id:'g02', utc:'2026-06-12T19:00:00Z', e1:'Argentina',    f1:'🇦🇷', e2:'Marruecos',    f2:'🇲🇦', fase:'Grupo B · J1',  sedeSlug:'nueva-york'       },
+    { id:'g03', utc:'2026-06-12T22:00:00Z', e1:'España',       f1:'🇪🇸', e2:'Croacia',      f2:'🇭🇷', fase:'Grupo C · J1',  sedeSlug:'los-angeles'      },
+    { id:'g04', utc:'2026-06-13T19:00:00Z', e1:'Colombia',     f1:'🇨🇴', e2:'Túnez',        f2:'🇹🇳', fase:'Grupo D · J1',  sedeSlug:'miami'            },
+    { id:'g05', utc:'2026-06-13T22:00:00Z', e1:'Brasil',       f1:'🇧🇷', e2:'Alemania',     f2:'🇩🇪', fase:'Grupo E · J1',  sedeSlug:'dallas'           },
+    { id:'g06', utc:'2026-06-14T01:00:00Z', e1:'USA',          f1:'🇺🇸', e2:'Ghana',        f2:'🇬🇭', fase:'Grupo F · J1',  sedeSlug:'kansas-city'      },
+    { id:'g07', utc:'2026-06-14T19:00:00Z', e1:'Francia',      f1:'🇫🇷', e2:'Portugal',     f2:'🇵🇹', fase:'Grupo G · J1',  sedeSlug:'seattle'          },
+    { id:'g08', utc:'2026-06-14T22:00:00Z', e1:'Canadá',       f1:'🇨🇦', e2:'Senegal',      f2:'🇸🇳', fase:'Grupo H · J1',  sedeSlug:'vancouver'        },
+    { id:'g09', utc:'2026-06-15T22:00:00Z', e1:'Países Bajos', f1:'🇳🇱', e2:'Polonia',      f2:'🇵🇱', fase:'Grupo I · J1',  sedeSlug:'filadelfia'       },
+    { id:'g10', utc:'2026-06-16T22:00:00Z', e1:'México',       f1:'🇲🇽', e2:'Polonia',      f2:'🇵🇱', fase:'Grupo A · J2',  sedeSlug:'guadalajara'      },
+    { id:'g11', utc:'2026-06-17T22:00:00Z', e1:'Argentina',    f1:'🇦🇷', e2:'España',       f2:'🇪🇸', fase:'Grupo B · J2',  sedeSlug:'nueva-york'       },
+    { id:'g12', utc:'2026-06-18T19:00:00Z', e1:'Colombia',     f1:'🇨🇴', e2:'Brasil',       f2:'🇧🇷', fase:'Grupo D · J2',  sedeSlug:'houston'          },
+    { id:'g13', utc:'2026-06-20T22:00:00Z', e1:'USA',          f1:'🇺🇸', e2:'Portugal',     f2:'🇵🇹', fase:'Grupo F · J2',  sedeSlug:'boston'           },
+    { id:'g14', utc:'2026-06-21T22:00:00Z', e1:'Francia',      f1:'🇫🇷', e2:'Suiza',        f2:'🇨🇭', fase:'Grupo G · J2',  sedeSlug:'atlanta'          },
+    { id:'g15', utc:'2026-06-27T19:00:00Z', e1:'México',       f1:'🇲🇽', e2:'Argentina',    f2:'🇦🇷', fase:'Grupo A · J3',  sedeSlug:'monterrey'        },
+    { id:'g16', utc:'2026-06-28T22:00:00Z', e1:'España',       f1:'🇪🇸', e2:'Colombia',     f2:'🇨🇴', fase:'Grupo C · J3',  sedeSlug:'san-francisco'    },
+    { id:'g17', utc:'2026-06-30T01:00:00Z', e1:'USA',          f1:'🇺🇸', e2:'Francia',      f2:'🇫🇷', fase:'Grupo F · J3',  sedeSlug:'atlanta'          },
+    { id:'g18', utc:'2026-07-01T19:00:00Z', e1:'Brasil',       f1:'🇧🇷', e2:'Países Bajos', f2:'🇳🇱', fase:'Grupo E · J3',  sedeSlug:'dallas'           },
+    { id:'r01', utc:'2026-07-04T22:00:00Z', e1:'Argentina',    f1:'🇦🇷', e2:'Japón',        f2:'🇯🇵', fase:'Ronda de 32',   sedeSlug:'filadelfia'       },
+    { id:'r02', utc:'2026-07-05T22:00:00Z', e1:'España',       f1:'🇪🇸', e2:'Suiza',        f2:'🇨🇭', fase:'Ronda de 32',   sedeSlug:'miami'            },
+    { id:'r03', utc:'2026-07-06T22:00:00Z', e1:'México',       f1:'🇲🇽', e2:'Costa Rica',   f2:'🇨🇷', fase:'Ronda de 32',   sedeSlug:'dallas'           },
+    { id:'r04', utc:'2026-07-07T22:00:00Z', e1:'Colombia',     f1:'🇨🇴', e2:'Senegal',      f2:'🇸🇳', fase:'Ronda de 32',   sedeSlug:'nueva-york'       },
+    { id:'o01', utc:'2026-07-09T01:00:00Z', e1:'Argentina',    f1:'🇦🇷', e2:'Países Bajos', f2:'🇳🇱', fase:'Octavos',       sedeSlug:'los-angeles'      },
+    { id:'o02', utc:'2026-07-10T22:00:00Z', e1:'España',       f1:'🇪🇸', e2:'Colombia',     f2:'🇨🇴', fase:'Octavos',       sedeSlug:'dallas'           },
+    { id:'o03', utc:'2026-07-11T22:00:00Z', e1:'México',       f1:'🇲🇽', e2:'Brasil',       f2:'🇧🇷', fase:'Octavos',       sedeSlug:'houston'          },
+    { id:'o04', utc:'2026-07-12T22:00:00Z', e1:'USA',          f1:'🇺🇸', e2:'Francia',      f2:'🇫🇷', fase:'Octavos',       sedeSlug:'boston'           },
+    { id:'q01', utc:'2026-07-13T22:00:00Z', e1:'Argentina',    f1:'🇦🇷', e2:'España',       f2:'🇪🇸', fase:'Cuartos',       sedeSlug:'ciudad-de-mexico' },
+    { id:'q02', utc:'2026-07-14T22:00:00Z', e1:'Colombia',     f1:'🇨🇴', e2:'Francia',      f2:'🇫🇷', fase:'Cuartos',       sedeSlug:'seattle'          },
+    { id:'s01', utc:'2026-07-16T22:00:00Z', e1:'Semifinal 1A', f1:'⚽',  e2:'Semifinal 1B', f2:'⚽',  fase:'Semifinal',     sedeSlug:'los-angeles'      },
+    { id:'s02', utc:'2026-07-17T22:00:00Z', e1:'Semifinal 2A', f1:'⚽',  e2:'Semifinal 2B', f2:'⚽',  fase:'Semifinal',     sedeSlug:'nueva-york'       },
+    { id:'f01', utc:'2026-07-19T22:00:00Z', e1:'Por definir',  f1:'🏆',  e2:'Por definir',  f2:'🏆',  fase:'🏆 GRAN FINAL', sedeSlug:'nueva-york'       },
+  ];
+
+  function pad2(n: number): string { return String(n).padStart(2, '0'); }
+
+  function countdown(ms: number) {
+    if (ms <= 0) return { d: 0, h: 0, m: 0, s: 0 };
+    const t = Math.floor(ms / 1000);
+    return { d: Math.floor(t / 86400), h: Math.floor((t % 86400) / 3600), m: Math.floor((t % 3600) / 60), s: t % 60 };
+  }
+
+  function getNext3(): Match[] {
+    const now = Date.now();
+    const seen = new Set<string>();
+    return MATCHES
+      .filter(m => {
+        const t = new Date(m.utc).getTime();
+        if (t <= now || seen.has(m.utc)) return false;
+        seen.add(m.utc);
+        return true;
+      })
+      .sort((a, b) => new Date(a.utc).getTime() - new Date(b.utc).getTime())
+      .slice(0, 3);
+  }
+
+  function renderCards(next3: Match[], tz: string): string {
+    if (next3.length === 0) {
+      return `<div class="sm:col-span-3 text-center text-slate-600 py-12 font-mono text-sm">
+        El Mundial 2026 ha concluido. ¡Gracias por seguirlo con nosotros! ⚽
+      </div>`;
+    }
+
+    return next3.map(m => {
+      const mt     = new Date(m.utc);
+      const lTime  = mt.toLocaleTimeString('es', { hour: '2-digit', minute: '2-digit', timeZone: tz, hour12: false });
+      const lDate  = mt.toLocaleDateString('es', { weekday: 'short', day: 'numeric', month: 'short', timeZone: tz });
+      const { d, h, m: mn, s } = countdown(mt.getTime() - Date.now());
+      const isFinal  = m.id === 'f01';
+      const border   = isFinal ? 'border-gold/50' : 'border-slate-700/60';
+      const faseCls  = isFinal ? 'bg-gold/20 text-gold' : 'bg-slate-800 text-green-400';
+      const sedeName = m.sedeSlug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+
+      return `
+<div class="group flex flex-col bg-slate-900 border ${border} hover:border-gold/40 rounded-2xl overflow-hidden transition-all hover:shadow-[0_0_28px_rgba(212,175,55,0.1)]">
+  <div class="px-4 py-2.5 border-b border-slate-800 flex items-center justify-between">
+    <span class="font-oswald text-[10px] tracking-[0.15em] uppercase ${faseCls} px-2 py-0.5 rounded">${m.fase}</span>
+    <span class="text-slate-600 font-mono text-[10px]">${lDate} · ${lTime}</span>
+  </div>
+  <div class="px-4 py-5 flex items-center justify-between gap-2 flex-1">
+    <div class="text-center flex-1 min-w-0">
+      <div class="text-3xl mb-1.5">${m.f1}</div>
+      <div class="text-white font-semibold text-xs leading-tight truncate">${m.e1}</div>
+    </div>
+    <div class="shrink-0 px-2 text-slate-600 font-mono text-xs font-bold">VS</div>
+    <div class="text-center flex-1 min-w-0">
+      <div class="text-3xl mb-1.5">${m.f2}</div>
+      <div class="text-white font-semibold text-xs leading-tight truncate">${m.e2}</div>
+    </div>
+  </div>
+  <div class="px-4 pb-4">
+    <div class="bg-black/50 border border-slate-800 rounded-xl p-2.5 grid grid-cols-4 gap-1 text-center" data-utc="${m.utc}">
+      <div><div class="font-mono font-bold text-green-400 tabular-nums text-base count-d">${pad2(d)}</div><div class="text-slate-600 text-[8px] uppercase tracking-wider mt-0.5">días</div></div>
+      <div><div class="font-mono font-bold text-green-400 tabular-nums text-base count-h">${pad2(h)}</div><div class="text-slate-600 text-[8px] uppercase tracking-wider mt-0.5">h</div></div>
+      <div><div class="font-mono font-bold text-green-400 tabular-nums text-base count-m">${pad2(mn)}</div><div class="text-slate-600 text-[8px] uppercase tracking-wider mt-0.5">min</div></div>
+      <div><div class="font-mono font-bold text-green-400 tabular-nums text-base count-s">${pad2(s)}</div><div class="text-slate-600 text-[8px] uppercase tracking-wider mt-0.5">seg</div></div>
+    </div>
+  </div>
+  <a href="/sedes/${m.sedeSlug}" class="px-4 pb-4 flex items-center justify-between text-xs font-mono transition-colors text-slate-600 hover:text-gold">
+    <span>${sedeName}</span>
+    <span class="text-gold group-hover:underline">Ver sede →</span>
+  </a>
+</div>`;
+    }).join('');
+  }
+
+  function init() {
+    const tz     = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const tzEl   = document.getElementById('nxt-tz');
+    const grid   = document.getElementById('nxt-grid');
+    if (tzEl) tzEl.textContent = `Tu hora local: ${tz}`;
+    const next3  = getNext3();
+    if (grid) grid.innerHTML = renderCards(next3, tz);
+  }
+
+  init();
+
+  setInterval(() => {
+    document.querySelectorAll<HTMLElement>('[data-utc]').forEach(el => {
+      const utc = el.dataset.utc!;
+      const ms  = new Date(utc).getTime() - Date.now();
+      if (ms <= 0) { init(); return; }
+      const { d, h, m, s } = countdown(ms);
+      (el.querySelector('.count-d') as HTMLElement).textContent = pad2(d);
+      (el.querySelector('.count-h') as HTMLElement).textContent = pad2(h);
+      (el.querySelector('.count-m') as HTMLElement).textContent = pad2(m);
+      (el.querySelector('.count-s') as HTMLElement).textContent = pad2(s);
+    });
+  }, 1000);
+</script>

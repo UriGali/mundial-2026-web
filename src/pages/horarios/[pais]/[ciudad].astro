@@ -39,6 +39,7 @@ interface Partido {
   flag2: string;
   sede: string;
   ciudadSede: string;
+  sedeSlug: string;
   fase: string;
   grupo: 'grupos' | 'eliminatorias';
 }
@@ -58,9 +59,9 @@ export function getStaticPaths() {
         { pais: 'colombia',  ciudad: 'bogota',       nombre: 'Bogotá',       paisNombre: 'Colombia',  flag: '🇨🇴' },
       ],
       ciudades: [
-        { slug: 'ciudad-de-mexico', nombre: 'Ciudad de México', timezone: 'America/Mexico_City',              offsetLabel: 'UTC−5',    abbr: 'CDT', locale: 'es-MX' },
-        { slug: 'guadalajara',      nombre: 'Guadalajara',      timezone: 'America/Mexico_City',              offsetLabel: 'UTC−5',    abbr: 'CDT', locale: 'es-MX' },
-        { slug: 'monterrey',        nombre: 'Monterrey',        timezone: 'America/Monterrey',                offsetLabel: 'UTC−5',    abbr: 'CDT', locale: 'es-MX' },
+        { slug: 'ciudad-de-mexico', nombre: 'Ciudad de México', timezone: 'America/Mexico_City',              offsetLabel: 'UTC−5', abbr: 'CDT', locale: 'es-MX' },
+        { slug: 'guadalajara',      nombre: 'Guadalajara',      timezone: 'America/Mexico_City',              offsetLabel: 'UTC−5', abbr: 'CDT', locale: 'es-MX' },
+        { slug: 'monterrey',        nombre: 'Monterrey',        timezone: 'America/Monterrey',                offsetLabel: 'UTC−5', abbr: 'CDT', locale: 'es-MX' },
       ],
     },
     {
@@ -75,9 +76,9 @@ export function getStaticPaths() {
         { pais: 'colombia',  ciudad: 'bogota',           nombre: 'Bogotá',           paisNombre: 'Colombia',  flag: '🇨🇴' },
       ],
       ciudades: [
-        { slug: 'madrid',    nombre: 'Madrid',    timezone: 'Europe/Madrid', offsetLabel: 'UTC+2',    abbr: 'CEST', locale: 'es-ES' },
-        { slug: 'barcelona', nombre: 'Barcelona', timezone: 'Europe/Madrid', offsetLabel: 'UTC+2',    abbr: 'CEST', locale: 'es-ES' },
-        { slug: 'sevilla',   nombre: 'Sevilla',   timezone: 'Europe/Madrid', offsetLabel: 'UTC+2',    abbr: 'CEST', locale: 'es-ES' },
+        { slug: 'madrid',    nombre: 'Madrid',    timezone: 'Europe/Madrid', offsetLabel: 'UTC+2', abbr: 'CEST', locale: 'es-ES' },
+        { slug: 'barcelona', nombre: 'Barcelona', timezone: 'Europe/Madrid', offsetLabel: 'UTC+2', abbr: 'CEST', locale: 'es-ES' },
+        { slug: 'sevilla',   nombre: 'Sevilla',   timezone: 'Europe/Madrid', offsetLabel: 'UTC+2', abbr: 'CEST', locale: 'es-ES' },
       ],
     },
     {
@@ -143,6 +144,24 @@ export function getStaticPaths() {
 interface Props { pais: PaisData; ciudad: CiudadData }
 const { pais, ciudad } = Astro.props;
 
+// ── Google Calendar link (UTC times, 2h duration) ─────────────────────────────
+function gcalLink(fechaISO: string, horaUTC: string, e1: string, e2: string, fase: string, sede: string, ciudadSede: string): string {
+  const [y, mo, d] = fechaISO.split('-').map(Number);
+  const [hr, min]  = horaUTC.split(':').map(Number);
+  const start      = new Date(Date.UTC(y, mo - 1, d, hr, min));
+  const end        = new Date(start.getTime() + 7_200_000);
+  const p2  = (n: number) => String(n).padStart(2, '0');
+  const fmt = (dt: Date) =>
+    `${dt.getUTCFullYear()}${p2(dt.getUTCMonth()+1)}${p2(dt.getUTCDate())}T${p2(dt.getUTCHours())}${p2(dt.getUTCMinutes())}00Z`;
+  return [
+    'https://calendar.google.com/calendar/render?action=TEMPLATE',
+    `&text=${encodeURIComponent(`${e1} vs ${e2} — Mundial 2026`)}`,
+    `&dates=${fmt(start)}/${fmt(end)}`,
+    `&details=${encodeURIComponent(`${fase}\n${sede}, ${ciudadSede}\nMundial FIFA 2026`)}`,
+    `&location=${encodeURIComponent(`${sede}, ${ciudadSede}`)}`,
+  ].join('');
+}
+
 // ── Helper: convertir hora UTC → timezone local ────────────────────────────────
 function horaLocal(fechaISO: string, horaUTC: string, timezone: string, locale: string) {
   const [y, m, d]   = fechaISO.split('-').map(Number);
@@ -167,44 +186,44 @@ function horaLocal(fechaISO: string, horaUTC: string, timezone: string, locale: 
 // ── Datos de partidos ──────────────────────────────────────────────────────────
 const partidos: Partido[] = [
   // ── FASE DE GRUPOS ──────────────────────────────────────────────────────────
-  { id:'g01', fechaISO:'2026-06-11', horaUTC:'19:00', equipo1:'México',       flag1:'🇲🇽', equipo2:'Ecuador',       flag2:'🇪🇨', sede:'Estadio Azteca',        ciudadSede:'Cd. de México', fase:'Grupo A — J1', grupo:'grupos' },
-  { id:'g02', fechaISO:'2026-06-12', horaUTC:'19:00', equipo1:'Argentina',    flag1:'🇦🇷', equipo2:'Marruecos',     flag2:'🇲🇦', sede:'MetLife Stadium',       ciudadSede:'Nueva York',    fase:'Grupo B — J1', grupo:'grupos' },
-  { id:'g03', fechaISO:'2026-06-12', horaUTC:'22:00', equipo1:'España',       flag1:'🇪🇸', equipo2:'Croacia',       flag2:'🇭🇷', sede:'SoFi Stadium',          ciudadSede:'Los Ángeles',   fase:'Grupo C — J1', grupo:'grupos' },
-  { id:'g04', fechaISO:'2026-06-13', horaUTC:'19:00', equipo1:'Colombia',     flag1:'🇨🇴', equipo2:'Túnez',         flag2:'🇹🇳', sede:'Hard Rock Stadium',     ciudadSede:'Miami',         fase:'Grupo D — J1', grupo:'grupos' },
-  { id:'g05', fechaISO:'2026-06-13', horaUTC:'22:00', equipo1:'Brasil',       flag1:'🇧🇷', equipo2:'Alemania',      flag2:'🇩🇪', sede:'AT&T Stadium',          ciudadSede:'Dallas',        fase:'Grupo E — J1', grupo:'grupos' },
-  { id:'g06', fechaISO:'2026-06-14', horaUTC:'01:00', equipo1:'USA',          flag1:'🇺🇸', equipo2:'Ghana',         flag2:'🇬🇭', sede:'Arrowhead Stadium',     ciudadSede:'Kansas City',   fase:'Grupo F — J1', grupo:'grupos' },
-  { id:'g07', fechaISO:'2026-06-14', horaUTC:'19:00', equipo1:'Francia',      flag1:'🇫🇷', equipo2:'Portugal',      flag2:'🇵🇹', sede:'Lumen Field',           ciudadSede:'Seattle',       fase:'Grupo G — J1', grupo:'grupos' },
-  { id:'g08', fechaISO:'2026-06-14', horaUTC:'22:00', equipo1:'Canadá',       flag1:'🇨🇦', equipo2:'Senegal',       flag2:'🇸🇳', sede:'BC Place',              ciudadSede:'Vancouver',     fase:'Grupo H — J1', grupo:'grupos' },
-  { id:'g09', fechaISO:'2026-06-15', horaUTC:'22:00', equipo1:'Países Bajos', flag1:'🇳🇱', equipo2:'Polonia',       flag2:'🇵🇱', sede:'Lincoln Financial',     ciudadSede:'Filadelfia',    fase:'Grupo I — J1', grupo:'grupos' },
-  { id:'g10', fechaISO:'2026-06-16', horaUTC:'22:00', equipo1:'México',       flag1:'🇲🇽', equipo2:'Polonia',       flag2:'🇵🇱', sede:'Estadio Akron',         ciudadSede:'Guadalajara',   fase:'Grupo A — J2', grupo:'grupos' },
-  { id:'g11', fechaISO:'2026-06-17', horaUTC:'22:00', equipo1:'Argentina',    flag1:'🇦🇷', equipo2:'España',        flag2:'🇪🇸', sede:'MetLife Stadium',       ciudadSede:'Nueva York',    fase:'Grupo B — J2', grupo:'grupos' },
-  { id:'g12', fechaISO:'2026-06-18', horaUTC:'19:00', equipo1:'Colombia',     flag1:'🇨🇴', equipo2:'Brasil',        flag2:'🇧🇷', sede:'NRG Stadium',           ciudadSede:'Houston',       fase:'Grupo D — J2', grupo:'grupos' },
-  { id:'g13', fechaISO:'2026-06-20', horaUTC:'22:00', equipo1:'USA',          flag1:'🇺🇸', equipo2:'Portugal',      flag2:'🇵🇹', sede:'Gillette Stadium',      ciudadSede:'Boston',        fase:'Grupo F — J2', grupo:'grupos' },
-  { id:'g14', fechaISO:'2026-06-21', horaUTC:'22:00', equipo1:'Francia',      flag1:'🇫🇷', equipo2:'Suiza',         flag2:'🇨🇭', sede:'Mercedes-Benz Stadium', ciudadSede:'Atlanta',       fase:'Grupo G — J2', grupo:'grupos' },
-  { id:'g15', fechaISO:'2026-06-27', horaUTC:'19:00', equipo1:'México',       flag1:'🇲🇽', equipo2:'Argentina',     flag2:'🇦🇷', sede:'Estadio BBVA',          ciudadSede:'Monterrey',     fase:'Grupo A — J3', grupo:'grupos' },
-  { id:'g16', fechaISO:'2026-06-28', horaUTC:'22:00', equipo1:'España',       flag1:'🇪🇸', equipo2:'Colombia',      flag2:'🇨🇴', sede:"Levi's Stadium",        ciudadSede:'San Francisco', fase:'Grupo C — J3', grupo:'grupos' },
-  { id:'g17', fechaISO:'2026-06-30', horaUTC:'01:00', equipo1:'USA',          flag1:'🇺🇸', equipo2:'Francia',       flag2:'🇫🇷', sede:'Mercedes-Benz Stadium', ciudadSede:'Atlanta',       fase:'Grupo F — J3', grupo:'grupos' },
-  { id:'g18', fechaISO:'2026-07-01', horaUTC:'19:00', equipo1:'Brasil',       flag1:'🇧🇷', equipo2:'Países Bajos',  flag2:'🇳🇱', sede:'AT&T Stadium',          ciudadSede:'Dallas',        fase:'Grupo E — J3', grupo:'grupos' },
+  { id:'g01', fechaISO:'2026-06-11', horaUTC:'19:00', equipo1:'México',       flag1:'🇲🇽', equipo2:'Ecuador',      flag2:'🇪🇨', sede:'Estadio Azteca',        ciudadSede:'Cd. de México', sedeSlug:'ciudad-de-mexico', fase:'Grupo A — J1', grupo:'grupos' },
+  { id:'g02', fechaISO:'2026-06-12', horaUTC:'19:00', equipo1:'Argentina',    flag1:'🇦🇷', equipo2:'Marruecos',    flag2:'🇲🇦', sede:'MetLife Stadium',       ciudadSede:'Nueva York',    sedeSlug:'nueva-york',       fase:'Grupo B — J1', grupo:'grupos' },
+  { id:'g03', fechaISO:'2026-06-12', horaUTC:'22:00', equipo1:'España',       flag1:'🇪🇸', equipo2:'Croacia',      flag2:'🇭🇷', sede:'SoFi Stadium',          ciudadSede:'Los Ángeles',   sedeSlug:'los-angeles',      fase:'Grupo C — J1', grupo:'grupos' },
+  { id:'g04', fechaISO:'2026-06-13', horaUTC:'19:00', equipo1:'Colombia',     flag1:'🇨🇴', equipo2:'Túnez',        flag2:'🇹🇳', sede:'Hard Rock Stadium',     ciudadSede:'Miami',         sedeSlug:'miami',            fase:'Grupo D — J1', grupo:'grupos' },
+  { id:'g05', fechaISO:'2026-06-13', horaUTC:'22:00', equipo1:'Brasil',       flag1:'🇧🇷', equipo2:'Alemania',     flag2:'🇩🇪', sede:'AT&T Stadium',          ciudadSede:'Dallas',        sedeSlug:'dallas',           fase:'Grupo E — J1', grupo:'grupos' },
+  { id:'g06', fechaISO:'2026-06-14', horaUTC:'01:00', equipo1:'USA',          flag1:'🇺🇸', equipo2:'Ghana',        flag2:'🇬🇭', sede:'Arrowhead Stadium',     ciudadSede:'Kansas City',   sedeSlug:'kansas-city',      fase:'Grupo F — J1', grupo:'grupos' },
+  { id:'g07', fechaISO:'2026-06-14', horaUTC:'19:00', equipo1:'Francia',      flag1:'🇫🇷', equipo2:'Portugal',     flag2:'🇵🇹', sede:'Lumen Field',           ciudadSede:'Seattle',       sedeSlug:'seattle',          fase:'Grupo G — J1', grupo:'grupos' },
+  { id:'g08', fechaISO:'2026-06-14', horaUTC:'22:00', equipo1:'Canadá',       flag1:'🇨🇦', equipo2:'Senegal',      flag2:'🇸🇳', sede:'BC Place',              ciudadSede:'Vancouver',     sedeSlug:'vancouver',        fase:'Grupo H — J1', grupo:'grupos' },
+  { id:'g09', fechaISO:'2026-06-15', horaUTC:'22:00', equipo1:'Países Bajos', flag1:'🇳🇱', equipo2:'Polonia',      flag2:'🇵🇱', sede:'Lincoln Financial',     ciudadSede:'Filadelfia',    sedeSlug:'filadelfia',       fase:'Grupo I — J1', grupo:'grupos' },
+  { id:'g10', fechaISO:'2026-06-16', horaUTC:'22:00', equipo1:'México',       flag1:'🇲🇽', equipo2:'Polonia',      flag2:'🇵🇱', sede:'Estadio Akron',         ciudadSede:'Guadalajara',   sedeSlug:'guadalajara',      fase:'Grupo A — J2', grupo:'grupos' },
+  { id:'g11', fechaISO:'2026-06-17', horaUTC:'22:00', equipo1:'Argentina',    flag1:'🇦🇷', equipo2:'España',       flag2:'🇪🇸', sede:'MetLife Stadium',       ciudadSede:'Nueva York',    sedeSlug:'nueva-york',       fase:'Grupo B — J2', grupo:'grupos' },
+  { id:'g12', fechaISO:'2026-06-18', horaUTC:'19:00', equipo1:'Colombia',     flag1:'🇨🇴', equipo2:'Brasil',       flag2:'🇧🇷', sede:'NRG Stadium',           ciudadSede:'Houston',       sedeSlug:'houston',          fase:'Grupo D — J2', grupo:'grupos' },
+  { id:'g13', fechaISO:'2026-06-20', horaUTC:'22:00', equipo1:'USA',          flag1:'🇺🇸', equipo2:'Portugal',     flag2:'🇵🇹', sede:'Gillette Stadium',      ciudadSede:'Boston',        sedeSlug:'boston',           fase:'Grupo F — J2', grupo:'grupos' },
+  { id:'g14', fechaISO:'2026-06-21', horaUTC:'22:00', equipo1:'Francia',      flag1:'🇫🇷', equipo2:'Suiza',        flag2:'🇨🇭', sede:'Mercedes-Benz Stadium', ciudadSede:'Atlanta',       sedeSlug:'atlanta',          fase:'Grupo G — J2', grupo:'grupos' },
+  { id:'g15', fechaISO:'2026-06-27', horaUTC:'19:00', equipo1:'México',       flag1:'🇲🇽', equipo2:'Argentina',    flag2:'🇦🇷', sede:'Estadio BBVA',          ciudadSede:'Monterrey',     sedeSlug:'monterrey',        fase:'Grupo A — J3', grupo:'grupos' },
+  { id:'g16', fechaISO:'2026-06-28', horaUTC:'22:00', equipo1:'España',       flag1:'🇪🇸', equipo2:'Colombia',     flag2:'🇨🇴', sede:"Levi's Stadium",        ciudadSede:'San Francisco', sedeSlug:'san-francisco',    fase:'Grupo C — J3', grupo:'grupos' },
+  { id:'g17', fechaISO:'2026-06-30', horaUTC:'01:00', equipo1:'USA',          flag1:'🇺🇸', equipo2:'Francia',      flag2:'🇫🇷', sede:'Mercedes-Benz Stadium', ciudadSede:'Atlanta',       sedeSlug:'atlanta',          fase:'Grupo F — J3', grupo:'grupos' },
+  { id:'g18', fechaISO:'2026-07-01', horaUTC:'19:00', equipo1:'Brasil',       flag1:'🇧🇷', equipo2:'Países Bajos', flag2:'🇳🇱', sede:'AT&T Stadium',          ciudadSede:'Dallas',        sedeSlug:'dallas',           fase:'Grupo E — J3', grupo:'grupos' },
   // ── RONDA DE 32 ─────────────────────────────────────────────────────────────
-  { id:'r01', fechaISO:'2026-07-04', horaUTC:'22:00', equipo1:'Argentina',    flag1:'🇦🇷', equipo2:'Japón',         flag2:'🇯🇵', sede:'Lincoln Financial',     ciudadSede:'Filadelfia',    fase:'Ronda de 32', grupo:'eliminatorias' },
-  { id:'r02', fechaISO:'2026-07-05', horaUTC:'22:00', equipo1:'España',       flag1:'🇪🇸', equipo2:'Suiza',         flag2:'🇨🇭', sede:'Hard Rock Stadium',     ciudadSede:'Miami',         fase:'Ronda de 32', grupo:'eliminatorias' },
-  { id:'r03', fechaISO:'2026-07-06', horaUTC:'22:00', equipo1:'México',       flag1:'🇲🇽', equipo2:'Costa Rica',    flag2:'🇨🇷', sede:'AT&T Stadium',          ciudadSede:'Dallas',        fase:'Ronda de 32', grupo:'eliminatorias' },
-  { id:'r04', fechaISO:'2026-07-07', horaUTC:'22:00', equipo1:'Colombia',     flag1:'🇨🇴', equipo2:'Senegal',       flag2:'🇸🇳', sede:'MetLife Stadium',       ciudadSede:'Nueva York',    fase:'Ronda de 32', grupo:'eliminatorias' },
+  { id:'r01', fechaISO:'2026-07-04', horaUTC:'22:00', equipo1:'Argentina',    flag1:'🇦🇷', equipo2:'Japón',        flag2:'🇯🇵', sede:'Lincoln Financial',     ciudadSede:'Filadelfia',    sedeSlug:'filadelfia',       fase:'Ronda de 32',      grupo:'eliminatorias' },
+  { id:'r02', fechaISO:'2026-07-05', horaUTC:'22:00', equipo1:'España',       flag1:'🇪🇸', equipo2:'Suiza',        flag2:'🇨🇭', sede:'Hard Rock Stadium',     ciudadSede:'Miami',         sedeSlug:'miami',            fase:'Ronda de 32',      grupo:'eliminatorias' },
+  { id:'r03', fechaISO:'2026-07-06', horaUTC:'22:00', equipo1:'México',       flag1:'🇲🇽', equipo2:'Costa Rica',   flag2:'🇨🇷', sede:'AT&T Stadium',          ciudadSede:'Dallas',        sedeSlug:'dallas',           fase:'Ronda de 32',      grupo:'eliminatorias' },
+  { id:'r04', fechaISO:'2026-07-07', horaUTC:'22:00', equipo1:'Colombia',     flag1:'🇨🇴', equipo2:'Senegal',      flag2:'🇸🇳', sede:'MetLife Stadium',       ciudadSede:'Nueva York',    sedeSlug:'nueva-york',       fase:'Ronda de 32',      grupo:'eliminatorias' },
   // ── OCTAVOS ─────────────────────────────────────────────────────────────────
-  { id:'o01', fechaISO:'2026-07-09', horaUTC:'01:00', equipo1:'Argentina',    flag1:'🇦🇷', equipo2:'Países Bajos',  flag2:'🇳🇱', sede:'SoFi Stadium',          ciudadSede:'Los Ángeles',   fase:'Octavos de Final', grupo:'eliminatorias' },
-  { id:'o02', fechaISO:'2026-07-10', horaUTC:'22:00', equipo1:'España',       flag1:'🇪🇸', equipo2:'Colombia',      flag2:'🇨🇴', sede:'AT&T Stadium',          ciudadSede:'Dallas',        fase:'Octavos de Final', grupo:'eliminatorias' },
-  { id:'o03', fechaISO:'2026-07-11', horaUTC:'22:00', equipo1:'México',       flag1:'🇲🇽', equipo2:'Brasil',        flag2:'🇧🇷', sede:'NRG Stadium',           ciudadSede:'Houston',       fase:'Octavos de Final', grupo:'eliminatorias' },
-  { id:'o04', fechaISO:'2026-07-12', horaUTC:'22:00', equipo1:'USA',          flag1:'🇺🇸', equipo2:'Francia',       flag2:'🇫🇷', sede:'Gillette Stadium',      ciudadSede:'Boston',        fase:'Octavos de Final', grupo:'eliminatorias' },
+  { id:'o01', fechaISO:'2026-07-09', horaUTC:'01:00', equipo1:'Argentina',    flag1:'🇦🇷', equipo2:'Países Bajos', flag2:'🇳🇱', sede:'SoFi Stadium',          ciudadSede:'Los Ángeles',   sedeSlug:'los-angeles',      fase:'Octavos de Final', grupo:'eliminatorias' },
+  { id:'o02', fechaISO:'2026-07-10', horaUTC:'22:00', equipo1:'España',       flag1:'🇪🇸', equipo2:'Colombia',     flag2:'🇨🇴', sede:'AT&T Stadium',          ciudadSede:'Dallas',        sedeSlug:'dallas',           fase:'Octavos de Final', grupo:'eliminatorias' },
+  { id:'o03', fechaISO:'2026-07-11', horaUTC:'22:00', equipo1:'México',       flag1:'🇲🇽', equipo2:'Brasil',       flag2:'🇧🇷', sede:'NRG Stadium',           ciudadSede:'Houston',       sedeSlug:'houston',          fase:'Octavos de Final', grupo:'eliminatorias' },
+  { id:'o04', fechaISO:'2026-07-12', horaUTC:'22:00', equipo1:'USA',          flag1:'🇺🇸', equipo2:'Francia',      flag2:'🇫🇷', sede:'Gillette Stadium',      ciudadSede:'Boston',        sedeSlug:'boston',           fase:'Octavos de Final', grupo:'eliminatorias' },
   // ── CUARTOS ─────────────────────────────────────────────────────────────────
-  { id:'q01', fechaISO:'2026-07-13', horaUTC:'22:00', equipo1:'Argentina',    flag1:'🇦🇷', equipo2:'España',        flag2:'🇪🇸', sede:'Estadio Azteca',        ciudadSede:'Cd. de México', fase:'Cuartos de Final', grupo:'eliminatorias' },
-  { id:'q02', fechaISO:'2026-07-14', horaUTC:'22:00', equipo1:'Colombia',     flag1:'🇨🇴', equipo2:'Francia',       flag2:'🇫🇷', sede:'Lumen Field',           ciudadSede:'Seattle',       fase:'Cuartos de Final', grupo:'eliminatorias' },
-  { id:'q03', fechaISO:'2026-07-15', horaUTC:'22:00', equipo1:'México',       flag1:'🇲🇽', equipo2:'Alemania',      flag2:'🇩🇪', sede:'Mercedes-Benz Stadium', ciudadSede:'Atlanta',       fase:'Cuartos de Final', grupo:'eliminatorias' },
-  { id:'q04', fechaISO:'2026-07-16', horaUTC:'22:00', equipo1:'USA',          flag1:'🇺🇸', equipo2:'Brasil',        flag2:'🇧🇷', sede:"Levi's Stadium",        ciudadSede:'San Francisco', fase:'Cuartos de Final', grupo:'eliminatorias' },
+  { id:'q01', fechaISO:'2026-07-13', horaUTC:'22:00', equipo1:'Argentina',    flag1:'🇦🇷', equipo2:'España',       flag2:'🇪🇸', sede:'Estadio Azteca',        ciudadSede:'Cd. de México', sedeSlug:'ciudad-de-mexico', fase:'Cuartos de Final', grupo:'eliminatorias' },
+  { id:'q02', fechaISO:'2026-07-14', horaUTC:'22:00', equipo1:'Colombia',     flag1:'🇨🇴', equipo2:'Francia',      flag2:'🇫🇷', sede:'Lumen Field',           ciudadSede:'Seattle',       sedeSlug:'seattle',          fase:'Cuartos de Final', grupo:'eliminatorias' },
+  { id:'q03', fechaISO:'2026-07-15', horaUTC:'22:00', equipo1:'México',       flag1:'🇲🇽', equipo2:'Alemania',     flag2:'🇩🇪', sede:'Mercedes-Benz Stadium', ciudadSede:'Atlanta',       sedeSlug:'atlanta',          fase:'Cuartos de Final', grupo:'eliminatorias' },
+  { id:'q04', fechaISO:'2026-07-16', horaUTC:'22:00', equipo1:'USA',          flag1:'🇺🇸', equipo2:'Brasil',       flag2:'🇧🇷', sede:"Levi's Stadium",        ciudadSede:'San Francisco', sedeSlug:'san-francisco',    fase:'Cuartos de Final', grupo:'eliminatorias' },
   // ── SEMIFINALES ──────────────────────────────────────────────────────────────
-  { id:'s01', fechaISO:'2026-07-14', horaUTC:'22:00', equipo1:'Semifinal 1A', flag1:'⚽', equipo2:'Semifinal 1B',  flag2:'⚽', sede:'SoFi Stadium',          ciudadSede:'Los Ángeles',   fase:'Semifinal', grupo:'eliminatorias' },
-  { id:'s02', fechaISO:'2026-07-15', horaUTC:'22:00', equipo1:'Semifinal 2A', flag1:'⚽', equipo2:'Semifinal 2B',  flag2:'⚽', sede:'MetLife Stadium',       ciudadSede:'Nueva York',    fase:'Semifinal', grupo:'eliminatorias' },
+  { id:'s01', fechaISO:'2026-07-14', horaUTC:'22:00', equipo1:'Semifinal 1A', flag1:'⚽',  equipo2:'Semifinal 1B', flag2:'⚽',  sede:'SoFi Stadium',          ciudadSede:'Los Ángeles',   sedeSlug:'los-angeles',      fase:'Semifinal',        grupo:'eliminatorias' },
+  { id:'s02', fechaISO:'2026-07-15', horaUTC:'22:00', equipo1:'Semifinal 2A', flag1:'⚽',  equipo2:'Semifinal 2B', flag2:'⚽',  sede:'MetLife Stadium',       ciudadSede:'Nueva York',    sedeSlug:'nueva-york',       fase:'Semifinal',        grupo:'eliminatorias' },
   // ── FINAL ────────────────────────────────────────────────────────────────────
-  { id:'f01', fechaISO:'2026-07-19', horaUTC:'22:00', equipo1:'Por definir',  flag1:'🏆', equipo2:'Por definir',   flag2:'🏆', sede:'MetLife Stadium',       ciudadSede:'Nueva York',    fase:'🏆 GRAN FINAL', grupo:'eliminatorias' },
+  { id:'f01', fechaISO:'2026-07-19', horaUTC:'22:00', equipo1:'Por definir',  flag1:'🏆',  equipo2:'Por definir',  flag2:'🏆',  sede:'MetLife Stadium',       ciudadSede:'Nueva York',    sedeSlug:'nueva-york',       fase:'🏆 GRAN FINAL',    grupo:'eliminatorias' },
 ];
 
 // ── Precalcular horarios locales ───────────────────────────────────────────────
@@ -256,7 +275,6 @@ const sedesAll = [
   { slug: 'toronto',          ciudad: 'Toronto',           pais: 'Canadá',  flag: '🇨🇦', estadio: 'BMO Field'               },
 ];
 
-// Todas las páginas de horarios (para interlinking entre países)
 const todasLasCiudadesHorarios = [
   { pais: 'mexico',    ciudad: 'ciudad-de-mexico', nombre: 'Ciudad de México', paisNombre: 'México',    flag: '🇲🇽' },
   { pais: 'mexico',    ciudad: 'guadalajara',      nombre: 'Guadalajara',      paisNombre: 'México',    flag: '🇲🇽' },
@@ -278,8 +296,8 @@ const title       = `Horarios Mundial 2026 en ${ciudad.nombre}, ${pais.nombre} �
 const description = `¿A qué hora son los partidos del Mundial 2026 en ${ciudad.nombre}? Tabla completa con los horarios convertidos a ${ciudad.abbr} (${ciudad.offsetLabel}). Fase de Grupos y Fases Eliminatorias con horario local exacto.`;
 const canonicalURL = `https://mundial2026guia.com/horarios/${pais.slug}/${ciudad.slug}`;
 
-// ── JSON-LD: FAQPage + BreadcrumbList ─────────────────────────────────────────
-const finalConv  = horaLocal('2026-07-19', '22:00', tz, loc);
+// ── JSON-LD ────────────────────────────────────────────────────────────────────
+const finalConv   = horaLocal('2026-07-19', '22:00', tz, loc);
 const estelarConv = horaLocal('2026-06-11', '22:00', tz, loc);
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -328,240 +346,368 @@ const jsonLd = {
 
 <Layout {title} {description} {canonicalURL} {jsonLd}>
 
-  <!-- ===================================================
-       HERO
-  ==================================================== -->
+  <!-- ═══════════════════════════════════════════════════
+       HERO — Airport dark theme
+  ════════════════════════════════════════════════════ -->
   <section
-    class="bg-navy-900 text-white py-14 sm:py-20 px-4"
+    class="relative text-white py-14 sm:py-20 px-4 overflow-hidden"
+    style="background: linear-gradient(160deg, #020617 0%, #0a1628 50%, #020617 100%);"
     aria-labelledby="page-heading"
   >
-    <div class="max-w-4xl mx-auto text-center">
+    <!-- Grid overlay -->
+    <div
+      class="absolute inset-0 opacity-[0.03] pointer-events-none"
+      style="background-image: linear-gradient(rgba(212,175,55,0.8) 1px,transparent 1px),linear-gradient(90deg,rgba(212,175,55,0.8) 1px,transparent 1px); background-size: 40px 40px;"
+      aria-hidden="true"
+    ></div>
+
+    <div class="max-w-4xl mx-auto text-center relative z-10">
       <!-- Breadcrumb -->
-      <nav class="mb-6 text-sm text-gray-500 flex justify-center" aria-label="Migas de pan">
-        <ol class="flex items-center gap-1.5 flex-wrap justify-center">
+      <nav class="mb-6 text-sm text-slate-600 flex justify-center" aria-label="Migas de pan">
+        <ol class="flex items-center gap-1.5 flex-wrap justify-center font-mono text-xs">
           <li><a href="/" class="hover:text-gold transition-colors">Inicio</a></li>
-          <li aria-hidden="true"><span>/</span></li>
+          <li aria-hidden="true" class="text-slate-700">/</li>
           <li><a href="/horarios" class="hover:text-gold transition-colors">Horarios</a></li>
-          <li aria-hidden="true"><span>/</span></li>
+          <li aria-hidden="true" class="text-slate-700">/</li>
           <li><a href={`/horarios/${pais.slug}`} class="hover:text-gold transition-colors">{pais.nombre}</a></li>
-          <li aria-hidden="true"><span>/</span></li>
-          <li class="text-gray-400" aria-current="page">{ciudad.nombre}</li>
+          <li aria-hidden="true" class="text-slate-700">/</li>
+          <li class="text-slate-400" aria-current="page">{ciudad.nombre}</li>
         </ol>
       </nav>
 
       <span class="text-5xl mb-3 block" role="img" aria-label={pais.nombre}>{pais.flag}</span>
 
-      <h1 id="page-heading" class="font-black text-3xl sm:text-5xl leading-tight mb-3">
+      <h1 id="page-heading" class="font-oswald font-bold leading-tight mb-3" style="font-size: clamp(2rem, 6vw, 3.5rem);">
         Horarios del Mundial 2026<br class="hidden sm:block" />
-        <span class="text-gold"> en {ciudad.nombre}</span>
+        <span
+          class="bg-clip-text text-transparent"
+          style="background-image: linear-gradient(105deg,#b8922a 0%,#d4af37 40%,#f5d97a 60%,#d4af37 80%,#b8922a 100%);"
+        > en {ciudad.nombre}</span>
       </h1>
 
-      <p class="text-gray-400 text-base sm:text-lg mb-8">
-        {pais.nombre} &middot; Zona horaria: <strong class="text-white">{ciudad.abbr} ({ciudad.offsetLabel})</strong>
+      <p class="text-slate-400 text-base sm:text-lg mb-8 font-mono">
+        {pais.nombre} · Zona horaria: <strong class="text-white">{ciudad.abbr} ({ciudad.offsetLabel})</strong>
       </p>
 
-      <!-- Chips de conversión rápida -->
+      <!-- UTC conversion chips — dark glass -->
       <div class="flex flex-wrap justify-center gap-3">
         {refTable.map(r => (
-          <div class="bg-white/10 border border-white/20 rounded-xl px-4 py-2.5 text-center min-w-[100px]">
-            <p class="text-xs text-gray-400 mb-0.5">{r.horaUTC} UTC</p>
-            <p class="font-black text-gold text-lg leading-none">{r.local}</p>
-            <p class="text-xs text-gray-500 mt-0.5">{r.etiqueta}</p>
+          <div
+            class="border border-slate-700/60 rounded-xl px-4 py-2.5 text-center min-w-[100px]"
+            style="background: rgba(255,255,255,0.04); backdrop-filter: blur(8px);"
+          >
+            <p class="text-xs text-slate-500 font-mono mb-0.5">{r.horaUTC} UTC</p>
+            <p class="font-mono font-bold text-green-400 text-lg leading-none">{r.local}</p>
+            <p class="text-xs text-slate-600 mt-0.5">{r.etiqueta}</p>
           </div>
         ))}
       </div>
     </div>
   </section>
 
-  <!-- ===================================================
-       CONTENIDO PRINCIPAL
-  ==================================================== -->
+  <!-- ═══════════════════════════════════════════════════
+       MAIN CONTENT
+  ════════════════════════════════════════════════════ -->
   <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
-    <!-- Aviso horarios referenciales -->
-    <div class="flex gap-3 items-start bg-blue-50 border border-blue-200 rounded-xl p-4 mb-10 text-sm">
-      <span class="text-xl shrink-0" aria-hidden="true">ℹ️</span>
-      <p class="text-blue-800 leading-relaxed">
-        <strong>Horarios orientativos.</strong> Los partidos mostrados son proyecciones representativas basadas en los formatos de turnos habituales de la FIFA. El calendario oficial completo se publicará cuando FIFA confirme el fixture definitivo. Todas las horas están convertidas a <strong>{ciudad.abbr} ({ciudad.offsetLabel})</strong>.
+    <!-- Tu hora local — client-side trust signal -->
+    <div
+      id="tz-banner"
+      class="hidden items-center gap-3 bg-green-950/20 border border-green-900/40 rounded-xl p-4 mb-6 text-sm"
+      aria-live="polite"
+    >
+      <span class="text-green-400 text-xl shrink-0" aria-hidden="true">🌍</span>
+      <div>
+        <p class="text-green-400 font-mono font-semibold text-sm">
+          Tu hora local: <span id="tz-local-name"></span>
+        </p>
+        <p class="text-slate-500 text-xs mt-0.5">
+          Los horarios de esta tabla corresponden a <strong class="text-slate-400">{ciudad.nombre} ({ciudad.abbr}, {ciudad.offsetLabel})</strong>
+        </p>
+      </div>
+    </div>
+
+    <!-- Aviso orientativo -->
+    <div class="flex gap-3 items-start bg-slate-800/40 border border-slate-700/40 rounded-xl p-4 mb-8 text-sm">
+      <span class="text-lg shrink-0" aria-hidden="true">ℹ️</span>
+      <p class="text-slate-400 leading-relaxed">
+        <strong class="text-slate-300">Horarios orientativos.</strong> Proyecciones basadas en los formatos de turnos habituales de la FIFA.
+        El calendario oficial completo se publicará cuando FIFA confirme el fixture definitivo.
+        Todas las horas: <strong class="text-white">{ciudad.abbr} ({ciudad.offsetLabel})</strong>.
       </p>
     </div>
 
-    <!-- ─── TABLA DE CONVERSIÓN RÁPIDA ────────────────────────────────────── -->
-    <section class="mb-12" aria-labelledby="ref-heading">
-      <h2 id="ref-heading" class="font-black text-xl sm:text-2xl text-navy-900 mb-4 flex items-center gap-2">
-        <span class="w-1 h-6 bg-gold rounded inline-block" aria-hidden="true"></span>
-        Conversión de Horarios UTC → {ciudad.nombre}
+    <!-- ─── FILTROS ───────────────────────────────────────────────────────── -->
+    <div class="mb-8 flex flex-wrap gap-2" role="group" aria-label="Filtrar partidos">
+      {[
+        { id: 'todos',  label: 'Todos los partidos' },
+        { id: 'hoy',    label: 'Hoy' },
+        { id: 'manana', label: 'Mañana' },
+        { id: 'grupos', label: 'Fase de Grupos' },
+        { id: 'elim',   label: 'Eliminatorias' },
+      ].map((f, i) => (
+        <button
+          data-filter={f.id}
+          aria-pressed={i === 0 ? 'true' : 'false'}
+          class={[
+            'px-4 py-2 rounded-full text-sm font-semibold border transition-all',
+            i === 0
+              ? 'bg-gold text-slate-950 border-gold'
+              : 'bg-slate-800 text-slate-400 border-slate-700 hover:text-white hover:border-slate-500',
+          ].join(' ')}
+        >
+          {f.label}
+        </button>
+      ))}
+    </div>
+
+    <!-- No results message (hidden by default) -->
+    <div
+      id="no-results"
+      class="hidden text-center py-10 text-slate-600 font-mono text-sm border border-slate-800 rounded-2xl mb-8"
+      aria-live="polite"
+    >
+      No hay partidos para este filtro en este momento.
+      <br /><button data-filter="todos" class="text-gold hover:underline mt-2 inline-block">Ver todos →</button>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════
+         TABLA AEROPUERTO — FASE DE GRUPOS
+    ════════════════════════════════════════════════════ -->
+    <section aria-labelledby="grupos-heading" class="mb-4">
+      <h2
+        id="grupos-heading"
+        class="font-oswald font-bold text-xl sm:text-2xl text-white mb-4 flex items-center gap-2"
+      >
+        <span
+          class="w-1 h-6 rounded inline-block"
+          style="background: linear-gradient(180deg,#f5d97a,#d4af37);"
+          aria-hidden="true"
+        ></span>
+        Fase de Grupos — {ciudad.nombre}
       </h2>
 
-      <div class="overflow-x-auto rounded-2xl shadow-sm border border-gray-100">
-        <table class="w-full text-sm text-left border-collapse">
-          <caption class="sr-only">
-            Tabla de conversión de horarios UTC a hora local de {ciudad.nombre} ({ciudad.abbr}, {ciudad.offsetLabel}) para el Mundial FIFA 2026
-          </caption>
-          <thead class="bg-navy-900 text-white">
-            <tr>
-              <th scope="col" class="px-4 py-3 font-semibold">Hora del partido (UTC)</th>
-              <th scope="col" class="px-4 py-3 font-semibold">Hora en {ciudad.nombre} ({ciudad.abbr})</th>
-              <th scope="col" class="px-4 py-3 font-semibold hidden sm:table-cell">Franja horaria</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-gray-100">
-            {refTable.map((r, i) => (
-              <tr class={i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                <td class="px-4 py-3 font-mono font-bold text-navy-900">{r.horaUTC} UTC</td>
-                <td class="px-4 py-3 font-black text-gold text-base">{r.local} {ciudad.abbr}</td>
-                <td class="px-4 py-3 text-gray-600 hidden sm:table-cell">{r.etiqueta}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- ===================================================
-         TABLA 1 — FASE DE GRUPOS
-    ==================================================== -->
-    <section aria-labelledby="grupos-heading">
-      <h2 id="grupos-heading" class="font-black text-xl sm:text-2xl text-navy-900 mb-2 flex items-center gap-2">
-        <span class="w-1 h-6 bg-gold rounded inline-block" aria-hidden="true"></span>
-        Fase de Grupos — Hora en {ciudad.nombre}
-      </h2>
-      <p class="text-gray-500 text-sm mb-5">
-        Los partidos de {pais.equipoNacional} aparecen <span class="bg-gold/20 text-navy-900 font-semibold px-1.5 rounded">resaltados en dorado</span>.
-      </p>
-
-      <!-- AdSlot ARRIBA de la tabla de grupos -->
       <AdSlot slot="5566778899" format="horizontal" label="Publicidad" />
 
-      <div class="overflow-x-auto rounded-2xl shadow-sm border border-gray-100 mb-6">
-        <table class="w-full text-sm border-collapse">
-          <caption class="text-left px-4 py-2 text-xs text-gray-500 bg-gray-50 border-b border-gray-100">
-            Horarios Fase de Grupos — Mundial FIFA 2026 en {ciudad.nombre} ({ciudad.abbr}, {ciudad.offsetLabel})
+      <div class="overflow-x-auto rounded-2xl border border-slate-800 mt-4 mb-2">
+        <table class="w-full text-sm border-collapse" style="background: #0a0f1e;">
+          <caption class="sr-only">
+            Horarios Fase de Grupos — Mundial FIFA 2026 en {ciudad.nombre} ({ciudad.abbr})
           </caption>
-          <thead class="bg-navy-900 text-white">
-            <tr>
-              <th scope="col" class="px-3 py-3 text-left font-semibold whitespace-nowrap">Fecha</th>
-              <th scope="col" class="px-3 py-3 text-center font-semibold whitespace-nowrap">Hora {ciudad.abbr}</th>
-              <th scope="col" class="px-3 py-3 text-left font-semibold">Partido</th>
-              <th scope="col" class="px-3 py-3 text-left font-semibold hidden md:table-cell">Sede</th>
-              <th scope="col" class="px-3 py-3 text-left font-semibold hidden lg:table-cell">Fase</th>
+          <thead>
+            <tr class="border-b border-slate-800">
+              <th scope="col" class="px-3 py-3 text-left font-oswald text-[10px] tracking-[0.2em] text-slate-500 uppercase whitespace-nowrap">Fecha</th>
+              <th scope="col" class="px-3 py-3 text-center font-oswald text-[10px] tracking-[0.2em] text-slate-500 uppercase whitespace-nowrap">{ciudad.abbr}</th>
+              <th scope="col" class="px-3 py-3 text-left font-oswald text-[10px] tracking-[0.2em] text-slate-500 uppercase">Partido</th>
+              <th scope="col" class="px-3 py-3 text-left font-oswald text-[10px] tracking-[0.2em] text-slate-500 uppercase hidden md:table-cell">Sede</th>
+              <th scope="col" class="px-3 py-3 text-left font-oswald text-[10px] tracking-[0.2em] text-slate-500 uppercase hidden lg:table-cell">Fase</th>
+              <th scope="col" class="px-3 py-3 text-right font-oswald text-[10px] tracking-[0.2em] text-slate-500 uppercase whitespace-nowrap">Acciones</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-gray-100">
+          <tbody>
             {partidosGrupos.map((p, i) => (
-              <tr class={[
-                p.esDestacado ? 'bg-gold/10 font-semibold' : (i % 2 === 0 ? 'bg-white' : 'bg-gray-50'),
-                'hover:bg-gold/5 transition-colors',
-              ].join(' ')}>
-                <td class="px-3 py-3 whitespace-nowrap text-gray-700">
-                  {p.esDestacado && <span class="inline-block w-1.5 h-1.5 rounded-full bg-gold mr-1.5 align-middle" aria-hidden="true"></span>}
-                  {p.diaFecha}
+              <tr
+                data-fecha={p.fechaISO}
+                data-grupo="grupos"
+                class={[
+                  'border-b border-slate-800/60 transition-colors',
+                  p.esDestacado
+                    ? 'bg-green-950/30 hover:bg-green-950/50'
+                    : i % 2 === 0
+                      ? 'hover:bg-slate-800/40'
+                      : 'bg-slate-900/40 hover:bg-slate-800/40',
+                ].join(' ')}
+              >
+                <td class="px-3 py-3 whitespace-nowrap">
+                  {p.esDestacado && (
+                    <span class="inline-block w-1.5 h-1.5 rounded-full bg-green-400 mr-1.5 align-middle" aria-hidden="true"></span>
+                  )}
+                  <span class="font-mono text-xs text-slate-400">{p.diaFecha}</span>
                 </td>
                 <td class="px-3 py-3 text-center">
-                  <span class={`font-black text-base ${p.esDestacado ? 'text-navy-900' : 'text-gold'}`}>{p.hora}</span>
+                  <span class={`font-mono font-bold text-base ${p.esDestacado ? 'text-green-300' : 'text-green-400'}`}>
+                    {p.hora}
+                  </span>
                 </td>
                 <td class="px-3 py-3">
                   <span class="whitespace-nowrap">
                     <span aria-hidden="true">{p.flag1}</span>
-                    <span class="mx-1 text-xs font-medium">{p.equipo1}</span>
+                    <span class="mx-1 text-xs font-semibold text-white">{p.equipo1}</span>
                   </span>
-                  <span class="text-gray-400 mx-1 text-xs font-bold">vs</span>
+                  <span class="text-slate-600 mx-1 text-xs font-mono">vs</span>
                   <span class="whitespace-nowrap">
-                    <span class="mx-1 text-xs font-medium">{p.equipo2}</span>
+                    <span class="mx-1 text-xs font-semibold text-white">{p.equipo2}</span>
                     <span aria-hidden="true">{p.flag2}</span>
                   </span>
                 </td>
-                <td class="px-3 py-3 text-gray-500 text-xs hidden md:table-cell whitespace-nowrap">
+                <td class="px-3 py-3 font-mono text-slate-500 text-xs hidden md:table-cell whitespace-nowrap">
                   {p.ciudadSede}
                 </td>
-                <td class="px-3 py-3 text-gray-500 text-xs hidden lg:table-cell whitespace-nowrap">
-                  {p.fase}
+                <td class="px-3 py-3 hidden lg:table-cell whitespace-nowrap">
+                  <span class="bg-slate-800 text-slate-400 text-[10px] font-oswald tracking-wider px-2 py-0.5 rounded">
+                    {p.fase}
+                  </span>
+                </td>
+                <td class="px-3 py-3 text-right whitespace-nowrap">
+                  <div class="flex items-center justify-end gap-1.5">
+                    <a
+                      href={gcalLink(p.fechaISO, p.horaUTC, p.equipo1, p.equipo2, p.fase, p.sede, p.ciudadSede)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="inline-flex items-center text-slate-500 hover:text-white border border-slate-700/60 hover:border-slate-500 p-1.5 rounded-lg transition-all"
+                      aria-label={`Añadir ${p.equipo1} vs ${p.equipo2} a Google Calendar`}
+                      title="Añadir a Google Calendar"
+                    >
+                      <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <rect x="3" y="4" width="18" height="18" rx="2" stroke-width="2"/>
+                        <line x1="16" y1="2" x2="16" y2="6" stroke-width="2"/>
+                        <line x1="8" y1="2" x2="8" y2="6" stroke-width="2"/>
+                        <line x1="3" y1="10" x2="21" y2="10" stroke-width="2"/>
+                      </svg>
+                    </a>
+                    <a
+                      href={`/sedes/${p.sedeSlug}`}
+                      class="text-gold hover:text-gold/80 text-xs font-mono font-bold transition-colors"
+                      aria-label={`Detalles de la sede ${p.ciudadSede}`}
+                    >
+                      Sede →
+                    </a>
+                  </div>
                 </td>
               </tr>
             ))}
+
+            <!-- ── IN-FEED AD ROW ── -->
+            <tr data-ad="true" data-grupo="grupos" class="border-b border-slate-800/60 border-dashed">
+              <td colspan={6} class="px-0 py-0">
+                <div class="relative">
+                  <span class="absolute top-1 right-3 text-[9px] font-mono text-slate-700 uppercase tracking-wider z-10">Publicidad</span>
+                  <AdSlot slot="6677889900" format="leaderboard" label="" />
+                </div>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
-
-      <!-- AdSlot ABAJO de la tabla de grupos -->
-      <AdSlot slot="6677889900" format="rectangle" label="Publicidad" class="max-w-2xl mx-auto" />
     </section>
 
-    <!-- ===================================================
-         TABLA 2 — FASES ELIMINATORIAS
-    ==================================================== -->
-    <section class="mt-12" aria-labelledby="elim-heading">
-      <h2 id="elim-heading" class="font-black text-xl sm:text-2xl text-navy-900 mb-2 flex items-center gap-2">
-        <span class="w-1 h-6 bg-gold rounded inline-block" aria-hidden="true"></span>
-        Fases Eliminatorias — Hora en {ciudad.nombre}
+    <!-- ═══════════════════════════════════════════════════
+         TABLA AEROPUERTO — ELIMINATORIAS
+    ════════════════════════════════════════════════════ -->
+    <section class="mt-10" aria-labelledby="elim-heading">
+      <h2
+        id="elim-heading"
+        class="font-oswald font-bold text-xl sm:text-2xl text-white mb-4 flex items-center gap-2"
+      >
+        <span
+          class="w-1 h-6 rounded inline-block"
+          style="background: linear-gradient(180deg,#f5d97a,#d4af37);"
+          aria-hidden="true"
+        ></span>
+        Fases Eliminatorias — {ciudad.nombre}
       </h2>
-      <p class="text-gray-500 text-sm mb-5">
-        Ronda de 32, Octavos, Cuartos, Semifinales y Gran Final del 4 al 19 de julio de 2026.
+      <p class="text-slate-500 text-sm mb-4 font-mono">
+        Ronda de 32 · Octavos · Cuartos · Semifinales · Final — 4 al 19 jul 2026
       </p>
 
-      <!-- AdSlot ARRIBA de la tabla eliminatorias -->
       <AdSlot slot="7788990012" format="horizontal" label="Publicidad" />
 
-      <div class="overflow-x-auto rounded-2xl shadow-sm border border-gray-100 mb-6">
-        <table class="w-full text-sm border-collapse">
-          <caption class="text-left px-4 py-2 text-xs text-gray-500 bg-gray-50 border-b border-gray-100">
-            Horarios Fases Eliminatorias — Mundial FIFA 2026 en {ciudad.nombre} ({ciudad.abbr}, {ciudad.offsetLabel})
+      <div class="overflow-x-auto rounded-2xl border border-slate-800 mt-4 mb-2">
+        <table class="w-full text-sm border-collapse" style="background: #0a0f1e;">
+          <caption class="sr-only">
+            Horarios Fases Eliminatorias — Mundial FIFA 2026 en {ciudad.nombre} ({ciudad.abbr})
           </caption>
-          <thead class="bg-navy-900 text-white">
-            <tr>
-              <th scope="col" class="px-3 py-3 text-left font-semibold whitespace-nowrap">Fecha</th>
-              <th scope="col" class="px-3 py-3 text-center font-semibold whitespace-nowrap">Hora {ciudad.abbr}</th>
-              <th scope="col" class="px-3 py-3 text-left font-semibold">Partido</th>
-              <th scope="col" class="px-3 py-3 text-left font-semibold hidden md:table-cell">Sede</th>
-              <th scope="col" class="px-3 py-3 text-left font-semibold hidden sm:table-cell">Ronda</th>
+          <thead>
+            <tr class="border-b border-slate-800">
+              <th scope="col" class="px-3 py-3 text-left font-oswald text-[10px] tracking-[0.2em] text-slate-500 uppercase whitespace-nowrap">Fecha</th>
+              <th scope="col" class="px-3 py-3 text-center font-oswald text-[10px] tracking-[0.2em] text-slate-500 uppercase whitespace-nowrap">{ciudad.abbr}</th>
+              <th scope="col" class="px-3 py-3 text-left font-oswald text-[10px] tracking-[0.2em] text-slate-500 uppercase">Partido</th>
+              <th scope="col" class="px-3 py-3 text-left font-oswald text-[10px] tracking-[0.2em] text-slate-500 uppercase hidden md:table-cell">Sede</th>
+              <th scope="col" class="px-3 py-3 text-left font-oswald text-[10px] tracking-[0.2em] text-slate-500 uppercase hidden sm:table-cell">Ronda</th>
+              <th scope="col" class="px-3 py-3 text-right font-oswald text-[10px] tracking-[0.2em] text-slate-500 uppercase whitespace-nowrap">Acciones</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-gray-100">
+          <tbody>
             {partidosElim.map((p, i) => {
               const isFinal = p.id === 'f01';
               return (
-                <tr class={[
-                  isFinal        ? 'bg-gold/20 font-bold'     :
-                  p.esDestacado  ? 'bg-gold/10 font-semibold' :
-                  i % 2 === 0    ? 'bg-white'                  : 'bg-gray-50',
-                  'hover:bg-gold/5 transition-colors',
-                ].join(' ')}>
-                  <td class="px-3 py-3 whitespace-nowrap text-gray-700">
-                    {isFinal && <span class="text-gold mr-1" aria-hidden="true">🏆</span>}
-                    {p.diaFecha}
+                <tr
+                  data-fecha={p.fechaISO}
+                  data-grupo="eliminatorias"
+                  class={[
+                    'border-b border-slate-800/60 transition-colors',
+                    isFinal
+                      ? 'bg-gold/10 hover:bg-gold/15'
+                      : p.esDestacado
+                        ? 'bg-green-950/30 hover:bg-green-950/50'
+                        : i % 2 === 0
+                          ? 'hover:bg-slate-800/40'
+                          : 'bg-slate-900/40 hover:bg-slate-800/40',
+                  ].join(' ')}
+                >
+                  <td class="px-3 py-3 whitespace-nowrap">
+                    {isFinal && <span class="text-gold mr-1 text-sm" aria-hidden="true">🏆</span>}
+                    <span class={`font-mono text-xs ${isFinal ? 'text-gold' : 'text-slate-400'}`}>{p.diaFecha}</span>
                   </td>
                   <td class="px-3 py-3 text-center">
-                    <span class={`font-black text-base ${isFinal ? 'text-navy-900' : p.esDestacado ? 'text-navy-900' : 'text-gold'}`}>
+                    <span class={`font-mono font-bold text-base ${isFinal ? 'text-gold' : p.esDestacado ? 'text-green-300' : 'text-green-400'}`}>
                       {p.hora}
                     </span>
                   </td>
                   <td class="px-3 py-3">
                     <span class="whitespace-nowrap">
                       <span aria-hidden="true">{p.flag1}</span>
-                      <span class="mx-1 text-xs">{p.equipo1}</span>
+                      <span class={`mx-1 text-xs font-semibold ${isFinal ? 'text-gold' : 'text-white'}`}>{p.equipo1}</span>
                     </span>
-                    <span class="text-gray-400 mx-1 text-xs font-bold">vs</span>
+                    <span class="text-slate-600 mx-1 text-xs font-mono">vs</span>
                     <span class="whitespace-nowrap">
-                      <span class="mx-1 text-xs">{p.equipo2}</span>
+                      <span class={`mx-1 text-xs font-semibold ${isFinal ? 'text-gold' : 'text-white'}`}>{p.equipo2}</span>
                       <span aria-hidden="true">{p.flag2}</span>
                     </span>
                   </td>
-                  <td class="px-3 py-3 text-gray-500 text-xs hidden md:table-cell whitespace-nowrap">
+                  <td class="px-3 py-3 font-mono text-slate-500 text-xs hidden md:table-cell whitespace-nowrap">
                     {p.ciudadSede}
                   </td>
-                  <td class="px-3 py-3 text-xs hidden sm:table-cell whitespace-nowrap">
-                    <span class={isFinal ? 'text-gold font-black' : 'text-gray-500'}>
+                  <td class="px-3 py-3 hidden sm:table-cell whitespace-nowrap">
+                    <span class={`text-[10px] font-oswald tracking-wider px-2 py-0.5 rounded ${isFinal ? 'bg-gold/20 text-gold' : 'bg-slate-800 text-slate-400'}`}>
                       {p.fase}
                     </span>
+                  </td>
+                  <td class="px-3 py-3 text-right whitespace-nowrap">
+                    <div class="flex items-center justify-end gap-1.5">
+                      <a
+                        href={gcalLink(p.fechaISO, p.horaUTC, p.equipo1, p.equipo2, p.fase, p.sede, p.ciudadSede)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="inline-flex items-center text-slate-500 hover:text-white border border-slate-700/60 hover:border-slate-500 p-1.5 rounded-lg transition-all"
+                        aria-label={`Añadir ${p.equipo1} vs ${p.equipo2} a Google Calendar`}
+                        title="Añadir a Google Calendar"
+                      >
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                          <rect x="3" y="4" width="18" height="18" rx="2" stroke-width="2"/>
+                          <line x1="16" y1="2" x2="16" y2="6" stroke-width="2"/>
+                          <line x1="8" y1="2" x2="8" y2="6" stroke-width="2"/>
+                          <line x1="3" y1="10" x2="21" y2="10" stroke-width="2"/>
+                        </svg>
+                      </a>
+                      <a
+                        href={`/sedes/${p.sedeSlug}`}
+                        class="text-gold hover:text-gold/80 text-xs font-mono font-bold transition-colors"
+                        aria-label={`Detalles de la sede ${p.ciudadSede}`}
+                      >
+                        Sede →
+                      </a>
+                    </div>
                   </td>
                 </tr>
               );
             })}
           </tbody>
           <tfoot>
-            <tr class="bg-navy-950 text-white text-xs">
-              <td colspan={5} class="px-4 py-2.5 text-center">
-                <strong>Final:</strong> 19 julio 2026 &middot; MetLife Stadium, Nueva York &middot;
+            <tr class="border-t border-gold/20" style="background: rgba(212,175,55,0.06);">
+              <td colspan={6} class="px-4 py-3 text-center font-mono text-xs text-slate-400">
+                <strong class="text-gold">Final:</strong>
+                19 julio 2026 · MetLife Stadium, Nueva York ·
                 {horaLocal('2026-07-19','22:00', tz, loc).hora} {ciudad.abbr}
               </td>
             </tr>
@@ -569,20 +715,24 @@ const jsonLd = {
         </table>
       </div>
 
-      <!-- AdSlot ABAJO de la tabla eliminatorias -->
-      <AdSlot slot="8899001122" format="rectangle" label="Publicidad" class="max-w-2xl mx-auto" />
+      <AdSlot slot="8899001122" format="rectangle" label="Publicidad" class="max-w-2xl mx-auto mt-6" />
     </section>
 
-    <!-- ───────────────────────────────────────────────────────────────────── -->
-    <!-- FAQ DESTACADA (visualmente + structured data ya en JSON-LD)          -->
-    <!-- ───────────────────────────────────────────────────────────────────── -->
+    <!-- ─── FAQ ──────────────────────────────────────────────────────────────── -->
     <section class="mt-14 mb-12" aria-labelledby="faq-heading">
-      <h2 id="faq-heading" class="font-black text-xl sm:text-2xl text-navy-900 mb-6 flex items-center gap-2">
-        <span class="w-1 h-6 bg-gold rounded inline-block" aria-hidden="true"></span>
+      <h2
+        id="faq-heading"
+        class="font-oswald font-bold text-xl sm:text-2xl text-white mb-6 flex items-center gap-2"
+      >
+        <span
+          class="w-1 h-6 rounded inline-block"
+          style="background: linear-gradient(180deg,#f5d97a,#d4af37);"
+          aria-hidden="true"
+        ></span>
         Preguntas frecuentes — Horarios en {ciudad.nombre}
       </h2>
 
-      <dl class="space-y-4">
+      <dl class="space-y-3">
         {[
           {
             pregunta: `¿A qué hora es la final del Mundial 2026 en ${ciudad.nombre}?`,
@@ -590,18 +740,18 @@ const jsonLd = {
           },
           {
             pregunta: `¿Cuál es la franja horaria más difícil para ver el Mundial desde ${ciudad.nombre}?`,
-            respuesta: `Los partidos nocturno-nocturnos (01:00 UTC) corresponden a las ${horaLocal('2026-06-12','01:00',tz,loc).hora} ${ciudad.abbr} en ${ciudad.nombre}. ${['CEST','CET'].includes(ciudad.abbr) ? 'Para España, los partidos nocturnos americanos (9pm EDT) se juegan a las 03:00 CEST, lo que implica trasnochar.' : 'Planifica el sueño en consecuencia para los partidos de máxima noche en USA.'} `,
+            respuesta: `Los partidos nocturnos (01:00 UTC) corresponden a las ${horaLocal('2026-06-12','01:00',tz,loc).hora} ${ciudad.abbr} en ${ciudad.nombre}. ${['CEST','CET'].includes(ciudad.abbr) ? 'Para España, los partidos nocturnos americanos se juegan a las 03:00 CEST, lo que implica trasnochar.' : 'Planifica el sueño en consecuencia para los partidos de máxima noche en USA.'} `,
           },
           {
             pregunta: `¿Cuántas horas de diferencia hay entre UTC y ${ciudad.nombre} durante el Mundial?`,
             respuesta: `Durante el Mundial FIFA 2026 (junio–julio 2026), ${ciudad.nombre} opera en ${ciudad.abbr} (${ciudad.offsetLabel} UTC). Para convertir cualquier hora UTC: aplica ${ciudad.offsetLabel} horas a la hora indicada en UTC.`,
           },
         ].map(({ pregunta, respuesta }) => (
-          <div class="bg-gray-50 rounded-2xl border border-gray-100 overflow-hidden">
-            <dt class="px-5 py-4 font-bold text-navy-900 text-sm sm:text-base cursor-default">
+          <div class="bg-slate-800/30 border border-slate-700/50 rounded-2xl overflow-hidden">
+            <dt class="px-5 py-4 font-semibold text-white text-sm sm:text-base">
               {pregunta}
             </dt>
-            <dd class="px-5 pb-4 text-gray-600 text-sm leading-relaxed border-t border-gray-100">
+            <dd class="px-5 pb-4 text-slate-400 text-sm leading-relaxed border-t border-slate-700/40">
               {respuesta}
             </dd>
           </div>
@@ -611,37 +761,40 @@ const jsonLd = {
 
   </div>
 
-  <!-- ===================================================
+  <!-- ═══════════════════════════════════════════════════
        INTERLINKING — LAS 16 SEDES
-  ==================================================== -->
-  <section class="bg-navy-900 text-white py-14 px-4 sm:px-6 lg:px-8" aria-labelledby="sedes-heading">
+  ════════════════════════════════════════════════════ -->
+  <section
+    class="py-14 px-4 sm:px-6 lg:px-8 border-t border-white/5"
+    style="background: rgba(255,255,255,0.02);"
+    aria-labelledby="sedes-heading"
+  >
     <div class="max-w-5xl mx-auto">
-      <h2 id="sedes-heading" class="font-black text-xl sm:text-2xl mb-2 text-center">
+      <h2 id="sedes-heading" class="font-oswald font-bold text-xl sm:text-2xl text-white mb-2 text-center">
         Las 16 Sedes del Mundial 2026
       </h2>
-      <p class="text-gray-400 text-sm text-center mb-8">
+      <p class="text-slate-500 text-sm text-center mb-8">
         Consulta información de cada estadio, transporte y Fan Zone
       </p>
 
-      <!-- Agrupar por país -->
       {[
         { paisNombre: 'México',   paisFlag: '🇲🇽', sedes: sedesAll.filter(s => s.pais === 'México')   },
         { paisNombre: 'EE. UU.', paisFlag: '🇺🇸', sedes: sedesAll.filter(s => s.pais === 'EE. UU.') },
         { paisNombre: 'Canadá',  paisFlag: '🇨🇦', sedes: sedesAll.filter(s => s.pais === 'Canadá')  },
       ].map(grupo => (
         <div class="mb-6">
-          <p class="text-xs uppercase tracking-widest text-gold mb-3">
+          <p class="font-oswald text-xs uppercase tracking-[0.2em] text-gold mb-3">
             {grupo.paisFlag} {grupo.paisNombre}
           </p>
           <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
             {grupo.sedes.map(s => (
               <a
                 href={`/sedes/${s.slug}`}
-                class="bg-white/10 hover:bg-gold/20 hover:border-gold border border-white/10 rounded-xl p-3 transition-all group"
+                class="bg-white/5 hover:bg-gold/10 border border-white/10 hover:border-gold/40 rounded-xl p-3 transition-all group"
                 aria-label={`Sede ${s.ciudad}: ${s.estadio}`}
               >
                 <p class="font-semibold text-white text-xs group-hover:text-gold transition-colors leading-snug">{s.ciudad}</p>
-                <p class="text-gray-500 text-xs mt-0.5 leading-snug">{s.estadio}</p>
+                <p class="text-slate-600 text-xs mt-0.5 leading-snug">{s.estadio}</p>
               </a>
             ))}
           </div>
@@ -650,51 +803,52 @@ const jsonLd = {
     </div>
   </section>
 
-  <!-- ===================================================
+  <!-- ═══════════════════════════════════════════════════
        INTERLINKING — HORARIOS EN OTROS PAÍSES
-  ==================================================== -->
-  <section class="py-14 px-4 sm:px-6 lg:px-8 bg-gray-50" aria-labelledby="otros-paises-heading">
+  ════════════════════════════════════════════════════ -->
+  <section
+    class="py-14 px-4 sm:px-6 lg:px-8 border-t border-white/5"
+    aria-labelledby="otros-paises-heading"
+  >
     <div class="max-w-5xl mx-auto">
-      <h2 id="otros-paises-heading" class="font-black text-xl sm:text-2xl text-navy-900 mb-2 text-center">
+      <h2 id="otros-paises-heading" class="font-oswald font-bold text-xl sm:text-2xl text-white mb-2 text-center">
         Horarios del Mundial 2026 en otros países
       </h2>
-      <p class="text-gray-500 text-sm text-center mb-8">
+      <p class="text-slate-500 text-sm text-center mb-8">
         Consulta los horarios convertidos a la zona horaria de tu ciudad
       </p>
 
-      <!-- Ciudades vecinas (los 4 países configurados en vecinos) -->
       <div class="mb-8">
-        <p class="text-xs font-bold text-gold uppercase tracking-widest mb-3">Países destacados</p>
+        <p class="font-oswald text-xs uppercase tracking-[0.2em] text-gold mb-3">Países destacados</p>
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {pais.vecinos.map(v => (
             <a
               href={`/horarios/${v.pais}/${v.ciudad}`}
-              class="flex items-center gap-2.5 bg-white border border-gray-200 hover:border-gold hover:shadow-md rounded-xl p-3.5 transition-all group"
+              class="flex items-center gap-2.5 bg-white/5 border border-white/10 hover:border-gold/40 hover:bg-gold/5 rounded-xl p-3.5 transition-all group"
             >
               <span class="text-2xl" aria-hidden="true">{v.flag}</span>
               <div>
-                <p class="font-bold text-navy-900 text-xs group-hover:text-gold transition-colors">{v.paisNombre}</p>
-                <p class="text-gray-500 text-xs">{v.nombre}</p>
+                <p class="font-bold text-white text-xs group-hover:text-gold transition-colors">{v.paisNombre}</p>
+                <p class="text-slate-500 text-xs">{v.nombre}</p>
               </div>
             </a>
           ))}
         </div>
       </div>
 
-      <!-- Todas las ciudades disponibles -->
       <div>
-        <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Todas las ciudades disponibles</p>
+        <p class="font-oswald text-xs uppercase tracking-[0.2em] text-slate-600 mb-3">Todas las ciudades disponibles</p>
         <div class="flex flex-wrap gap-2">
           {todasLasCiudadesHorarios
             .filter(c => !(c.pais === pais.slug && c.ciudad === ciudad.slug))
             .map(c => (
               <a
                 href={`/horarios/${c.pais}/${c.ciudad}`}
-                class="inline-flex items-center gap-1.5 bg-white border border-gray-200 hover:border-gold hover:text-gold text-gray-700 text-xs font-medium px-3 py-2 rounded-full transition-all shadow-sm"
+                class="inline-flex items-center gap-1.5 bg-white/5 border border-white/10 hover:border-gold/40 hover:text-gold text-slate-400 text-xs font-medium px-3 py-2 rounded-full transition-all"
               >
                 <span aria-hidden="true">{c.flag}</span>
                 {c.nombre}
-                <span class="text-gray-400">({c.paisNombre})</span>
+                <span class="text-slate-600">({c.paisNombre})</span>
               </a>
             ))
           }
@@ -704,3 +858,81 @@ const jsonLd = {
   </section>
 
 </Layout>
+
+<!-- ── Client-side: TZ banner + filter pills ──────────────────────────────────── -->
+<script>
+  (function () {
+    // Show timezone banner
+    const tz     = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const banner = document.getElementById('tz-banner') as HTMLElement | null;
+    const tzName = document.getElementById('tz-local-name') as HTMLElement | null;
+    if (tzName) tzName.textContent = tz;
+    if (banner) { banner.style.display = 'flex'; }
+
+    // Date helpers — get today/tomorrow in user's LOCAL timezone as YYYY-MM-DD
+    function localDateStr(offset: number): string {
+      const d = new Date();
+      d.setDate(d.getDate() + offset);
+      return d.toLocaleDateString('en-CA', { timeZone: tz }); // en-CA gives YYYY-MM-DD
+    }
+
+    const todayStr    = localDateStr(0);
+    const tomorrowStr = localDateStr(1);
+
+    const allRows   = Array.from(document.querySelectorAll<HTMLElement>('[data-fecha]'));
+    const adRows    = Array.from(document.querySelectorAll<HTMLElement>('[data-ad="true"]'));
+    const pills     = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-filter]'));
+    const noResults = document.getElementById('no-results') as HTMLElement | null;
+
+    function applyFilter(filter: string) {
+      let visible = 0;
+
+      allRows.forEach(row => {
+        const fecha = row.dataset.fecha!;
+        const grupo = row.dataset.grupo!;
+
+        let show = false;
+        if      (filter === 'todos')  show = true;
+        else if (filter === 'hoy')    show = fecha === todayStr;
+        else if (filter === 'manana') show = fecha === tomorrowStr;
+        else if (filter === 'grupos') show = grupo === 'grupos';
+        else if (filter === 'elim')   show = grupo === 'eliminatorias';
+
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+
+      // Ad rows: only show when all groups or grupos filter active
+      adRows.forEach(row => {
+        row.style.display = (filter === 'todos' || filter === 'grupos') ? '' : 'none';
+      });
+
+      if (noResults) noResults.style.display = visible === 0 ? '' : 'none';
+    }
+
+    function setActivePill(activeFilter: string) {
+      pills.forEach(p => {
+        const isActive = p.dataset.filter === activeFilter;
+        p.setAttribute('aria-pressed', String(isActive));
+        if (isActive) {
+          p.classList.remove('bg-slate-800', 'text-slate-400', 'border-slate-700', 'hover:text-white', 'hover:border-slate-500');
+          p.classList.add('bg-gold', 'text-slate-950', 'border-gold');
+        } else {
+          p.classList.remove('bg-gold', 'text-slate-950', 'border-gold');
+          p.classList.add('bg-slate-800', 'text-slate-400', 'border-slate-700', 'hover:text-white', 'hover:border-slate-500');
+        }
+      });
+    }
+
+    pills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        const filter = pill.dataset.filter!;
+        setActivePill(filter);
+        applyFilter(filter);
+      });
+    });
+
+    // Apply initial state
+    applyFilter('todos');
+  })();
+</script>

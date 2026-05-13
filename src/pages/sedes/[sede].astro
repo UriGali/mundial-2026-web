@@ -53,6 +53,23 @@ interface SedeData {
 
 // ── getStaticPaths ─────────────────────────────────────────────────────────────
 export function getStaticPaths() {
+  // computeTags must live inside getStaticPaths due to Astro SSG isolation
+  function computeTags(s: SedeData): string[] {
+    const tags: string[] = [];
+    if      (s.pais === 'México') tags.push('mexico');
+    else if (s.pais === 'Canadá') tags.push('canada');
+    else                          tags.push('usa');
+    const f = s.fase.toLowerCase();
+    if (f.includes('final') && !f.includes('semi') && !f.includes('cuarto')) tags.push('final');
+    if (f.includes('semi'))   tags.push('semifinal');
+    if (f.includes('cuarto')) tags.push('cuartos');
+    if (f.includes('octavo')) tags.push('octavos');
+    if (f.includes('ronda'))  tags.push('ronda32');
+    if (f.includes('grupo'))  tags.push('grupos');
+    const cap = parseInt(s.capacidad.replace(/,/g, ''), 10);
+    tags.push(cap >= 75_000 ? 'grande' : cap >= 60_000 ? 'mediano' : 'pequeño');
+    return tags;
+  }
   const sedesData: SedeData[] = [
   // ─────────────────────────────────────────────────────────────────────────────
   // 1. CIUDAD DE MÉXICO
@@ -1847,15 +1864,27 @@ export function getStaticPaths() {
   },
   ];
 
-  return sedesData.map(sede => ({
-    params: { sede: sede.slug },
-    props:  { sede },
-  }));
+  return sedesData.map(sede => {
+    const myTags      = computeTags(sede);
+    const relacionadas = sedesData
+      .filter(s => s.slug !== sede.slug)
+      .map(s => ({ ...s, score: computeTags(s).filter(t => myTags.includes(t)).length }))
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 3)
+      .map(({ slug, ciudad, pais, flag, estadio, fase, capacidad, faseClass }) =>
+        ({ slug, ciudad, pais, flag, estadio, fase, capacidad, faseClass })
+      );
+    return {
+      params: { sede: sede.slug },
+      props:  { sede, relacionadas },
+    };
+  });
 }
 
 // ── Props de la página activa ──────────────────────────────────────────────────
-interface Props { sede: SedeData }
-const { sede } = Astro.props;
+type RelatedSede = { slug: string; ciudad: string; pais: string; flag: string; estadio: string; fase: string; capacidad: string; faseClass: string };
+interface Props { sede: SedeData; relacionadas: RelatedSede[] }
+const { sede, relacionadas } = Astro.props;
 
 const {
   slug, ciudad, pais, flag, estadio, capacidad, fase, faseClass,
@@ -2153,6 +2182,100 @@ const jsonLd = {
     <AdSlot slot="7788990011" format="rectangle" label="Publicidad" />
 
   </div>
+
+  <!-- ===================================================
+       NOTICIAS RELACIONADAS — tag-matched sedes
+  ==================================================== -->
+  <section
+    class="py-14 px-4 sm:px-6 lg:px-8 border-t border-white/5"
+    style="background:rgba(255,255,255,0.015);"
+    aria-labelledby="relacionadas-heading"
+  >
+    <div class="max-w-4xl mx-auto">
+      <h2
+        id="relacionadas-heading"
+        class="font-oswald font-bold text-xl text-white mb-2 flex items-center gap-2"
+      >
+        <span
+          class="w-1 h-6 rounded inline-block"
+          style="background:linear-gradient(180deg,#f5d97a,#d4af37);"
+          aria-hidden="true"
+        ></span>
+        Sedes relacionadas
+      </h2>
+      <p class="text-slate-500 text-sm mb-8">
+        Estadios con características similares a {ciudad} — mismo país, fase o aforo.
+      </p>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {relacionadas.map((r, idx) => (
+          <a
+            href={`/sedes/${r.slug}`}
+            class="group block bg-slate-900/60 border border-slate-800 hover:border-gold/40 rounded-2xl overflow-hidden transition-all hover:shadow-[0_0_20px_rgba(212,175,55,0.08)]"
+          >
+            <!-- Placeholder image with overlay -->
+            <div class="relative h-32 overflow-hidden">
+              <img
+                src={`https://picsum.photos/seed/${r.slug}-rel/480/200`}
+                alt={r.estadio}
+                width="480" height="200"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                loading="lazy"
+              />
+              <div
+                class="absolute inset-0"
+                style="background:linear-gradient(180deg,transparent 30%,rgba(2,6,23,0.9) 100%);"
+                aria-hidden="true"
+              ></div>
+              <span class={`absolute top-2 right-2 text-[10px] font-oswald tracking-wider px-2 py-0.5 rounded text-white ${r.faseClass}`}>
+                {r.fase}
+              </span>
+            </div>
+            <!-- Content -->
+            <div class="px-4 py-3">
+              <p class="text-xs text-slate-500 font-mono mb-1">{r.flag} {r.pais}</p>
+              <h3 class="font-oswald font-bold text-white group-hover:text-gold transition-colors text-base leading-tight">
+                {r.ciudad}
+              </h3>
+              <p class="text-slate-500 text-xs mt-0.5 leading-snug">{r.estadio}</p>
+              <div class="flex items-center justify-between mt-2">
+                <span class="text-slate-600 font-mono text-xs">{r.capacidad} aforo</span>
+                <span class="text-gold text-xs font-mono group-hover:underline">Ver sede →</span>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <!-- Also link to calendar and horarios -->
+      <div class="mt-6 flex flex-wrap gap-3">
+        <a
+          href="/calendario"
+          class="inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-gold border border-slate-700/60 hover:border-gold/40 px-4 py-2 rounded-full transition-all"
+        >
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="3" y="4" width="18" height="18" rx="2" stroke-width="2"/>
+            <line x1="16" y1="2" x2="16" y2="6" stroke-width="2"/>
+            <line x1="8" y1="2" x2="8" y2="6" stroke-width="2"/>
+            <line x1="3" y1="10" x2="21" y2="10" stroke-width="2"/>
+          </svg>
+          Calendario de partidos
+        </a>
+        <a
+          href="/horarios/mexico/ciudad-de-mexico"
+          class="inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-gold border border-slate-700/60 hover:border-gold/40 px-4 py-2 rounded-full transition-all"
+        >
+          🕐 Horarios en tu zona
+        </a>
+        <a
+          href="/grupos"
+          class="inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-gold border border-slate-700/60 hover:border-gold/40 px-4 py-2 rounded-full transition-all"
+        >
+          ⚽ Grupos del Mundial
+        </a>
+      </div>
+    </div>
+  </section>
 
   <!-- ===================================================
        NAVEGACIÓN ENTRE SEDES
