@@ -1,0 +1,26 @@
+# robots.txt — Mundial 2026 Guide
+# https://mundial2026guia.com
+
+# ── Todos los robots: acceso completo ────────────────────────────────────────
+User-agent: *
+Allow: /
+Disallow: /404
+Disallow: /_astro/
+
+# ── Googlebot: permisos explícitos ───────────────────────────────────────────
+User-agent: Googlebot
+Allow: /
+Disallow: /404
+Disallow: /_astro/
+
+# ── Bingbot ───────────────────────────────────────────────────────────────────
+User-agent: Bingbot
+Allow: /
+Disallow: /404
+
+# ── GPTBot (OpenAI) — opcional: bloquear si no quieres entrenar IA ───────────
+# User-agent: GPTBot
+# Disallow: /
+
+# ── Sitemap ───────────────────────────────────────────────────────────────────
+Sitemap: https://mundial2026guia.com/sitemap-index.xml

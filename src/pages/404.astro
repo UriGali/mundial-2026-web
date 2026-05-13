@@ -1,0 +1,239 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const title       = 'Página no encontrada (404) — Mundial 2026';
+const description = 'La página que buscas no existe. Encuentra información sobre el Mundial FIFA 2026: horarios, sedes, entradas y más.';
+
+const paginasPopulares = [
+  {
+    href: '/',
+    icon: '🏠',
+    titulo: 'Inicio',
+    desc: 'Portada del Mundial 2026 con toda la información',
+    clase: 'border-gold bg-gold/5 hover:bg-gold/10',
+  },
+  {
+    href: '/horarios/mexico/ciudad-de-mexico',
+    icon: '⏰',
+    titulo: 'Horarios (México)',
+    desc: 'Partidos convertidos a hora de Ciudad de México',
+    clase: 'border-blue-300 bg-blue-50 hover:bg-blue-100',
+  },
+  {
+    href: '/horarios/espana/madrid',
+    icon: '🕐',
+    titulo: 'Horarios (España)',
+    desc: 'Partidos convertidos a hora de Madrid (CEST)',
+    clase: 'border-blue-300 bg-blue-50 hover:bg-blue-100',
+  },
+  {
+    href: '/sedes/ciudad-de-mexico',
+    icon: '🏟️',
+    titulo: 'Estadio Azteca',
+    desc: 'Guía de transporte, hoteles y Fan Zone en CDMX',
+    clase: 'border-green-300 bg-green-50 hover:bg-green-100',
+  },
+  {
+    href: '/sedes/nueva-york',
+    icon: '🗽',
+    titulo: 'MetLife Stadium',
+    desc: 'Sede de la Gran Final — Nueva York / New Jersey',
+    clase: 'border-green-300 bg-green-50 hover:bg-green-100',
+  },
+  {
+    href: '/sedes/los-angeles',
+    icon: '🎬',
+    titulo: 'SoFi Stadium',
+    desc: 'Sede de la Semifinal — Los Ángeles, California',
+    clase: 'border-green-300 bg-green-50 hover:bg-green-100',
+  },
+];
+---
+
+<Layout
+  title={title}
+  description={description}
+  noindex={true}
+>
+  <!-- ===================================================
+       HERO 404
+  ==================================================== -->
+  <section
+    class="min-h-[80vh] flex flex-col items-center justify-center text-center px-4 py-20 bg-navy-900 text-white overflow-hidden relative"
+    aria-labelledby="error-heading"
+  >
+    <!-- Patrón de fondo -->
+    <div
+      class="absolute inset-0 opacity-5 pointer-events-none"
+      style="background-image:radial-gradient(circle,#d4af37 1px,transparent 1px);background-size:36px 36px;"
+      aria-hidden="true"
+    ></div>
+
+    <!-- Tarjeta roja -->
+    <div class="relative z-10 mb-4" aria-hidden="true">
+      <span class="text-5xl">🟥</span>
+    </div>
+
+    <!-- 404 grande -->
+    <p
+      class="relative z-10 font-black text-[8rem] sm:text-[12rem] leading-none text-gold/20 select-none pointer-events-none absolute"
+      aria-hidden="true"
+    >
+      404
+    </p>
+
+    <!-- Texto principal -->
+    <div class="relative z-10 mt-4">
+      <p class="text-gold font-bold text-sm uppercase tracking-widest mb-3">
+        Tarjeta Roja — Error 404
+      </p>
+
+      <h1 id="error-heading" class="font-black text-3xl sm:text-5xl leading-tight mb-4">
+        Esta página<br/>recibió expulsión
+      </h1>
+
+      <p class="text-gray-400 text-base sm:text-lg max-w-md mx-auto mb-8 leading-relaxed">
+        El árbitro VAR revisó esta URL y no existía en el servidor.
+        Pero el partido continúa — aquí tienes los accesos directos más visitados.
+      </p>
+
+      <!-- CTA principal -->
+      <div class="flex flex-col sm:flex-row justify-center gap-3 mb-10">
+        <a
+          href="/"
+          class="bg-gold hover:bg-gold-dark text-navy-900 font-black px-8 py-3.5 rounded-full transition-colors shadow-lg text-sm"
+        >
+          ⚽ Volver al Inicio
+        </a>
+        <a
+          href="/horarios/mexico/ciudad-de-mexico"
+          class="border-2 border-white/30 hover:border-gold hover:text-gold text-white font-bold px-8 py-3.5 rounded-full transition-colors text-sm"
+        >
+          ⏰ Ver Horarios del Mundial
+        </a>
+      </div>
+
+      <!-- Búsqueda rápida -->
+      <form
+        action="/buscar"
+        method="get"
+        role="search"
+        class="w-full max-w-md mx-auto mb-8"
+        aria-label="Buscar en el sitio"
+      >
+        <div class="relative">
+          <label for="search-404" class="sr-only">Buscar</label>
+          <input
+            id="search-404"
+            type="search"
+            name="q"
+            placeholder="Busca equipo, sede, horario..."
+            class="w-full pl-5 pr-28 py-3.5 rounded-full text-gray-900 text-sm focus:outline-none focus:ring-4 focus:ring-gold/50 shadow-xl"
+            autocomplete="off"
+          />
+          <button
+            type="submit"
+            class="absolute right-2 top-1/2 -translate-y-1/2 bg-navy-800 hover:bg-navy-700 text-white text-xs font-bold px-4 py-2 rounded-full transition-colors"
+          >
+            Buscar
+          </button>
+        </div>
+      </form>
+
+      <!-- Cuenta atrás regreso -->
+      <p class="text-gray-600 text-xs" id="countdown-msg" aria-live="polite">
+        Redirigiendo al inicio en <span id="cd-num" class="font-bold text-gray-400">15</span> segundos…
+        <button
+          id="cancel-redirect"
+          class="ml-2 underline text-gray-500 hover:text-gold transition-colors"
+        >
+          Cancelar
+        </button>
+      </p>
+    </div>
+  </section>
+
+  <!-- ===================================================
+       PÁGINAS POPULARES
+  ==================================================== -->
+  <section class="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50" aria-labelledby="popular-heading">
+    <div class="max-w-4xl mx-auto">
+      <h2 id="popular-heading" class="font-black text-xl sm:text-2xl text-navy-900 text-center mb-8">
+        Páginas más visitadas del Mundial 2026
+      </h2>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {paginasPopulares.map(({ href, icon, titulo, desc, clase }) => (
+          <a
+            href={href}
+            class={`flex items-start gap-3 p-4 rounded-2xl border-2 transition-all hover:-translate-y-0.5 hover:shadow-md ${clase}`}
+          >
+            <span class="text-2xl shrink-0 mt-0.5" aria-hidden="true">{icon}</span>
+            <div>
+              <p class="font-bold text-navy-900 text-sm mb-0.5">{titulo}</p>
+              <p class="text-gray-500 text-xs leading-relaxed">{desc}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================
+       HORARIOS RÁPIDOS — retención de tráfico perdido
+  ==================================================== -->
+  <section class="py-14 px-4 sm:px-6 lg:px-8 bg-white" aria-labelledby="horarios-rapidos-heading">
+    <div class="max-w-3xl mx-auto text-center">
+      <h2 id="horarios-rapidos-heading" class="font-black text-xl text-navy-900 mb-6">
+        ¿Buscabas los horarios en tu país?
+      </h2>
+
+      <div class="flex flex-wrap justify-center gap-2">
+        {[
+          { href: '/horarios/mexico/ciudad-de-mexico', label: '🇲🇽 México' },
+          { href: '/horarios/mexico/guadalajara',      label: '🇲🇽 Guadalajara' },
+          { href: '/horarios/espana/madrid',           label: '🇪🇸 España' },
+          { href: '/horarios/argentina/buenos-aires',  label: '🇦🇷 Argentina' },
+          { href: '/horarios/colombia/bogota',         label: '🇨🇴 Colombia' },
+          { href: '/horarios/usa/nueva-york',          label: '🇺🇸 EE. UU.' },
+          { href: '/horarios/usa/los-angeles',         label: '🇺🇸 Los Ángeles' },
+          { href: '/horarios/usa/chicago',             label: '🇺🇸 Chicago' },
+        ].map(({ href, label }) => (
+          <a
+            href={href}
+            class="bg-navy-900 hover:bg-navy-800 text-white text-sm font-medium px-4 py-2 rounded-full transition-colors"
+          >
+            {label}
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<!-- Countdown redirect script -->
+<script>
+  let remaining = 15;
+  let cancelled = false;
+
+  const numEl     = document.getElementById('cd-num');
+  const msgEl     = document.getElementById('countdown-msg');
+  const cancelBtn = document.getElementById('cancel-redirect');
+
+  cancelBtn?.addEventListener('click', () => {
+    cancelled = true;
+    if (msgEl) msgEl.textContent = 'Redirección cancelada.';
+  });
+
+  const tick = setInterval(() => {
+    if (cancelled) { clearInterval(tick); return; }
+
+    remaining--;
+    if (numEl) numEl.textContent = String(remaining);
+
+    if (remaining <= 0) {
+      clearInterval(tick);
+      window.location.href = '/';
+    }
+  }, 1000);
+</script>

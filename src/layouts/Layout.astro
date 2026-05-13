@@ -1,0 +1,226 @@
+---
+import LastUpdated from '../components/LastUpdated.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  keywords?: string;
+  ogImage?: string;
+  canonicalURL?: string;
+  jsonLd?: object;
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description,
+  keywords = 'mundial 2026, copa del mundo 2026, world cup 2026, FIFA 2026, mundial USA Mexico Canada, entradas mundial 2026, sedes mundial 2026',
+  ogImage = '/og-image.jpg',
+  canonicalURL = Astro.url.href,
+  jsonLd,
+  noindex = false,
+} = Astro.props;
+
+const ADSENSE_PUB_ID = 'ca-pub-XXXXXXXXXXXXXXXXX'; // TODO: reemplazar con tu Publisher ID real
+const siteURL = Astro.site ?? new URL('https://mundial2026guia.com');
+const ogImageURL = new URL(ogImage, siteURL).href;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow'} />
+    <meta name="theme-color" content="#0d1b3e" />
+
+    <!-- SEO primario -->
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="keywords" content={keywords} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- OpenGraph -->
+    <meta property="og:type"        content="website" />
+    <meta property="og:url"         content={canonicalURL} />
+    <meta property="og:title"       content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image"       content={ogImageURL} />
+    <meta property="og:image:alt"   content={title} />
+    <meta property="og:site_name"   content="Mundial 2026 — Guía para Fans" />
+    <meta property="og:locale"      content="es_ES" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card"        content="summary_large_image" />
+    <meta name="twitter:title"       content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image"       content={ogImageURL} />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Fuente: Inter (preconnect para performance) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Google AdSense -->
+    <script
+      async
+      src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_PUB_ID}`}
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- JSON-LD datos estructurados -->
+    {jsonLd && (
+      <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    )}
+  </head>
+
+  <body class="bg-white font-inter antialiased text-gray-900">
+
+    <!-- ===== HEADER ===== -->
+    <header class="bg-navy-900 text-white sticky top-0 z-50 shadow-2xl border-b-2 border-gold">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+
+          <!-- Logo -->
+          <a href="/" class="flex items-center gap-2" aria-label="Mundial 2026 – Inicio">
+            <span class="text-2xl" aria-hidden="true">⚽</span>
+            <span class="font-black text-xl tracking-tight leading-none">
+              <span class="text-gold">MUNDIAL</span>
+              <span class="text-white"> 2026</span>
+            </span>
+          </a>
+
+          <!-- Navegación desktop -->
+          <nav class="hidden md:flex items-center gap-1" aria-label="Navegación principal">
+            <a href="/sedes"     class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-gold hover:bg-navy-800 rounded-md transition-colors">Sedes</a>
+            <a href="/equipos"   class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-gold hover:bg-navy-800 rounded-md transition-colors">Equipos</a>
+            <a href="/entradas"  class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-gold hover:bg-navy-800 rounded-md transition-colors">Entradas</a>
+            <a href="/calendario" class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-gold hover:bg-navy-800 rounded-md transition-colors">Calendario</a>
+            <a
+              href="/guia-completa"
+              class="ml-3 px-5 py-2 bg-gold text-navy-900 text-sm font-bold rounded-full hover:bg-gold-light transition-colors shadow-md"
+            >
+              Guía Completa
+            </a>
+          </nav>
+
+          <!-- Botón menú móvil -->
+          <button
+            id="menu-toggle"
+            class="md:hidden p-2 rounded-md text-gray-400 hover:text-white hover:bg-navy-800 transition-colors"
+            aria-expanded="false"
+            aria-controls="mobile-nav"
+            aria-label="Abrir menú de navegación"
+          >
+            <svg id="icon-open"  class="w-6 h-6"         fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            <svg id="icon-close" class="w-6 h-6 hidden"  fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+
+        <!-- Menú móvil -->
+        <nav id="mobile-nav" class="md:hidden hidden border-t border-navy-800 py-3" aria-label="Navegación móvil">
+          <a href="/sedes"      class="block px-3 py-2 text-sm text-gray-300 hover:text-gold rounded-md">Sedes</a>
+          <a href="/equipos"    class="block px-3 py-2 text-sm text-gray-300 hover:text-gold rounded-md">Equipos</a>
+          <a href="/entradas"   class="block px-3 py-2 text-sm text-gray-300 hover:text-gold rounded-md">Entradas</a>
+          <a href="/calendario" class="block px-3 py-2 text-sm text-gray-300 hover:text-gold rounded-md">Calendario</a>
+          <a href="/guia-completa" class="block px-3 py-2 text-sm font-bold text-gold">Guía Completa →</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- ===== CONTENIDO PRINCIPAL ===== -->
+    <main id="main-content">
+      <slot />
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="bg-navy-950 text-gray-500 mt-20">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+
+          <!-- Marca -->
+          <div class="lg:col-span-1">
+            <a href="/" class="flex items-center gap-2 mb-4">
+              <span class="text-xl" aria-hidden="true">⚽</span>
+              <span class="font-black text-white text-lg">
+                <span class="text-gold">MUNDIAL</span> 2026
+              </span>
+            </a>
+            <p class="text-sm leading-relaxed">
+              La guía definitiva para el Mundial FIFA 2026. Sedes, equipos, entradas y todo lo que necesitas saber.
+            </p>
+          </div>
+
+          <!-- Sedes -->
+          <div>
+            <h3 class="font-semibold text-white text-xs uppercase tracking-widest mb-4">Países Sede</h3>
+            <ul class="space-y-2 text-sm">
+              <li><a href="/sedes/estados-unidos" class="hover:text-gold transition-colors">🇺🇸 Estados Unidos (11 ciudades)</a></li>
+              <li><a href="/sedes/mexico"         class="hover:text-gold transition-colors">🇲🇽 México (3 ciudades)</a></li>
+              <li><a href="/sedes/canada"         class="hover:text-gold transition-colors">🇨🇦 Canadá (2 ciudades)</a></li>
+            </ul>
+          </div>
+
+          <!-- Información -->
+          <div>
+            <h3 class="font-semibold text-white text-xs uppercase tracking-widest mb-4">Información</h3>
+            <ul class="space-y-2 text-sm">
+              <li><a href="/entradas"  class="hover:text-gold transition-colors">Guía de Entradas</a></li>
+              <li><a href="/calendario" class="hover:text-gold transition-colors">Calendario de Partidos</a></li>
+              <li><a href="/equipos"   class="hover:text-gold transition-colors">Equipos Clasificados</a></li>
+              <li><a href="/grupos"    class="hover:text-gold transition-colors">Grupos y Fase Final</a></li>
+            </ul>
+          </div>
+
+          <!-- Legal -->
+          <div>
+            <h3 class="font-semibold text-white text-xs uppercase tracking-widest mb-4">Legal</h3>
+            <ul class="space-y-2 text-sm">
+              <li><a href="/sobre-nosotros" class="hover:text-gold transition-colors">Sobre Nosotros</a></li>
+              <li><a href="/privacidad"     class="hover:text-gold transition-colors">Política de Privacidad</a></li>
+              <li><a href="/aviso-legal"    class="hover:text-gold transition-colors">Aviso Legal</a></li>
+              <li><a href="/contacto"       class="hover:text-gold transition-colors">Contacto</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Barra inferior -->
+      <div class="border-t border-navy-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs">
+          <div class="flex flex-col sm:flex-row items-center gap-3">
+            <p>© 2026 mundial2026guia.com — Sitio informativo independiente. No afiliado con FIFA™ ni ningún comité organizador oficial.</p>
+            <!-- Señal de frescura para Googlebot (Freshness SEO) -->
+            <LastUpdated />
+          </div>
+          <div class="flex gap-4 shrink-0">
+            <a href="/privacidad"  class="hover:text-gold transition-colors">Privacidad</a>
+            <a href="/aviso-legal" class="hover:text-gold transition-colors">Aviso Legal</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Toggle menú móvil -->
+    <script>
+      const toggle   = document.getElementById('menu-toggle');
+      const nav      = document.getElementById('mobile-nav');
+      const iconOpen  = document.getElementById('icon-open');
+      const iconClose = document.getElementById('icon-close');
+
+      toggle?.addEventListener('click', () => {
+        const opening = nav?.classList.contains('hidden');
+        nav?.classList.toggle('hidden', !opening);
+        toggle.setAttribute('aria-expanded', String(opening));
+        iconOpen?.classList.toggle('hidden', opening);
+        iconClose?.classList.toggle('hidden', !opening);
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,648 @@
+---
+import Layout from '../layouts/Layout.astro';
+import AdSlot from '../components/AdSlot.astro';
+
+const title       = 'Mundial 2026 — Guía Completa | Sedes, Entradas y Equipos';
+const description = 'Todo sobre el Mundial FIFA 2026: sedes en USA, México y Canadá, cómo comprar entradas, equipos clasificados, calendario y guía de viaje. ¡El torneo más grande de la historia!';
+const keywords    = 'mundial 2026, copa del mundo 2026, world cup 2026, FIFA 2026, sedes mundial 2026, entradas mundial 2026, mundial usa mexico canada';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': 'https://mundial2026guia.com/#website',
+      url: 'https://mundial2026guia.com/',
+      name: 'Mundial 2026 — Guía para Fans',
+      description,
+      inLanguage: 'es',
+      potentialAction: {
+        '@type': 'SearchAction',
+        target: {
+          '@type': 'EntryPoint',
+          urlTemplate: 'https://mundial2026guia.com/buscar?q={search_term_string}',
+        },
+        'query-input': 'required name=search_term_string',
+      },
+    },
+    {
+      '@type': 'SportsEvent',
+      name: 'Copa Mundial de Fútbol FIFA 2026',
+      alternateName: ['World Cup 2026', 'Mundial 2026'],
+      startDate: '2026-06-11',
+      endDate: '2026-07-19',
+      eventStatus: 'https://schema.org/EventScheduled',
+      location: {
+        '@type': 'Place',
+        name: 'Estados Unidos, México y Canadá',
+      },
+      organizer: {
+        '@type': 'Organization',
+        name: 'FIFA',
+        url: 'https://www.fifa.com',
+      },
+      description:
+        'El torneo de fútbol más grande de la historia. 48 selecciones, 16 sedes y 3 países anfitriones del 11 de junio al 19 de julio de 2026.',
+    },
+    {
+      '@type': 'FAQPage',
+      mainEntity: [
+        {
+          '@type': 'Question',
+          name: '¿Cuándo empieza el Mundial 2026?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'El Mundial FIFA 2026 empieza el 11 de junio de 2026 y termina el 19 de julio de 2026 con la Gran Final en el MetLife Stadium de Nueva York / New Jersey.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: '¿Cuántos equipos participan en el Mundial 2026?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: '48 selecciones nacionales participan en el Mundial 2026, distribuidas en 12 grupos de 4 equipos. Esto representa un aumento de 16 equipos respecto a Qatar 2022, que tuvo 32 selecciones.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: '¿Dónde se juega la Final del Mundial 2026?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'La Final del Mundial 2026 se juega el 19 de julio de 2026 en el MetLife Stadium, ubicado en East Rutherford, Nueva Jersey (área metropolitana de Nueva York), con capacidad para 82,500 espectadores.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: '¿En qué países se juega el Mundial 2026?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'El Mundial 2026 se juega en tres países: Estados Unidos (11 sedes), México (3 sedes: Ciudad de México, Guadalajara y Monterrey) y Canadá (2 sedes: Toronto y Vancouver). Es la primera vez en la historia que un Mundial se celebra en tres naciones de forma simultánea.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: '¿Cómo comprar entradas para el Mundial 2026?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Las entradas para el Mundial 2026 se venden exclusivamente a través del portal oficial de FIFA. Para comprar: 1) Crea una cuenta en FIFA.com, 2) Selecciona los partidos y categoría de entrada, 3) Completa el pago. Las entradas son nominales. Evita revendedores no autorizados.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: '¿Cuántos partidos se juegan en el Mundial 2026?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'En el Mundial 2026 se juegan 104 partidos en total: 72 en la Fase de Grupos, 16 en Octavos de Final, 8 en Cuartos de Final, 4 Semifinales, 1 partido por el tercer puesto y 1 Gran Final.',
+          },
+        },
+      ],
+    },
+  ],
+};
+
+const sedes = [
+  {
+    ciudad: 'Ciudad de México',
+    pais: 'México',
+    flag: '🇲🇽',
+    estadio: 'Estadio Azteca',
+    capacidad: '87,523',
+    fase: 'Cuartos de Final',
+    badge: 'bg-green-700',
+    gradient: 'from-green-950 to-green-800',
+  },
+  {
+    ciudad: 'Nueva York / NJ',
+    pais: 'Estados Unidos',
+    flag: '🇺🇸',
+    estadio: 'MetLife Stadium',
+    capacidad: '82,500',
+    fase: '⭐ FINAL',
+    badge: 'bg-gold text-navy-900',
+    gradient: 'from-indigo-950 to-indigo-800',
+  },
+  {
+    ciudad: 'Los Ángeles',
+    pais: 'Estados Unidos',
+    flag: '🇺🇸',
+    estadio: 'SoFi Stadium',
+    capacidad: '70,240',
+    fase: 'Semifinal',
+    badge: 'bg-blue-700',
+    gradient: 'from-blue-950 to-blue-800',
+  },
+  {
+    ciudad: 'Dallas',
+    pais: 'Estados Unidos',
+    flag: '🇺🇸',
+    estadio: "AT&T Stadium",
+    capacidad: '80,000',
+    fase: 'Cuartos de Final',
+    badge: 'bg-sky-700',
+    gradient: 'from-slate-900 to-slate-700',
+  },
+  {
+    ciudad: 'Vancouver',
+    pais: 'Canadá',
+    flag: '🇨🇦',
+    estadio: 'BC Place',
+    capacidad: '54,500',
+    fase: 'Octavos de Final',
+    badge: 'bg-red-700',
+    gradient: 'from-red-950 to-red-800',
+  },
+  {
+    ciudad: 'Guadalajara',
+    pais: 'México',
+    flag: '🇲🇽',
+    estadio: 'Estadio Akron',
+    capacidad: '49,850',
+    fase: 'Fase de Grupos',
+    badge: 'bg-emerald-700',
+    gradient: 'from-emerald-950 to-emerald-800',
+  },
+];
+
+const categorias = [
+  {
+    num: '1',
+    nombre: 'Categoría 1 — Premium',
+    desc: 'Mejor visibilidad y experiencia. Asientos centrales, zonas premium.',
+    precio: 'Desde $210 USD',
+    border: 'border-gold',
+    badgeBg: 'bg-gold text-navy-900',
+    badge: 'Top',
+  },
+  {
+    num: '2',
+    nombre: 'Categoría 2 — Estándar',
+    desc: 'Excelente vista del campo. Relación calidad-precio ideal.',
+    precio: 'Desde $105 USD',
+    border: 'border-blue-400',
+    badgeBg: 'bg-blue-600 text-white',
+    badge: 'Popular',
+  },
+  {
+    num: '3',
+    nombre: 'Categoría 3 — General',
+    desc: 'Acceso general con el mejor ambiente de la tribuna.',
+    precio: 'Desde $70 USD',
+    border: 'border-gray-300',
+    badgeBg: 'bg-gray-600 text-white',
+    badge: 'Accesible',
+  },
+  {
+    num: '4',
+    nombre: 'Categoría 4 — Residentes',
+    desc: 'Reservada para residentes del país sede. Requiere acreditación.',
+    precio: 'Desde $35 USD',
+    border: 'border-green-400',
+    badgeBg: 'bg-green-700 text-white',
+    badge: 'Local',
+  },
+];
+---
+
+<Layout {title} {description} {keywords} {jsonLd}>
+
+  <!-- ===================================================
+       HERO
+  ==================================================== -->
+  <section
+    class="relative overflow-hidden min-h-[92vh] flex flex-col justify-center items-center text-white text-center px-4 py-20"
+    style="background: linear-gradient(160deg,#060d1f 0%,#0d1b3e 45%,#1e3360 75%,#0d1b3e 100%)"
+    aria-labelledby="hero-heading"
+  >
+    <!-- Patrón decorativo de fondo -->
+    <div class="absolute inset-0 opacity-5 pointer-events-none" aria-hidden="true">
+      <div class="absolute inset-0" style="background-image:radial-gradient(circle, #d4af37 1px, transparent 1px); background-size:40px 40px;"></div>
+    </div>
+
+    <!-- Badge urgencia -->
+    <div class="relative z-10 mb-6 inline-flex items-center gap-2 bg-gold/10 border border-gold/40 text-gold px-4 py-2 rounded-full text-sm font-semibold tracking-wide">
+      <span class="w-2 h-2 bg-gold rounded-full animate-pulse" aria-hidden="true"></span>
+      Copa Mundial FIFA 2026 &mdash; 11 Jun &ndash; 19 Jul
+    </div>
+
+    <!-- Titular principal H1 -->
+    <h1
+      id="hero-heading"
+      class="relative z-10 font-black text-5xl sm:text-6xl lg:text-8xl leading-none tracking-tight mb-4"
+    >
+      <span class="block text-white">COPA MUNDIAL</span>
+      <span class="block text-gold drop-shadow-[0_0_30px_rgba(212,175,55,0.4)]">FIFA 2026</span>
+    </h1>
+
+    <!-- Subtítulo con países -->
+    <p class="relative z-10 text-xl sm:text-2xl font-semibold text-gray-300 mb-4 tracking-wide">
+      🇺🇸 USA &nbsp;&middot;&nbsp; 🇲🇽 México &nbsp;&middot;&nbsp; 🇨🇦 Canadá
+    </p>
+
+    <!-- Countdown -->
+    <div id="countdown-wrapper" class="relative z-10 mb-10 flex gap-3 sm:gap-5" aria-live="polite" aria-label="Cuenta regresiva para el Mundial">
+      {['cd-days','cd-hours','cd-minutes','cd-seconds'].map((id, i) => (
+        <div class="flex flex-col items-center bg-white/10 backdrop-blur-sm rounded-xl px-3 sm:px-5 py-3 border border-white/20 min-w-[60px] sm:min-w-[72px]">
+          <span id={id} class="font-black text-2xl sm:text-4xl text-gold tabular-nums">--</span>
+          <span class="text-[10px] sm:text-xs text-gray-400 uppercase tracking-widest mt-1">
+            {['Días','Horas','Min','Seg'][i]}
+          </span>
+        </div>
+      ))}
+    </div>
+
+    <!-- Buscador -->
+    <form
+      action="/buscar"
+      method="get"
+      role="search"
+      class="relative z-10 w-full max-w-xl mb-10"
+      aria-label="Buscar en Mundial 2026"
+    >
+      <label for="hero-search" class="sr-only">Buscar sede, equipo o ciudad</label>
+      <div class="relative shadow-2xl">
+        <input
+          id="hero-search"
+          type="search"
+          name="q"
+          placeholder="Busca sede, equipo, ciudad..."
+          class="w-full pl-5 pr-36 py-4 rounded-full text-gray-900 text-base focus:outline-none focus:ring-4 focus:ring-gold/50"
+          autocomplete="off"
+        />
+        <button
+          type="submit"
+          class="absolute right-2 top-1/2 -translate-y-1/2 bg-gold hover:bg-gold-dark text-navy-900 font-bold px-5 py-2.5 rounded-full transition-colors text-sm"
+        >
+          Buscar
+        </button>
+      </div>
+    </form>
+
+    <!-- Chips de estadísticas -->
+    <div class="relative z-10 flex flex-wrap justify-center gap-3 text-sm">
+      {[
+        { num: '48', label: 'Equipos' },
+        { num: '16', label: 'Ciudades' },
+        { num: '3',  label: 'Países' },
+        { num: '104', label: 'Partidos' },
+      ].map(({ num, label }) => (
+        <div class="flex items-center gap-1.5 bg-white/10 border border-white/20 rounded-full px-4 py-1.5">
+          <span class="font-black text-gold text-base">{num}</span>
+          <span class="text-gray-300">{label}</span>
+        </div>
+      ))}
+    </div>
+
+    <!-- Flecha scroll -->
+    <a
+      href="#sedes"
+      class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 text-gray-500 hover:text-gold transition-colors animate-bounce"
+      aria-label="Ver sedes"
+    >
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+      </svg>
+    </a>
+  </section>
+
+  <!-- ===================================================
+       BANNER DATOS CLAVE
+  ==================================================== -->
+  <section class="bg-navy-900 text-white py-6" aria-label="Datos clave del Mundial 2026">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+        {[
+          { icon: '🏟️', text: 'El mundial más grande de la historia' },
+          { icon: '📅', text: '11 junio – 19 julio 2026' },
+          { icon: '🌎', text: 'Primera vez en 3 naciones simultáneas' },
+          { icon: '🏆', text: '48 selecciones clasificadas' },
+        ].map(({ icon, text }) => (
+          <div class="flex flex-col items-center gap-1.5">
+            <span class="text-2xl" aria-hidden="true">{icon}</span>
+            <p class="text-xs sm:text-sm text-gray-300 font-medium">{text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Ad: Leaderboard tras el hero -->
+  <AdSlot slot="1234567890" format="horizontal" label="Publicidad" />
+
+  <!-- ===================================================
+       SEDES DESTACADAS
+  ==================================================== -->
+  <section id="sedes" class="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50" aria-labelledby="sedes-heading">
+    <div class="max-w-7xl mx-auto">
+
+      <!-- Encabezado sección -->
+      <div class="text-center mb-14">
+        <p class="text-gold font-bold text-sm uppercase tracking-widest mb-2">16 ciudades en 3 países</p>
+        <h2 id="sedes-heading" class="font-black text-4xl sm:text-5xl text-navy-900 leading-tight">
+          Sedes Destacadas
+        </h2>
+        <div class="w-16 h-1 bg-gold mx-auto mt-4 rounded-full" aria-hidden="true"></div>
+        <p class="mt-5 text-gray-600 text-lg max-w-2xl mx-auto">
+          El torneo se disputará en los estadios más icónicos de Norteamérica. Conoce las sedes confirmadas.
+        </p>
+      </div>
+
+      <!-- Grid de sedes -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {sedes.map(({ ciudad, pais, flag, estadio, capacidad, fase, badge, gradient }) => (
+          <article
+            class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 cursor-pointer"
+            aria-label={`${ciudad}, ${pais} — ${estadio}`}
+          >
+            <!-- Gradiente de fondo -->
+            <div class={`absolute inset-0 bg-gradient-to-br ${gradient}`} aria-hidden="true"></div>
+            <!-- Patrón sutil -->
+            <div class="absolute inset-0 opacity-10" style="background-image:radial-gradient(circle, white 1px, transparent 1px); background-size:20px 20px;" aria-hidden="true"></div>
+
+            <div class="relative z-10 p-6 text-white">
+              <!-- Flag + badge fase -->
+              <div class="flex items-center justify-between mb-4">
+                <span class="text-4xl" role="img" aria-label={pais}>{flag}</span>
+                <span class={`${badge} text-white text-xs font-bold px-3 py-1 rounded-full`}>{fase}</span>
+              </div>
+
+              <!-- Ciudad -->
+              <h3 class="font-black text-2xl leading-tight mb-1">{ciudad}</h3>
+              <p class="text-sm font-medium text-white/70 mb-4">{pais}</p>
+
+              <!-- Estadio info -->
+              <div class="border-t border-white/20 pt-4 flex justify-between items-end">
+                <div>
+                  <p class="text-xs text-white/60 uppercase tracking-wide">Estadio</p>
+                  <p class="font-semibold text-sm mt-0.5">{estadio}</p>
+                </div>
+                <div class="text-right">
+                  <p class="text-xs text-white/60 uppercase tracking-wide">Capacidad</p>
+                  <p class="font-bold text-gold text-sm mt-0.5">{capacidad}</p>
+                </div>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <!-- CTA ver todas las sedes -->
+      <div class="text-center mt-12">
+        <a
+          href="/sedes"
+          class="inline-flex items-center gap-2 bg-navy-900 hover:bg-navy-800 text-white font-bold px-8 py-4 rounded-full transition-colors shadow-lg"
+        >
+          Ver las 16 sedes completas
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ad: Rectángulo entre secciones -->
+  <AdSlot slot="0987654321" format="rectangle" label="Publicidad" class="max-w-3xl mx-auto px-4" />
+
+  <!-- ===================================================
+       GUÍA DE ENTRADAS
+  ==================================================== -->
+  <section id="entradas" class="py-20 px-4 sm:px-6 lg:px-8 bg-white" aria-labelledby="entradas-heading">
+    <div class="max-w-7xl mx-auto">
+
+      <!-- Encabezado sección -->
+      <div class="text-center mb-14">
+        <p class="text-gold font-bold text-sm uppercase tracking-widest mb-2">Cómo conseguir tu lugar</p>
+        <h2 id="entradas-heading" class="font-black text-4xl sm:text-5xl text-navy-900 leading-tight">
+          Guía de Entradas
+        </h2>
+        <div class="w-16 h-1 bg-gold mx-auto mt-4 rounded-full" aria-hidden="true"></div>
+        <p class="mt-5 text-gray-600 text-lg max-w-2xl mx-auto">
+          Las entradas se venden exclusivamente a través de FIFA. Conoce las categorías, precios y cómo comprar.
+        </p>
+      </div>
+
+      <!-- Categorías de entradas -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-16">
+        {categorias.map(({ num, nombre, desc, precio, border, badgeBg, badge }) => (
+          <div class={`relative rounded-2xl border-2 ${border} p-6 hover:shadow-xl transition-shadow`}>
+            <span class={`absolute -top-3 left-5 ${badgeBg} text-xs font-bold px-3 py-1 rounded-full`}>
+              {badge}
+            </span>
+            <div class="font-black text-5xl text-gray-100 absolute top-4 right-5 select-none" aria-hidden="true">{num}</div>
+            <h3 class="font-bold text-navy-900 text-sm mt-4 mb-2 pr-8">{nombre}</h3>
+            <p class="text-gray-500 text-sm leading-relaxed mb-4">{desc}</p>
+            <p class="font-black text-navy-900 text-lg">{precio}</p>
+          </div>
+        ))}
+      </div>
+
+      <!-- Cómo comprar -->
+      <div class="bg-navy-900 rounded-3xl p-8 sm:p-12 text-white mb-12">
+        <h3 class="font-black text-2xl sm:text-3xl mb-8 text-center">
+          Cómo Comprar Entradas en <span class="text-gold">3 Pasos</span>
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {[
+            {
+              step: '01',
+              titulo: 'Regístrate en FIFA',
+              desc: 'Crea tu cuenta en el portal oficial de FIFA. Necesitas un ID de FIFA para acceder al sistema de venta.',
+            },
+            {
+              step: '02',
+              titulo: 'Selecciona partidos',
+              desc: 'Escoge los partidos que quieres ver: Fase de Grupos, Octavos, Cuartos, Semifinales o la Gran Final.',
+            },
+            {
+              step: '03',
+              titulo: 'Compra y confirma',
+              desc: 'Completa el pago. Las entradas son nominales y se vinculan a tu identidad. Recibirás confirmación por email.',
+            },
+          ].map(({ step, titulo, desc }) => (
+            <div class="flex flex-col items-center text-center sm:items-start sm:text-left">
+              <div class="w-12 h-12 bg-gold rounded-full flex items-center justify-center font-black text-navy-900 text-lg mb-4 shrink-0">
+                {step}
+              </div>
+              <h4 class="font-bold text-lg mb-2">{titulo}</h4>
+              <p class="text-gray-400 text-sm leading-relaxed">{desc}</p>
+            </div>
+          ))}
+        </div>
+
+        <div class="text-center mt-10">
+          <a
+            href="/entradas"
+            class="inline-flex items-center gap-2 bg-gold hover:bg-gold-dark text-navy-900 font-black px-8 py-4 rounded-full transition-colors text-base shadow-lg"
+          >
+            Ver Guía Completa de Entradas
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Aviso importante -->
+      <div class="flex gap-4 bg-amber-50 border border-amber-200 rounded-2xl p-5">
+        <span class="text-2xl shrink-0" aria-hidden="true">⚠️</span>
+        <div>
+          <p class="font-bold text-amber-900 mb-1">¡Atención! Evita revendedores no autorizados</p>
+          <p class="text-amber-800 text-sm leading-relaxed">
+            Las entradas solo se venden a través del portal oficial de FIFA. Los revendedores no autorizados son ilegales y FIFA puede invalidar esas entradas. Compra siempre en los canales oficiales.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ad: Final de página -->
+  <AdSlot slot="1122334455" format="auto" label="Publicidad" class="max-w-4xl mx-auto px-4" />
+
+  <!-- ===================================================
+       PREGUNTAS FRECUENTES (FAQ)
+  ==================================================== -->
+  <section id="faqs" class="py-20 px-4 sm:px-6 lg:px-8 bg-navy-900 text-white" aria-labelledby="faq-heading">
+    <div class="max-w-4xl mx-auto">
+
+      <div class="text-center mb-12">
+        <p class="text-gold font-bold text-sm uppercase tracking-widest mb-2">Todo lo que necesitas saber</p>
+        <h2 id="faq-heading" class="font-black text-4xl sm:text-5xl leading-tight mb-4">
+          Preguntas Frecuentes
+        </h2>
+        <div class="w-16 h-1 bg-gold mx-auto rounded-full" aria-hidden="true"></div>
+      </div>
+
+      <div class="space-y-3">
+        {[
+          {
+            q: '¿Cuándo empieza el Mundial 2026?',
+            a: 'El Mundial FIFA 2026 empieza el 11 de junio de 2026 y termina el 19 de julio de 2026 con la Gran Final en el MetLife Stadium de Nueva York / New Jersey. Son 39 días de competición con 104 partidos.',
+          },
+          {
+            q: '¿Cuántos equipos participan en el Mundial 2026?',
+            a: '48 selecciones nacionales. Es la primera vez que el torneo tiene este formato ampliado, divididas en 12 grupos de 4 equipos. Son 16 selecciones más que en Qatar 2022, lo que da oportunidades a más países del mundo.',
+          },
+          {
+            q: '¿Dónde se juega la Final del Mundial 2026?',
+            a: 'La Gran Final es el 19 de julio de 2026 en el MetLife Stadium, East Rutherford (Nueva York / New Jersey). Con capacidad para 82,500 espectadores, será la final mundialista más concurrida de la historia.',
+          },
+          {
+            q: '¿En qué países se juega el Mundial 2026?',
+            a: 'En tres países: Estados Unidos (11 sedes), México (3: Ciudad de México, Guadalajara, Monterrey) y Canadá (2: Toronto, Vancouver). Es la primera vez en la historia que un Mundial se celebra simultáneamente en tres naciones.',
+          },
+          {
+            q: '¿Cómo comprar entradas para el Mundial 2026?',
+            a: 'Solo a través del portal oficial de FIFA. Pasos: 1) Crea tu ID en FIFA.com, 2) Selecciona partidos y categoría de entrada (desde $35 residentes hasta $210 Categoría 1), 3) Paga y recibe confirmación. Las entradas son nominales. Evita siempre revendedores no autorizados: FIFA puede invalidarlas.',
+          },
+          {
+            q: '¿Cuántos partidos se juegan en el Mundial 2026?',
+            a: '104 partidos en total: 72 en Fase de Grupos + 16 Octavos + 8 Cuartos + 4 Semifinales + 1 partido por el 3.er puesto + 1 Gran Final. Son 15 partidos más que en Qatar 2022.',
+          },
+          {
+            q: '¿Cuáles son las 16 sedes del Mundial 2026?',
+            a: 'Las 16 sedes son: Ciudad de México (Azteca), Guadalajara (Akron) y Monterrey (BBVA) en México; Toronto (BMO Field) y Vancouver (BC Place) en Canadá; y en EE.UU.: Nueva York/NJ (MetLife), Los Ángeles (SoFi), Dallas (AT&T), San Francisco (Levi\'s), Seattle (Lumen), Miami (Hard Rock), Atlanta (Mercedes-Benz), Boston (Gillette), Kansas City (Arrowhead), Filadelfia (Lincoln Financial) y Houston (NRG).',
+          },
+          {
+            q: '¿Cuándo se conocerán los grupos del Mundial 2026?',
+            a: 'El sorteo de grupos del Mundial 2026 está programado para enero de 2026 en Miami, Florida. Hasta entonces, los 48 equipos clasificados están divididos en bombos por su ranking FIFA, pero los emparejamientos definitivos se conocerán en esa fecha.',
+          },
+        ].map(({ q, a }) => (
+          <details class="group bg-white/10 border border-white/20 rounded-2xl overflow-hidden hover:border-gold/50 transition-colors">
+            <summary class="flex items-center justify-between gap-4 p-5 cursor-pointer list-none select-none hover:bg-white/5 transition-colors">
+              <span class="font-bold text-white text-sm sm:text-base pr-2">{q}</span>
+              <svg
+                class="w-5 h-5 text-gold shrink-0 transition-transform duration-200 group-open:rotate-180"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </summary>
+            <div class="px-5 pb-5 pt-2 text-sm text-gray-300 leading-relaxed border-t border-white/10">
+              {a}
+            </div>
+          </details>
+        ))}
+      </div>
+
+      <div class="text-center mt-10">
+        <a
+          href="/grupos"
+          class="inline-flex items-center gap-2 bg-gold hover:bg-gold-dark text-navy-900 font-black px-8 py-4 rounded-full transition-colors shadow-lg"
+        >
+          Ver tablas de grupos completas
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================
+       CTA FINAL
+  ==================================================== -->
+  <section class="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50" aria-labelledby="cta-heading">
+    <div class="max-w-3xl mx-auto text-center">
+      <span class="text-4xl mb-4 block" aria-hidden="true">🏆</span>
+      <h2 id="cta-heading" class="font-black text-3xl sm:text-4xl text-navy-900 mb-4">
+        ¿Listo para el Mundial?
+      </h2>
+      <p class="text-gray-600 text-lg mb-8">
+        Descubre todo lo que necesitas saber: sedes, equipos, guía de viaje y cómo vivir el torneo más grande de la historia del fútbol.
+      </p>
+      <div class="flex flex-col sm:flex-row justify-center gap-4">
+        <a
+          href="/guia-completa"
+          class="bg-navy-900 hover:bg-navy-800 text-white font-bold px-8 py-4 rounded-full transition-colors shadow-lg"
+        >
+          Ver Guía Completa
+        </a>
+        <a
+          href="/sedes"
+          class="border-2 border-navy-900 text-navy-900 hover:bg-navy-900 hover:text-white font-bold px-8 py-4 rounded-full transition-colors"
+        >
+          Explorar Sedes
+        </a>
+      </div>
+    </div>
+  </section>
+
+</Layout>
+
+<!-- Countdown script -->
+<script>
+  function pad(n: number) { return String(n).padStart(2, '0'); }
+
+  function updateCountdown() {
+    const target = new Date('2026-06-11T14:00:00Z').getTime();
+    const now    = Date.now();
+    const diff   = target - now;
+
+    const daysEl    = document.getElementById('cd-days');
+    const hoursEl   = document.getElementById('cd-hours');
+    const minutesEl = document.getElementById('cd-minutes');
+    const secondsEl = document.getElementById('cd-seconds');
+
+    if (diff <= 0) {
+      const wrapper = document.getElementById('countdown-wrapper');
+      if (wrapper) wrapper.innerHTML = '<p class="text-gold font-black text-2xl animate-pulse">¡El Mundial ha comenzado! ⚽🎉</p>';
+      return;
+    }
+
+    const days    = Math.floor(diff / 86400000);
+    const hours   = Math.floor((diff % 86400000) / 3600000);
+    const minutes = Math.floor((diff % 3600000) / 60000);
+    const seconds = Math.floor((diff % 60000) / 1000);
+
+    if (daysEl)    daysEl.textContent    = pad(days);
+    if (hoursEl)   hoursEl.textContent   = pad(hours);
+    if (minutesEl) minutesEl.textContent = pad(minutes);
+    if (secondsEl) secondsEl.textContent = pad(seconds);
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+</script>

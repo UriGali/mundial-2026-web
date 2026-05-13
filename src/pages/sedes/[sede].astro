@@ -1,0 +1,2204 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import AdSlot from '../../components/AdSlot.astro';
+
+// ── Interfaces ────────────────────────────────────────────────────────────────
+interface Transporte {
+  icon: string;
+  metodo: string;
+  descripcion: string;
+  detalle: string;
+  tiempo: string;
+  costo: string;
+}
+
+interface Hotel {
+  nombre: string;
+  estrellas: number;
+  precio: string;
+  distancia: string;
+  descripcion: string;
+  badge: string;
+  badgeClass: string;
+}
+
+interface FanZone {
+  nombre: string;
+  ubicacion: string;
+  descripcion: string;
+  capacidad: string;
+  horario: string;
+  features: string[];
+}
+
+interface SedeData {
+  slug: string;
+  ciudad: string;
+  pais: string;
+  flag: string;
+  estadio: string;
+  capacidad: string;
+  fase: string;
+  faseClass: string;
+  heroGradient: string;
+  descripcion: string;
+  intro: [string, string];
+  transportes: Transporte[];
+  hoteles: Hotel[];
+  fanZone: FanZone;
+  coords: { lat: number; lng: number };
+  address: string;
+  mapsQuery: string;
+}
+
+// ── getStaticPaths ─────────────────────────────────────────────────────────────
+export function getStaticPaths() {
+  const sedesData: SedeData[] = [
+  // ─────────────────────────────────────────────────────────────────────────────
+  // 1. CIUDAD DE MÉXICO
+  // ─────────────────────────────────────────────────────────────────────────────
+  {
+    slug: 'ciudad-de-mexico',
+    ciudad: 'Ciudad de México',
+    pais: 'México',
+    flag: '🇲🇽',
+    estadio: 'Estadio Azteca',
+    capacidad: '87,523',
+    fase: 'Cuartos de Final',
+    faseClass: 'bg-orange-600',
+    heroGradient: 'linear-gradient(160deg,#0a2200 0%,#0d3a00 40%,#145200 70%,#0a2200 100%)',
+    descripcion:
+      'La catedral del fútbol mundial acoge su tercer Mundial. El mítico Estadio Azteca es el único recinto en haber sido sede de dos finales mundialistas (1970 y 1986) y el más grande de Latinoamérica.',
+    intro: [
+      'Ciudad de México, con más de 9 millones de habitantes en su zona metropolitana, es una de las capitales más vibrantes y contrastantes del planeta. Su mezcla de cultura prehispánica, arquitectura colonial y modernidad vanguardista la convierte en un destino único que va más allá del fútbol.',
+      'El Estadio Azteca —conocido como "El Coloso de Santa Úrsula"— lleva la historia del fútbol en sus paredes: aquí se vivió el Gol del Siglo de Maradona (1986) y el doblete de Pelé en el 70. Renovado para este torneo, albergará partidos de Fase de Grupos y Cuartos de Final, prolongando una leyenda que comenzó en 1966.',
+    ],
+    transportes: [
+      {
+        icon: '🚇',
+        metodo: 'Metro — Línea 2 (Azul)',
+        descripcion: 'La opción más económica y popular para los aficionados.',
+        detalle:
+          'Toma la Línea 2 (azul) hasta la estación Tasqueña (terminal sur). Desde ahí, aborda el autobús RTP o los "peseros" con destino al Estadio Azteca. Señalización especial durante el Mundial.',
+        tiempo: '~35 min desde el Centro Histórico',
+        costo: '$5 MXN por trayecto',
+      },
+      {
+        icon: '🚌',
+        metodo: 'Autobuses oficiales del Mundial',
+        descripcion: 'Servicio especial habilitado por FIFA y el Gobierno de la CDMX.',
+        detalle:
+          'Rutas directas desde: Tasqueña, Indios Verdes, Observatorio y Buenavista. Frecuencias de 10 min en días de partido. Compra tu pase en la app oficial del Mundial.',
+        tiempo: 'Variable según punto de salida',
+        costo: 'Incluido con la entrada al partido',
+      },
+      {
+        icon: '🚕',
+        metodo: 'Uber / Cabify / DiDi',
+        descripcion: 'Cómodo y disponible en toda la ciudad las 24 horas.',
+        detalle:
+          'Zona de llegada y recogida habilitada sobre Av. Insurgentes Sur. Programa tu regreso desde la app antes de entrar al partido para evitar la saturación post-partido.',
+        tiempo: '~25–50 min según tráfico',
+        costo: '$150–$300 MXN aprox.',
+      },
+      {
+        icon: '🚗',
+        metodo: 'Vehículo propio',
+        descripcion: 'Estacionamiento oficial disponible en el complejo deportivo.',
+        detalle:
+          'Compra tu pase de estacionamiento oficial con anticipación en la web del torneo. Llega al menos 3 horas antes del partido. Acceso principal por Calzada de Tlalpan.',
+        tiempo: 'Variable — llega 3 h antes',
+        costo: '$150–$250 MXN en parking oficial',
+      },
+    ],
+    hoteles: [
+      {
+        nombre: 'Camino Real Polanco México',
+        estrellas: 5,
+        precio: 'Desde $220 USD/noche',
+        distancia: '18 km del estadio',
+        descripcion:
+          'Ícono de la hotelería mexicana diseñado por Ricardo Legorreta. Spa de clase mundial, restaurantes galardonados y la energía vibrante del exclusivo Polanco.',
+        badge: 'Lujo',
+        badgeClass: 'bg-gold text-navy-900',
+      },
+      {
+        nombre: 'Fiesta Inn Insurgentes Sur',
+        estrellas: 3,
+        precio: 'Desde $85 USD/noche',
+        distancia: '8 km del estadio',
+        descripcion:
+          'Hotel confiable en corredor bien conectado de Insurgentes. Acceso directo al Metrobús y a docenas de restaurantes y bares de la zona.',
+        badge: 'Recomendado',
+        badgeClass: 'bg-blue-600 text-white',
+      },
+      {
+        nombre: 'Hotel Pedregal de Xochimilco',
+        estrellas: 3,
+        precio: 'Desde $60 USD/noche',
+        distancia: '5 km del estadio',
+        descripcion:
+          'La opción más cercana al Estadio Azteca. Sencillo pero funcional, ideal para grupos que priorizan la proximidad al recinto deportivo.',
+        badge: 'Más cercano',
+        badgeClass: 'bg-green-700 text-white',
+      },
+    ],
+    fanZone: {
+      nombre: 'Fan Zone FIFA — Zócalo CDMX',
+      ubicacion: 'Plaza de la Constitución (Zócalo), Centro Histórico, CDMX',
+      descripcion:
+        'El corazón de México se convierte en el epicentro del Mundial. La plaza más grande de Latinoamérica acogerá a decenas de miles de aficionados de todo el mundo para ver partidos en pantallas gigantes, disfrutar espectáculos culturales y vivir la magia del fútbol rodeados de la historia milenaria de México.',
+      capacidad: 'Hasta 100,000 personas',
+      horario: 'Abre 4 h antes de cada partido · Cierra 2 h después del pitido final',
+      features: [
+        '⚽ Pantallas LED 4K de 100 m² para todos los partidos',
+        '🎵 Conciertos en vivo: música mexicana, cumbia y pop regional',
+        '🌮 Área de food trucks con la mejor gastronomía callejera de México',
+        '🍺 Zona de bebidas con pulque, mezcal y cervezas artesanales',
+        '🏛️ Museo interactivo sobre la historia del fútbol en México',
+        '🎮 Activaciones FIFA: simuladores y torneos de FIFA 26',
+        '👶 Zona familiar con fut-bol lento y pintacaras para niños',
+        '🚑 Módulos médicos, primeros auxilios y info turística bilingüe',
+      ],
+    },
+    coords: { lat: 19.3029, lng: -99.1505 },
+    address: 'Calzada de Tlalpan 3465, Sta. Úrsula Xitla, Coyoacán, CDMX',
+    mapsQuery: 'Estadio+Azteca+Ciudad+de+Mexico',
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // 2. MONTERREY
+  // ─────────────────────────────────────────────────────────────────────────────
+  {
+    slug: 'monterrey',
+    ciudad: 'Monterrey',
+    pais: 'México',
+    flag: '🇲🇽',
+    estadio: 'Estadio BBVA',
+    capacidad: '53,500',
+    fase: 'Fase de Grupos',
+    faseClass: 'bg-blue-700',
+    heroGradient: 'linear-gradient(160deg,#1a0a2e 0%,#2d1a5a 40%,#1a3a6e 70%,#0a1a2e 100%)',
+    descripcion:
+      'La Sultana del Norte recibe su primer Mundial con el moderno Estadio BBVA, considerado uno de los 10 mejores estadios del mundo. Sus vistas al Cerro de la Silla lo hacen inconfundible.',
+    intro: [
+      'Monterrey es la tercera ciudad más grande de México y su motor industrial y financiero más dinámico. Con la majestuosa Sierra Madre Occidental como telón de fondo y una cultura norteña fiera y apasionada, "La Sultana del Norte" conquista a todo visitante con su hospitalidad y su carne asada legendaria.',
+      'El Estadio BBVA, inaugurado en 2015 e incrustado en el paisaje montañoso de Guadalupe, es una obra maestra del diseño deportivo contemporáneo. Sus líneas curvilíneas, su acústica excepcional y la vista al imponente Cerro de la Silla desde las tribunas lo convierten en uno de los estadios más fotogénicos del torneo.',
+    ],
+    transportes: [
+      {
+        icon: '🚇',
+        metodo: 'Metro de Monterrey — Línea 1',
+        descripcion: 'Conexión directa y económica desde el centro de Monterrey.',
+        detalle:
+          'Línea 1 hasta la estación Exposición, luego lanzadera oficial de 15 min al estadio en días de partido. Alternativa: combinar Línea 1 con rutas de autobús de Guadalupe.',
+        tiempo: '~30 min desde la Macroplaza',
+        costo: '$5 MXN + lanzadera gratuita con entrada',
+      },
+      {
+        icon: '🚌',
+        metodo: 'Autobús ruta al estadio',
+        descripcion: 'Rutas especiales desde puntos estratégicos de la ciudad.',
+        detalle:
+          'Salidas frecuentes desde: Centro de Monterrey, Valle Oriente y Santa Catarina. Frecuencia de 15 min. Coordina horarios en la app oficial del torneo.',
+        tiempo: '~45 min desde el centro',
+        costo: '$20 MXN aprox.',
+      },
+      {
+        icon: '🚕',
+        metodo: 'Uber / DiDi / InDriver',
+        descripcion: 'El transporte más usado por visitantes internacionales.',
+        detalle:
+          'Zona de ascenso y descenso en Av. Pablo Livas. Programa el viaje de regreso desde la app al entrar al estadio. Demanda alta post-partido: reserva con antelación.',
+        tiempo: '~25 min desde el centro',
+        costo: '$120–$200 MXN',
+      },
+      {
+        icon: '🚗',
+        metodo: 'Vehículo propio',
+        descripcion: 'El estadio cuenta con 5,000 espacios de estacionamiento.',
+        detalle:
+          'Acceso principal por Av. Pablo Livas. Estacionamiento oficial: compra anticipada obligatoria en línea. El Cerro de la Silla como guía visual: si lo ves, estás cerca.',
+        tiempo: 'Variable — llega 2.5 h antes',
+        costo: '$100–$180 MXN parking oficial',
+      },
+    ],
+    hoteles: [
+      {
+        nombre: 'Quinta Real Monterrey',
+        estrellas: 5,
+        precio: 'Desde $195 USD/noche',
+        distancia: '12 km del estadio',
+        descripcion:
+          'El alojamiento más emblemático de Monterrey, en San Pedro Garza García. Arquitectura hacienda, jardines majestuosos y cocina regional de autor con vistas a las montañas.',
+        badge: 'Lujo',
+        badgeClass: 'bg-gold text-navy-900',
+      },
+      {
+        nombre: 'Crowne Plaza Monterrey',
+        estrellas: 4,
+        precio: 'Desde $110 USD/noche',
+        distancia: '10 km del estadio',
+        descripcion:
+          'En el corazón del Barrio Antiguo, con rooftop bar y vistas al Cerro de la Silla. Perfectamente situado para explorar la vida nocturna y cultural de la ciudad.',
+        badge: 'Recomendado',
+        badgeClass: 'bg-blue-600 text-white',
+      },
+      {
+        nombre: 'Hampton Inn & Suites Guadalupe',
+        estrellas: 3,
+        precio: 'Desde $75 USD/noche',
+        distancia: '4 km del estadio',
+        descripcion:
+          'La opción más práctica y cercana al Estadio BBVA. Desayuno americano incluido, estacionamiento gratuito y acceso rápido por Av. Pablo Livas.',
+        badge: 'Más cercano',
+        badgeClass: 'bg-green-700 text-white',
+      },
+    ],
+    fanZone: {
+      nombre: 'Fan Zone FIFA — Macroplaza',
+      ubicacion: 'Gran Plaza / Macroplaza, Centro de Monterrey, N.L.',
+      descripcion:
+        'La Macroplaza, una de las plazas cívicas más grandes del mundo, albergará la Fan Zone oficial de Monterrey. Entre la modernidad del centro y la vista al Cerro de la Silla, miles de aficionados internacionales vivirán el ambiente más caliente del norte de México.',
+      capacidad: 'Hasta 80,000 personas',
+      horario: 'Abre 5 h antes de partidos sede · Transmisiones de todos los partidos del Mundial',
+      features: [
+        '⚽ Transmisión en vivo de todos los partidos en pantallas gigantes',
+        '🎵 Música norteña, banda sinaloense y corridos en vivo',
+        '🥩 Zona de asadores con cortes de carne regiomontanos',
+        '🍺 Bar de cervezas artesanales del norte de México',
+        '🏔️ Foto-spots con el Cerro de la Silla como fondo icónico',
+        '🎮 Zona gamer y simuladores de disparo al arco',
+        '👶 Área infantil con futbolito y face painting',
+        '🚑 Módulos médicos y puesto de información turística',
+      ],
+    },
+    coords: { lat: 25.6694, lng: -100.2437 },
+    address: 'Av. Pablo Livas 2011, Guadalupe, N.L. 67190, México',
+    mapsQuery: 'Estadio+BBVA+Monterrey+Mexico',
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // 3. LOS ÁNGELES
+  // ─────────────────────────────────────────────────────────────────────────────
+  {
+    slug: 'los-angeles',
+    ciudad: 'Los Ángeles',
+    pais: 'Estados Unidos',
+    flag: '🇺🇸',
+    estadio: 'SoFi Stadium',
+    capacidad: '70,240',
+    fase: 'Semifinal',
+    faseClass: 'bg-purple-700',
+    heroGradient: 'linear-gradient(160deg,#000d2e 0%,#001a56 40%,#002b85 70%,#000d2e 100%)',
+    descripcion:
+      'La capital del entretenimiento mundial recibe una Semifinal del Mundial 2026. El futurista SoFi Stadium, el más caro jamás construido ($5,500 millones USD), será escenario de uno de los partidos más esperados del torneo.',
+    intro: [
+      'Los Ángeles, la segunda ciudad más grande de Estados Unidos, es sinónimo de sol perenne, diversidad cultural y espectáculo sin límites. Con playas icónicas, Hollywood, la gastronomía más diversa del país y una escena artística de talla mundial, LA ofrece experiencias únicas para cada perfil de aficionado.',
+      'El SoFi Stadium, inaugurado en 2020 en Inglewood, es una revolución arquitectónica: su transparente techo de "etileno tetrafluoroetileno" (ETFE) deja entrar la luz natural sin el calor, y su pantalla doble de 70,000 pies cuadrados es la más grande de cualquier estadio del planeta. Para una Semifinal del Mundial, el escenario no podría ser más imponente.',
+    ],
+    transportes: [
+      {
+        icon: '🚇',
+        metodo: 'Metro C Line (Green) + Lanzadera',
+        descripcion: 'Combina Metro y lanzadera oficial para llegar sin estrés.',
+        detalle:
+          'Toma la C Line hasta Hawthorne/Lennox Station. Desde ahí, lanzadera oficial al estadio (~10 min). La A Line (Blue) conecta desde Union Station/Downtown. Usa la TAP Card.',
+        tiempo: '~45 min desde Downtown LA',
+        costo: '$1.75 USD por trayecto Metro',
+      },
+      {
+        icon: '🚌',
+        metodo: 'Lanzadera oficial FIFA',
+        descripcion: 'Servicio de autobús directo desde múltiples puntos de LA.',
+        detalle:
+          'Salidas desde: Union Station, LAX City Bus Center, Hollywood & Highland y Santa Monica Pier. Compra anticipada en la app oficial del Mundial 2026.',
+        tiempo: '~30–60 min según origen',
+        costo: 'Incluido con la entrada al partido',
+      },
+      {
+        icon: '🚕',
+        metodo: 'Uber / Lyft',
+        descripcion: 'La opción preferida para grupos y con equipaje.',
+        detalle:
+          'Zona designada en Inglewood Ave / Prairie Ave. Programa el regreso al entrar al estadio. Surge pricing esperado post-partido: usa la opción "Programa tu viaje" con antelación.',
+        tiempo: '~30–60 min según tráfico I-405',
+        costo: '$25–$55 USD (surge post-partido hasta 3x)',
+      },
+      {
+        icon: '✈️',
+        metodo: 'Desde el Aeropuerto LAX',
+        descripcion: 'LAX está a solo 5 millas del SoFi Stadium.',
+        detalle:
+          'Toma el APM (People Mover) a LA Metro Connector Station, luego C Line al norte. También puedes ir en rideshare directamente (~15–20 min). Hay señalización especial durante el Mundial.',
+        tiempo: '~20–30 min desde terminales',
+        costo: '$3–$4 USD (Metro) · $18–$30 USD (rideshare)',
+      },
+    ],
+    hoteles: [
+      {
+        nombre: 'JW Marriott Los Angeles L.A. LIVE',
+        estrellas: 5,
+        precio: 'Desde $350 USD/noche',
+        distancia: '12 km del estadio',
+        descripcion:
+          'En el epicentro del Downtown LA, junto a Crypto.com Arena y LA LIVE. La mejor opción para combinar el Mundial con la vida nocturna más vibrante de la ciudad.',
+        badge: 'Lujo',
+        badgeClass: 'bg-gold text-navy-900',
+      },
+      {
+        nombre: 'Marriott Residence Inn Inglewood',
+        estrellas: 4,
+        precio: 'Desde $180 USD/noche',
+        distancia: '2.5 km del estadio',
+        descripcion:
+          'El hotel más cercano al SoFi Stadium. Lanzaderas directas en días de partido, suites con cocina y vistas al complejo Hollywood Park desde las plantas altas.',
+        badge: 'Más cercano',
+        badgeClass: 'bg-green-700 text-white',
+      },
+      {
+        nombre: 'Hyatt Place LAX / Century Blvd',
+        estrellas: 3,
+        precio: 'Desde $130 USD/noche',
+        distancia: '8 km del estadio',
+        descripcion:
+          'Excelente relación calidad-precio junto al aeropuerto. Shuttle gratuito a LAX, desayuno incluido y acceso rápido al Metro C Line para llegar al estadio.',
+        badge: 'Recomendado',
+        badgeClass: 'bg-blue-600 text-white',
+      },
+    ],
+    fanZone: {
+      nombre: 'Fan Zone FIFA — LA LIVE',
+      ubicacion: 'LA LIVE, 800 W Olympic Blvd, Downtown Los Angeles, CA',
+      descripcion:
+        'El complejo LA LIVE, en el corazón del Downtown de Los Ángeles, se transformará en la Fan Zone más glamurosa del planeta. Con la energía única de LA, pantallas gigantes, estrellas de Hollywood y el skyline de la ciudad de fondo, esta Fan Zone será probablemente el espectáculo más visto fuera de los estadios.',
+      capacidad: 'Hasta 50,000 personas',
+      horario: 'Abre 4 h antes de cada partido · Eventos especiales toda la semana del torneo',
+      features: [
+        '⚽ Retransmisión de todos los partidos en pantallas de cine',
+        '🎬 Celebrities y leyendas del fútbol como presentadores especiales',
+        '🍔 Food trucks de las mejores cocinas de LA (mexicana, coreana, americana)',
+        '🍺 Zona premium de bebidas con marcas patrocinadoras FIFA',
+        '🎵 Artistas en vivo: conciertos antes y después de cada partido',
+        '📸 Red carpet temática del Mundial con photo wall oficial',
+        '🎮 Gaming Zone: FIFA 26 en consolas gigantes y torneos en vivo',
+        '🏆 Exhibición de trofeos y reliquias de la historia mundialista',
+      ],
+    },
+    coords: { lat: 33.9534, lng: -118.3392 },
+    address: '1001 Stadium Dr, Inglewood, CA 90301, United States',
+    mapsQuery: 'SoFi+Stadium+Inglewood+Los+Angeles',
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // 4. MIAMI
+  // ─────────────────────────────────────────────────────────────────────────────
+  {
+    slug: 'miami',
+    ciudad: 'Miami',
+    pais: 'Estados Unidos',
+    flag: '🇺🇸',
+    estadio: 'Hard Rock Stadium',
+    capacidad: '64,767',
+    fase: 'Fase de Grupos + Octavos',
+    faseClass: 'bg-teal-700',
+    heroGradient: 'linear-gradient(160deg,#001a2e 0%,#002d4a 40%,#004466 70%,#001428 100%)',
+    descripcion:
+      'La ciudad más latina de Estados Unidos se convierte en epicentro del Mundial. Miami, con su explosiva mezcla de culturas y su pasión por el fútbol latinoamericano, será la sede de mayor ambiente en todo el torneo.',
+    intro: [
+      'Miami es la capital latina de Norteamérica: más del 70% de su población es hispanohablante y la ciudad vive el fútbol con una intensidad comparable a Bogotá, Buenos Aires o Ciudad de México. Con sus playas de arena blanca, la efervescente vida de Brickell, el arte de Wynwood y la gastronomía de todo el continente, Miami será la ciudad favorita de los aficionados latinos.',
+      'El Hard Rock Stadium, modernizado con una inversión de $550 millones en 2016, es famoso por su icónica marquesina de 7 acres que protege a los 64,000 aficionados del intenso sol y las lluvias tropicales de Florida. La pasión que vivirá en sus gradas durante los partidos del grupo será un espectáculo por sí solo.',
+    ],
+    transportes: [
+      {
+        icon: '🚂',
+        metodo: 'Brightline + Rideshare',
+        descripcion: 'Combinación imbatible: tren de alta velocidad hasta el área y rideshare al estadio.',
+        detalle:
+          'Toma Brightline hasta MIA Station (Aeropuerto Miami), luego Uber/Lyft 15 min al estadio. Es la combinación más rápida y cómoda desde Fort Lauderdale y West Palm Beach.',
+        tiempo: '~30 min desde Downtown Miami',
+        costo: '$10–$18 USD (Brightline) + $15 USD rideshare',
+      },
+      {
+        icon: '🚇',
+        metodo: 'Metrorail Miami-Dade + Lanzadera',
+        descripcion: 'Sistema de tren ligero de Miami con conexión oficial al estadio.',
+        detalle:
+          'Metrorail Orange/Green Line hasta Palmetto Station. Lanzadera oficial de 20 min al Hard Rock Stadium en días de partido. Señalización especial del Mundial en todas las estaciones.',
+        tiempo: '~55 min desde Downtown Miami',
+        costo: '$2.25 USD + lanzadera incluida con tu entrada',
+      },
+      {
+        icon: '🚕',
+        metodo: 'Uber / Lyft',
+        descripcion: 'La opción más popular y directa en el área metropolitana.',
+        detalle:
+          'Drop-off y pickup en NW 199th St. Reserva el regreso al entrar al estadio para evitar el surge pricing. Se esperan multiplicadores de hasta 3x post-partido por alta demanda.',
+        tiempo: '~25–45 min desde South Beach / Brickell',
+        costo: '$20–$50 USD (surge hasta 3x post-partido)',
+      },
+      {
+        icon: '🚗',
+        metodo: 'Vehículo propio',
+        descripcion: 'Acceso por I-95 North o Florida Turnpike.',
+        detalle:
+          'Estacionamiento en el complejo: adquirir pases oficiales anticipados en línea (no hay parking en puerta). Salida por NW 27th Ave. Prevé tráfico hacia South Beach o Brickell después.',
+        tiempo: 'Variable — llega 3+ h antes',
+        costo: '$30–$50 USD en estacionamiento oficial',
+      },
+    ],
+    hoteles: [
+      {
+        nombre: 'EAST Miami — Brickell',
+        estrellas: 5,
+        precio: 'Desde $290 USD/noche',
+        distancia: '22 km del estadio',
+        descripcion:
+          'Hotel de diseño en el corazón financiero de Brickell con vistas espectaculares a la bahía de Biscayne. Su rooftop bar "Sugar" es legendario. El punto de inicio perfecto para explorar Miami.',
+        badge: 'Lujo',
+        badgeClass: 'bg-gold text-navy-900',
+      },
+      {
+        nombre: 'Miami Airport Marriott',
+        estrellas: 4,
+        precio: 'Desde $160 USD/noche',
+        distancia: '8 km del estadio',
+        descripcion:
+          'Estratégicamente entre el aeropuerto y el estadio. Conectado al MIA Mover, con lanzadera al Hard Rock en días de partido. Excelente opción logística para itinerarios apretados.',
+        badge: 'Recomendado',
+        badgeClass: 'bg-blue-600 text-white',
+      },
+      {
+        nombre: 'Courtyard Miami Aventura Mall',
+        estrellas: 3,
+        precio: 'Desde $120 USD/noche',
+        distancia: '12 km del estadio',
+        descripcion:
+          'Opción sólida al norte del área metropolitana. Cercanía al Aventura Mall, piscina exterior y fácil acceso al Brightline para moverse por todo el sur de Florida.',
+        badge: 'Accesible',
+        badgeClass: 'bg-gray-600 text-white',
+      },
+    ],
+    fanZone: {
+      nombre: 'Fan Zone FIFA — Bayfront Park',
+      ubicacion: 'Bayfront Park, 301 Biscayne Blvd, Downtown Miami, FL',
+      descripcion:
+        'El Bayfront Park, con la bahía de Biscayne y el skyline de Miami como fondo inigualable, albergará la Fan Zone más latina y tropical del Mundial. La mezcla de culturas de Miami —colombiana, venezolana, cubana, argentina, brasileña— garantiza una atmósfera que no se replicará en ninguna otra sede del planeta.',
+      capacidad: 'Hasta 60,000 personas',
+      horario: 'Abre 5 h antes de los partidos sede · Eventos nocturnos hasta las 2 AM',
+      features: [
+        '⚽ Pantallas LED gigantes con imagen 4K para todos los partidos',
+        '🎵 Conciertos de reggaetón, salsa, merengue y EDM tropical',
+        '🌊 Vista panorámica a la Bahía de Biscayne y el skyline',
+        '🍹 Zona de cocktails: mojitos cubanos, piñas coladas y seltzer tropical',
+        '🥘 Food court: cocina latinoamericana completa (Colombian, Cuban, Peruvian, Venezuelan)',
+        '🎮 Zona gamer con torneos de FIFA 26 y premios',
+        '🌴 Área lounge al aire libre bajo palmeras reales',
+        '🚑 Equipo médico bilingüe (español/inglés) disponible las 24 h',
+      ],
+    },
+    coords: { lat: 25.9580, lng: -80.2390 },
+    address: '347 Don Shula Dr, Miami Gardens, FL 33056, United States',
+    mapsQuery: 'Hard+Rock+Stadium+Miami+Gardens+Florida',
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // 5. VANCOUVER
+  // ─────────────────────────────────────────────────────────────────────────────
+  {
+    slug: 'vancouver',
+    ciudad: 'Vancouver',
+    pais: 'Canadá',
+    flag: '🇨🇦',
+    estadio: 'BC Place',
+    capacidad: '54,500',
+    fase: 'Fase de Grupos + Octavos',
+    faseClass: 'bg-red-700',
+    heroGradient: 'linear-gradient(160deg,#001020 0%,#001a30 40%,#002a40 70%,#000a14 100%)',
+    descripcion:
+      'La perla del Pacífico canadiense acoge el Mundial en el BC Place, el único estadio del torneo con cubierta retráctil. Vancouver, constantemente votada como una de las mejores ciudades del mundo para vivir, es también la sede más verde y multicultural del torneo.',
+    intro: [
+      'Vancouver es una ciudad donde el futuro y la naturaleza se abrazan: rascacielos sostenibles conviven con bosques de cedros milenarios, y el océano Pacífico llega hasta las terrazas de los cafés del centro. Con una escena gastronómica de fama internacional —influenciada por las cocinas asiática, indígena, europea y latinoamericana— y una calidad de vida excepcional, Vancouver enamorará a cualquier aficionado que la visite.',
+      'El BC Place, en el corazón del Downtown de Vancouver, tiene la ventaja única de estar integrado en la ciudad: a 2 minutos del SkyTrain, rodeado de restaurantes y con el False Creek a sus pies. Su cubierta de cable-soportada, la más grande del mundo de su tipo, garantiza que la lluvia —y en Vancouver llueve— nunca arruinará un partido.',
+    ],
+    transportes: [
+      {
+        icon: '🚇',
+        metodo: 'SkyTrain — Stadium-Chinatown Station',
+        descripcion: 'La estación está a literalmente 2 minutos caminando del estadio.',
+        detalle:
+          'Líneas Expo (azul) y Millennium (amarilla) paran en Stadium-Chinatown. Conecta desde el aeropuerto YVR en 25 min sin transbordo. Sin duda la mejor opción para llegar al BC Place.',
+        tiempo: '~25 min desde el aeropuerto YVR',
+        costo: '$3.15–$4.45 CAD según zonas',
+      },
+      {
+        icon: '🚶',
+        metodo: 'A pie desde el Downtown',
+        descripcion: 'La opción más placentera si te hospedas en el centro.',
+        detalle:
+          'Desde Robson Street: 15 min. Desde Gastown: 25 min. Desde Yaletown: 10 min. El paseo costero junto al False Creek es uno de los más bonitos de cualquier sede del torneo.',
+        tiempo: '10–25 min desde el centro',
+        costo: 'Gratis 🎉',
+      },
+      {
+        icon: '🚌',
+        metodo: 'TransLink Bus',
+        descripcion: 'Red de autobuses totalmente integrada con el SkyTrain.',
+        detalle:
+          'Rutas 3, 8, 19 y el famoso 99-B Line (Broadway) pasan cerca del BC Place. Usa la app Moovit o Google Maps para la ruta exacta. La misma tarifa integra Metro + Bus.',
+        tiempo: 'Varía según origen',
+        costo: '$3.15 CAD (transbordos incluidos 90 min)',
+      },
+      {
+        icon: '🚕',
+        metodo: 'Uber / Lyft / Taxi',
+        descripcion: 'Alternativa cómoda para grupos, mal tiempo o con equipaje.',
+        detalle:
+          'Zona de recogida y drop-off en Pacific Blvd frente al estadio. Los taxis de Vancouver son regulados y seguros. Para el regreso, reserva por app al entrar al estadio.',
+        tiempo: '~20–40 min según origen',
+        costo: '$15–$35 CAD',
+      },
+    ],
+    hoteles: [
+      {
+        nombre: 'Fairmont Pacific Rim',
+        estrellas: 5,
+        precio: 'Desde $420 CAD/noche',
+        distancia: '1.5 km del estadio',
+        descripcion:
+          'El hotel más icónico de Vancouver frente al Puerto de Coal Harbour, con las montañas North Shore de fondo. Spa excepcional, fine dining y a 15 min a pie del BC Place.',
+        badge: 'Lujo',
+        badgeClass: 'bg-gold text-navy-900',
+      },
+      {
+        nombre: 'Westin Grand Vancouver',
+        estrellas: 4,
+        precio: 'Desde $250 CAD/noche',
+        distancia: '1.2 km del estadio',
+        descripcion:
+          'En el centro de Vancouver, a 15 min a pie del BC Place. Suites amplias con kitchenette, vistas al skyline o a False Creek. Desayuno incluido en paquetes para el Mundial.',
+        badge: 'Mejor ubicación',
+        badgeClass: 'bg-blue-600 text-white',
+      },
+      {
+        nombre: 'Holiday Inn Vancouver Downtown',
+        estrellas: 3,
+        precio: 'Desde $170 CAD/noche',
+        distancia: '2 km del estadio',
+        descripcion:
+          'Opción práctica con acceso directo al SkyTrain. Ideal para familias y grupos numerosos. Parking incluido (escaso en el Downtown de Vancouver) y desayuno buffet.',
+        badge: 'Recomendado',
+        badgeClass: 'bg-green-700 text-white',
+      },
+    ],
+    fanZone: {
+      nombre: 'Fan Zone FIFA — Robson Square',
+      ubicacion: 'Robson Square, 800 Robson St, Vancouver, BC',
+      descripcion:
+        'Robson Square, el corazón cívico y cultural de Vancouver, se convierte en la Fan Zone más verde y multicultural del Mundial. Con la cordillera North Shore nevada como telón de fondo y la diversidad única de la ciudad —inglés, español, mandarín, punjabi— esta Fan Zone refleja el espíritu del fútbol como lenguaje universal.',
+      capacidad: 'Hasta 30,000 personas',
+      horario: 'Abre 4 h antes de cada partido · Eventos culturales todo el día · Pantallas toda la noche',
+      features: [
+        '⚽ Transmisión de todos los partidos del Mundial en pantalla gigante exterior',
+        '🍁 Celebración de la diversidad cultural canadiense con actuaciones locales',
+        '🍜 Food hall: sushi, dim sum, pho, poutine y tacos bajo el mismo techo',
+        '🍺 Craft beers de las mejores cervecerías artesanales de British Columbia',
+        '🎵 Actuaciones de artistas canadienses e internacionales cada día',
+        '🌲 Fan Zone más sostenible del torneo: energía solar + gestión de residuos cero',
+        '📸 Fotoposados con las montañas nevadas de Vancouver como fondo único',
+        '🚑 Primeros auxilios y info turística en inglés, español, mandarín y punjabi',
+      ],
+    },
+    coords: { lat: 49.2767, lng: -123.1116 },
+    address: '777 Pacific Blvd, Vancouver, BC V6B 4Y8, Canada',
+    mapsQuery: 'BC+Place+Stadium+Vancouver+Canada',
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // 6. NUEVA YORK / NEW JERSEY
+  // ─────────────────────────────────────────────────────────────────────────────
+  {
+    slug: 'nueva-york',
+    ciudad: 'Nueva York / NJ',
+    pais: 'Estados Unidos',
+    flag: '🇺🇸',
+    estadio: 'MetLife Stadium',
+    capacidad: '82,500',
+    fase: '⭐ Gran Final',
+    faseClass: 'bg-gold text-navy-900',
+    heroGradient: 'linear-gradient(160deg,#020614 0%,#0a1230 40%,#0d1b3e 70%,#020614 100%)',
+    descripcion:
+      'El estadio más grande del torneo albergará la Gran Final del Mundial 2026. MetLife Stadium, hogar de los Giants y los Jets de la NFL, será el escenario del partido más visto en la historia de la humanidad.',
+    intro: [
+      'Nueva York es la capital del mundo: la ciudad más famosa, más fotografiada y más visitada del planeta. Con más de 8 millones de habitantes y decenas de millones en su área metropolitana, la energía que se vivirá durante el Mundial es imposible de replicar en ninguna otra sede del torneo. El skyline más icónico de la historia, Central Park, Times Square y la Estatua de la Libertad son apenas el comienzo.',
+      'El MetLife Stadium se encuentra en East Rutherford, New Jersey, justo al otro lado del río Hudson. Con capacidad para 82,500 personas y la posibilidad de ampliar a 100,000 para la Final, será el estadio más grande jamás utilizado en una final mundialista. El 19 de julio de 2026, el mundo entero tendrá los ojos puestos en este recinto.',
+    ],
+    transportes: [
+      {
+        icon: '🚌',
+        metodo: 'NJ Transit Bus 351/355 (directo)',
+        descripcion: 'La opción oficial y más usada: bus directo desde Port Authority Bus Terminal en Manhattan.',
+        detalle:
+          'Desde Port Authority Bus Terminal (42nd St, Manhattan): bus 351 o 355 directo al Meadowlands / MetLife Stadium. En días de partido, frecuencia de 5–10 min. Compra el MetroCard en cualquier estación del subway. El viaje cruza el río Hudson por el Lincoln Tunnel.',
+        tiempo: '~35 min desde Midtown Manhattan',
+        costo: '$3.50 USD (ida) · $7 USD ida y vuelta',
+      },
+      {
+        icon: '🚂',
+        metodo: 'Meadowlands Rail (NJ Transit)',
+        descripcion: 'Tren especial en días de partido desde Penn Station (NY) o Secaucus Junction.',
+        detalle:
+          'En días de evento, NJ Transit activa la línea Meadowlands Rail. Desde Penn Station: transborda en Secaucus Junction. Desde Secaucus: tren directo ~10 min. Señalización especial en todas las estaciones durante el Mundial.',
+        tiempo: '~25 min desde Penn Station',
+        costo: '$5–$8 USD según zona',
+      },
+      {
+        icon: '🚕',
+        metodo: 'Uber / Lyft desde Manhattan',
+        descripcion: 'Cómodo pero sujeto a surge pricing intenso en días de partido.',
+        detalle:
+          'Zona de pickup/dropoff en el este del estadio. Reserva el regreso al entrar al partido. Post-Final: surge de hasta 5x esperado. Considera rideshare desde NJ para evitar el recargo del puente GWB o Lincoln Tunnel.',
+        tiempo: '~30–60 min según tráfico',
+        costo: '$40–$80 USD desde Manhattan (surge hasta 5x post-partido)',
+      },
+      {
+        icon: '🚗',
+        metodo: 'Vehículo propio — Ruta 3 / I-95',
+        descripcion: 'Acceso directo por NJ, sin cruzar Manhattan.',
+        detalle:
+          'Desde Manhattan: Holland Tunnel o Lincoln Tunnel → Rt-3 West → MetLife. El estadio tiene estacionamiento para 28,000 vehículos. Pases de parking anticipados obligatorios online. Llega al menos 3 horas antes de la Final.',
+        tiempo: 'Variable — llega 3–4 h antes para la Final',
+        costo: '$40–$60 USD parking oficial para la Final',
+      },
+    ],
+    hoteles: [
+      {
+        nombre: 'The Peninsula New York',
+        estrellas: 5,
+        precio: 'Desde $650 USD/noche',
+        distancia: '25 km (Manhattan, 5th Ave)',
+        descripcion:
+          'Una de las direcciones más prestigiosas del mundo: Fifth Avenue en Midtown Manhattan. Spa legendario, restaurante de autor y la mejor vista de la ciudad. Para la Final del Mundial, la experiencia definitiva.',
+        badge: 'Lujo máximo',
+        badgeClass: 'bg-gold text-navy-900',
+      },
+      {
+        nombre: 'Marriott at the Meadowlands',
+        estrellas: 4,
+        precio: 'Desde $220 USD/noche',
+        distancia: '1.5 km del estadio',
+        descripcion:
+          'El hotel más cercano al MetLife Stadium. Lanzadera gratuita en días de partido, piscina cubierta y vistas al estadio desde las plantas altas. El alojamiento logístico perfecto.',
+        badge: 'Más cercano',
+        badgeClass: 'bg-green-700 text-white',
+      },
+      {
+        nombre: 'Sheraton Lincoln Harbor Hotel',
+        estrellas: 4,
+        precio: 'Desde $180 USD/noche',
+        distancia: '5 km del estadio',
+        descripcion:
+          'En Weehawken, NJ, con vistas panorámicas al skyline de Manhattan. Fácil acceso al ferry a Manhattan y al bus 351 al estadio. La mezcla perfecta de vistas icónicas y logística sencilla.',
+        badge: 'Recomendado',
+        badgeClass: 'bg-blue-600 text-white',
+      },
+    ],
+    fanZone: {
+      nombre: 'Fan Zone FIFA — Times Square / Hudson Yards',
+      ubicacion: 'Times Square & 42nd St / Hudson Yards, Manhattan, NY',
+      descripcion:
+        'La Fan Zone de Nueva York será la más mediática del planeta: pantallas gigantes en Times Square, el lugar donde el mundo entero tiene los ojos puestos. Para la Final del 19 de julio, se esperan más de un millón de personas en las calles de Manhattan. La ciudad que nunca duerme tampoco dormirá durante el Mundial 2026.',
+      capacidad: 'Más de 200,000 personas (calles cerradas al tráfico)',
+      horario: 'Eventos toda la semana del torneo · Noche de la Final: 24 horas continuas',
+      features: [
+        '⚽ Pantallas en Times Square transmitiendo los partidos en directo',
+        '🗽 Activaciones temáticas en Central Park, Bryant Park y Hudson Yards',
+        '🎵 Conciertos masivos de artistas internacionales antes de la Final',
+        '🍔 Food festival: las mejores cocinas de los 195 países representados',
+        '🏆 Exposición oficial del Trofeo de la Copa del Mundo en el AMNH',
+        '🎮 FIFA Gaming Festival en el Javits Center',
+        '📸 Fotospots en los monumentos más icónicos del mundo',
+        '🚑 Operativo médico y de seguridad de nivel olímpico',
+      ],
+    },
+    coords: { lat: 40.8135, lng: -74.0745 },
+    address: '1 MetLife Stadium Dr, East Rutherford, NJ 07073, United States',
+    mapsQuery: 'MetLife+Stadium+East+Rutherford+New+Jersey',
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // 7. DALLAS
+  // ─────────────────────────────────────────────────────────────────────────────
+  {
+    slug: 'dallas',
+    ciudad: 'Dallas',
+    pais: 'Estados Unidos',
+    flag: '🇺🇸',
+    estadio: "AT&T Stadium",
+    capacidad: '80,000',
+    fase: 'Cuartos de Final',
+    faseClass: 'bg-sky-700',
+    heroGradient: 'linear-gradient(160deg,#000814 0%,#001020 40%,#002040 70%,#000814 100%)',
+    descripcion:
+      'El estadio más grande y tecnológicamente avanzado del mundo alberga un Cuarto de Final. AT&T Stadium, hogar de los Dallas Cowboys, cuenta con la pantalla de video más grande de cualquier estadio deportivo del planeta.',
+    intro: [
+      'Dallas-Fort Worth es la cuarta área metropolitana más grande de Estados Unidos y el destino estrella del centro de Texas: barbecue legendario, espíritu cowboy, negocios de escala mundial y un calor que rivaliza con cualquier ciudad del torneo. La energía del mundo de los negocios texano se mezcla con la pasión futbolera latinoamericana que tiene en el DFW uno de sus principales enclaves de Estados Unidos.',
+      'El AT&T Stadium en Arlington es una maravilla arquitectónica: su cubierta retráctil de acero, las puertas de vidrio de 180 pies y, sobre todo, su colosal pantalla suspendida de 160×72 metros —la más grande del mundo— convierten cada partido aquí en un espectáculo audiovisual que ningún otro estadio puede igualar.',
+    ],
+    transportes: [
+      {
+        icon: '🚌',
+        metodo: 'Lanzadera oficial FIFA desde Dallas',
+        descripcion: 'Servicio directo desde puntos estratégicos del DFW Metroplex.',
+        detalle:
+          'Salidas desde: Dallas Convention Center, Fort Worth Convention Center, Dallas Love Field y DFW Airport. En días de partido, frecuencia de 15–20 min. Compra anticipada en la app oficial del Mundial 2026.',
+        tiempo: '~30–50 min según punto de salida',
+        costo: 'Incluido con la entrada al partido',
+      },
+      {
+        icon: '🚇',
+        metodo: 'DART Light Rail + Lanzadera',
+        descripcion: 'Combina el tren ligero de Dallas con lanzadera oficial al estadio.',
+        detalle:
+          'Línea Verde o Azul de DART hasta CentrePort/DFW Airport Station. Desde ahí, lanzadera oficial ~15 min al AT&T Stadium. Es la opción más económica si te hospedas en el corredor DART de Dallas.',
+        tiempo: '~45–60 min desde Downtown Dallas',
+        costo: '$2.50 USD DART + lanzadera incluida con entrada',
+      },
+      {
+        icon: '🚕',
+        metodo: 'Uber / Lyft',
+        descripcion: 'La opción más popular en una ciudad diseñada para el automóvil.',
+        detalle:
+          'Zona designada en Collins St / Randol Mill Rd. El DFW Metroplex es ideal para rideshare: precios más bajos que NYC o LA. Reserva el regreso al entrar al estadio para evitar esperas post-partido.',
+        tiempo: '~25–45 min desde Downtown Dallas',
+        costo: '$20–$40 USD desde Dallas · $15–$25 desde Arlington',
+      },
+      {
+        icon: '🚗',
+        metodo: 'Vehículo propio — I-30 / Hwy 360',
+        descripcion: 'Dallas está diseñada para el coche: la opción natural para muchos.',
+        detalle:
+          'Acceso por I-30 (salida Collins Street) o TX-360 (salida Randol Mill). El estadio tiene parking para 12,000+ vehículos. Pases anticipados obligatorios para Cuartos de Final. Llega 2.5 h antes.',
+        tiempo: 'Variable — llega 2.5 h antes',
+        costo: '$30–$50 USD parking oficial',
+      },
+    ],
+    hoteles: [
+      {
+        nombre: 'Omni Dallas Hotel',
+        estrellas: 5,
+        precio: 'Desde $280 USD/noche',
+        distancia: '22 km del estadio',
+        descripcion:
+          'El emblema hotelero de Downtown Dallas, conectado al Kay Bailey Hutchison Convention Center. Piscina en la terraza con vistas al skyline, restaurante con cocina texana de autor y acceso directo al DART.',
+        badge: 'Lujo',
+        badgeClass: 'bg-gold text-navy-900',
+      },
+      {
+        nombre: 'Live! by Loews — Arlington, TX',
+        estrellas: 4,
+        precio: 'Desde $175 USD/noche',
+        distancia: '1.2 km del estadio',
+        descripcion:
+          'El hotel más cercano al AT&T Stadium, literalmente al lado del complejo Globe Life Field. Lanzadera gratuita en días de partido y una ubicación inmejorable para vivir la semana del Cuarto de Final.',
+        badge: 'Más cercano',
+        badgeClass: 'bg-green-700 text-white',
+      },
+      {
+        nombre: 'Sheraton Grand Dallas',
+        estrellas: 4,
+        precio: 'Desde $150 USD/noche',
+        distancia: '20 km del estadio',
+        descripcion:
+          'En el corazón de Downtown Dallas con acceso directo al DART. Excelente base para explorar el Deep Ellum, el Distrito de las Artes y la gastronomía de la ciudad mientras disfrutas del torneo.',
+        badge: 'Recomendado',
+        badgeClass: 'bg-blue-600 text-white',
+      },
+    ],
+    fanZone: {
+      nombre: 'Fan Zone FIFA — AT&T Discovery District',
+      ubicacion: 'AT&T Discovery District, 208 S Akard St, Dallas, TX',
+      descripcion:
+        'El AT&T Discovery District en el corazón de Dallas se transforma en la Fan Zone oficial: pantallas al aire libre, música en vivo y la hospitalidad texana que lo hace todo más grande. Con la comunidad latinoamericana más activa del centro de Texas, el ambiente en los días de Cuartos de Final será explosivo.',
+      capacidad: 'Hasta 40,000 personas',
+      horario: 'Abre 4 h antes de cada partido del torneo · Eventos especiales en días de partido en Dallas',
+      features: [
+        '⚽ Pantallas LED gigantes para todos los partidos del Mundial',
+        '🤠 Bienvenida texana: barbecue, country music y cowboy culture',
+        '🌮 Food festival: tacos texanos, BBQ brisket y tex-mex auténtico',
+        '🍺 Zona de cervezas artesanales de Texas (Lone Star y craft breweries)',
+        '🎵 Conciertos de country, tejano y norteño en el escenario principal',
+        '🎮 Gaming Zone con torneos de FIFA 26 y simuladores de gol',
+        '📸 Fotospots con el icónico skyline de Dallas y el "Big D"',
+        '🚑 Módulos médicos y asistencia bilingüe español/inglés',
+      ],
+    },
+    coords: { lat: 32.7480, lng: -97.0931 },
+    address: 'AT&T Way, Arlington, TX 76011, United States',
+    mapsQuery: 'ATT+Stadium+Arlington+Texas',
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // 8. SAN FRANCISCO / BAY AREA
+  // ─────────────────────────────────────────────────────────────────────────────
+  {
+    slug: 'san-francisco',
+    ciudad: 'San Francisco',
+    pais: 'Estados Unidos',
+    flag: '🇺🇸',
+    estadio: "Levi's Stadium",
+    capacidad: '68,500',
+    fase: 'Fase de Grupos + Octavos',
+    faseClass: 'bg-teal-700',
+    heroGradient: 'linear-gradient(160deg,#001020 0%,#002030 40%,#003050 70%,#001020 100%)',
+    descripcion:
+      'La cuna de la tecnología mundial acoge el Mundial en el moderno Levi\'s Stadium. San Francisco y Silicon Valley aportan una energía innovadora única al torneo, con la bahía más fotogénica de Estados Unidos como telón de fondo.',
+    intro: [
+      'San Francisco es la ciudad más bella y sofisticada de la costa oeste de Estados Unidos: el Golden Gate, Alcatraz, los famosos cable cars, la gastronomía de clase mundial del Ferry Building y la efervescencia cultural de Mission District y Castro hacen de la ciudad una experiencia que va mucho más allá del fútbol. Y todo ello bajo un microclima en el que la niebla matutina da paso a tardes perfectas.',
+      'El Levi\'s Stadium, ubicado en Santa Clara en el corazón de Silicon Valley, fue el primer estadio en construirse pensando en la era digital: app propia, 1,700 puntos de acceso WiFi, carga inalámbrica en los asientos y el mejor sistema de sonido de cualquier estadio del país. Para los partidos del Mundial, su modernidad technological se fusiona con la pasión futbolera de la comunidad latinoamericana más educada del mundo.',
+    ],
+    transportes: [
+      {
+        icon: '🚇',
+        metodo: 'VTA Light Rail — Levi\'s Stadium Station',
+        descripcion: 'El tranvía ligero del Valle del Silicio para directamente en el estadio.',
+        detalle:
+          'Línea 902 (Orange Line) tiene parada oficial en Levi\'s Stadium. Conecta desde San Jose Diridon Station y Mountain View Caltrain. En días de partido, frecuencia de 5 min y trenes extra. La opción más fácil.',
+        tiempo: '~20 min desde San Jose · ~35 min desde Mountain View',
+        costo: '$2.50 USD',
+      },
+      {
+        icon: '🚂',
+        metodo: 'Caltrain + Lanzadera',
+        descripcion: 'Tren regional que conecta San Francisco con Santa Clara.',
+        detalle:
+          'Desde San Francisco 4th & King: Caltrain hasta Santa Clara Station (~50 min). Lanzadera gratuita oficial ~10 min al Levi\'s Stadium en días de partido. El Baby Bullet (expreso) reduce el tiempo a 40 min.',
+        tiempo: '~60 min desde SF · ~30 min desde Palo Alto',
+        costo: '$6.50–$9.75 USD según zonas',
+      },
+      {
+        icon: '🚕',
+        metodo: 'Uber / Lyft',
+        descripcion: 'Silicon Valley: Uber y Lyft nacieron aquí. Disponibilidad excelente.',
+        detalle:
+          'Zona de pickup/dropoff en Marie P. DeBartolo Way. Precios más estables que en otras sedes. Reserva el regreso al entrar al estadio. Para grupos desde SF, considera rideshare compartido (Pool/Shared).',
+        tiempo: '~35–55 min desde SF · ~15–20 min desde San Jose',
+        costo: '$25–$45 USD desde SF · $12–$20 desde San Jose',
+      },
+      {
+        icon: '✈️',
+        metodo: 'Desde el Aeropuerto SFO',
+        descripcion: 'SFO tiene conexión directa por BART al corredor Caltrain.',
+        detalle:
+          'BART desde SFO (Milbrae) → Millbrae Station → Caltrain sur → Santa Clara → lanzadera. Total: ~70–80 min. Alternativa más rápida: Uber/Lyft directo desde SFO (~30–40 min por US-101).',
+        tiempo: '~70 min (BART+Caltrain) · ~35 min (rideshare)',
+        costo: '$6–$10 USD (tránsito) · $35–$55 USD (rideshare)',
+      },
+    ],
+    hoteles: [
+      {
+        nombre: 'Four Seasons San Francisco at Embarcadero',
+        estrellas: 5,
+        precio: 'Desde $550 USD/noche',
+        distancia: '60 km del estadio (SF Downtown)',
+        descripcion:
+          'La joya hotelera del Embarcadero con vistas directas a la Bahía de San Francisco y el Bay Bridge. Restaurante con vistas únicas, spa de cinco estrellas y acceso inmediato al Ferry Building y los cable cars.',
+        badge: 'Lujo',
+        badgeClass: 'bg-gold text-navy-900',
+      },
+      {
+        nombre: 'Hyatt House San Jose / Silicon Valley',
+        estrellas: 3,
+        precio: 'Desde $145 USD/noche',
+        distancia: '8 km del estadio',
+        descripcion:
+          'La opción más práctica cerca del estadio: acceso directo al VTA Light Rail y al Caltrain. Suites con cocina, desayuno caliente incluido y la logística perfecta para los días de partido.',
+        badge: 'Más cercano',
+        badgeClass: 'bg-green-700 text-white',
+      },
+      {
+        nombre: 'Hotel Via San Francisco',
+        estrellas: 4,
+        precio: 'Desde $220 USD/noche',
+        distancia: '60 km del estadio',
+        descripcion:
+          'Frente al AT&T Park en SoMa. Terraza rooftop con las mejores vistas de la bahía de SF. A 2 min a pie de la estación Caltrain 4th & King para ir al Levi\'s Stadium.',
+        badge: 'Recomendado SF',
+        badgeClass: 'bg-blue-600 text-white',
+      },
+    ],
+    fanZone: {
+      nombre: 'Fan Zone FIFA — Ferry Building / Embarcadero',
+      ubicacion: 'Embarcadero Plaza / Ferry Building, San Francisco, CA',
+      descripcion:
+        'La Fan Zone de San Francisco en el Embarcadero es, sin duda, la más tecnológicamente avanzada del torneo. Con Silicon Valley patrocinando activaciones en AR/VR, la Bahía y el Bay Bridge de fondo, y la comunidad tecnológica más innovadora del mundo, esta Fan Zone reinventará cómo los aficionados viven el fútbol en el siglo XXI.',
+      capacidad: 'Hasta 35,000 personas',
+      horario: 'Abre 3 h antes de cada partido · Eventos tecnológicos toda la semana',
+      features: [
+        '⚽ Pantallas 8K con la mayor resolución de cualquier Fan Zone del torneo',
+        '🥽 Experiencias de realidad virtual: vive el partido desde el campo',
+        '🌉 Vistas al Golden Gate desde la zona lounge premium',
+        '🦞 Mercado gastronómico: pescado y mariscos frescos + cocina latina SF-style',
+        '🍷 Bar de vinos de Napa Valley y cervezas craft de Bay Area',
+        '🎵 DJ sets y artistas en vivo con la escena musical de SF',
+        '💻 Tech Pavilion: demos de FIFA 26 con IA y análisis de partidos en tiempo real',
+        '🚑 Primeros auxilios con aplicación tecnológica de gestión de multitudes',
+      ],
+    },
+    coords: { lat: 37.4033, lng: -121.9694 },
+    address: "4900 Marie P. DeBartolo Way, Santa Clara, CA 95054, United States",
+    mapsQuery: "Levi%27s+Stadium+Santa+Clara+California",
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // 9. SEATTLE
+  // ─────────────────────────────────────────────────────────────────────────────
+  {
+    slug: 'seattle',
+    ciudad: 'Seattle',
+    pais: 'Estados Unidos',
+    flag: '🇺🇸',
+    estadio: 'Lumen Field',
+    capacidad: '69,000',
+    fase: 'Fase de Grupos + Octavos',
+    faseClass: 'bg-teal-700',
+    heroGradient: 'linear-gradient(160deg,#001a10 0%,#002a18 40%,#003a20 70%,#001a10 100%)',
+    descripcion:
+      'La ciudad más verde de la costa noroeste acoge el Mundial en el Lumen Field, famoso por generar el mayor nivel de ruido de cualquier estadio de la NFL. Sus 69,000 aficionados convertirán cada partido en un estruendo legendario.',
+    intro: [
+      'Seattle es la ciudad perfecta para el aficionado al fútbol que también es viajero curioso: el mercado Pike Place con su mítico lanzamiento de pescado, el primer Starbucks del mundo, la Space Needle con el Monte Rainier de fondo, los bosques de la Olympic Peninsula y un sistema de transporte público que cualquier ciudad envidiaría. Con Amazon, Microsoft y Boeing en su patio trasero, Seattle combina naturaleza salvaje con cosmopolitismo de primer nivel.',
+      'El Lumen Field, en el barrio de SoDo junto al puerto de Seattle, es el estadio más ruidoso de la NFL —los Seahawks y sus "12s" ostentan el récord Guinness de ruido en un estadio deportivo—. Cuando 69,000 aficionados de todo el mundo llenen sus gradas para el Mundial, el décibel count alcanzará nuevas cotas históricas.',
+    ],
+    transportes: [
+      {
+        icon: '🚇',
+        metodo: 'Link Light Rail — Stadium Station',
+        descripcion: 'La estación "Stadium" está literalmente a 100 metros del Lumen Field.',
+        detalle:
+          'La Link Light Rail de Sound Transit para en la estación Stadium, a 2 min caminando del Lumen Field. Línea 1 conecta desde Sea-Tac Airport (35 min, $3.25) y Downtown Seattle (5 min). La mejor opción sin ninguna duda.',
+        tiempo: '~5 min desde Downtown · ~35 min desde SEA Airport',
+        costo: '$2.25–$3.25 USD según zonas',
+      },
+      {
+        icon: '🚶',
+        metodo: 'A pie desde el Downtown',
+        descripcion: 'El estadio está en SoDo, a una caminata fácil desde el centro.',
+        detalle:
+          'Desde Pike Place Market: ~25 min a pie por 1st Ave Sur. Desde el Pioneer Square: ~10 min. El paseo por el waterfront de Seattle es uno de los más agradables de cualquier sede del torneo.',
+        tiempo: '10–25 min desde el Downtown',
+        costo: 'Gratis 🎉',
+      },
+      {
+        icon: '🚌',
+        metodo: 'King County Metro Bus',
+        descripcion: 'Red de autobuses integrada con el Light Rail de Seattle.',
+        detalle:
+          'Rutas 21, 36, 132 y varias express pasan por SoDo. La misma tarifa que el Light Rail. En días de partido, servicio ampliado con buses extra. Usa la app One Bus Away para horarios en tiempo real.',
+        tiempo: 'Variable según origen',
+        costo: '$2.25 USD',
+      },
+      {
+        icon: '⛴️',
+        metodo: 'Water Taxi desde West Seattle',
+        descripcion: 'La opción más pintoresca: llega en ferry por la bahía de Elliott.',
+        detalle:
+          'Water taxi desde West Seattle Terminal hasta Downtown Seattle Waterfront, luego 20 min a pie o 5 min en Link al estadio. Escénico y relajante — la vista del skyline llegando en barco es inigualable.',
+        tiempo: '~40 min desde West Seattle (incluyendo conexión)',
+        costo: '$5.75 USD (ferry) + $2.25 (Link)',
+      },
+    ],
+    hoteles: [
+      {
+        nombre: 'The Fairmont Olympic Seattle',
+        estrellas: 5,
+        precio: 'Desde $380 USD/noche',
+        distancia: '2 km del estadio',
+        descripcion:
+          'El gran dame de los hoteles de Seattle desde 1924. Arquitectura renacentista italiana, el legendario Georgian restaurant, spa de clase mundial y una ubicación central desde la que el estadio es accesible a pie o en Link.',
+        badge: 'Lujo',
+        badgeClass: 'bg-gold text-navy-900',
+      },
+      {
+        nombre: 'Courtyard Seattle Downtown / Pioneer Square',
+        estrellas: 3,
+        precio: 'Desde $160 USD/noche',
+        distancia: '1 km del estadio',
+        descripcion:
+          'La opción más cercana al Lumen Field con buena relación calidad-precio. Pioneer Square es el barrio más histórico de Seattle, lleno de bares de craftbeer y restaurantes para el post-partido.',
+        badge: 'Más cercano',
+        badgeClass: 'bg-green-700 text-white',
+      },
+      {
+        nombre: 'Hyatt Regency Seattle',
+        estrellas: 4,
+        precio: 'Desde $240 USD/noche',
+        distancia: '3 km del estadio',
+        descripcion:
+          'El hotel más grande del Pacífico Noroeste en el corazón del Convention District. A 3 paradas de Link del estadio. Vista al Elliott Bay y acceso a pie a Pike Place Market y el waterfront.',
+        badge: 'Recomendado',
+        badgeClass: 'bg-blue-600 text-white',
+      },
+    ],
+    fanZone: {
+      nombre: 'Fan Zone FIFA — Seattle Center',
+      ubicacion: 'Seattle Center, 305 Harrison St, Seattle, WA',
+      descripcion:
+        'El Seattle Center, bajo la icónica Space Needle, acoge la Fan Zone oficial. Con el Monte Rainier al fondo en los días despejados, la arquitectura futurista del centro y la diversidad de una ciudad que habla más de 100 idiomas, la Fan Zone de Seattle tiene el escenario más fotogénico de todas las sedes norteamericanas.',
+      capacidad: 'Hasta 50,000 personas',
+      horario: 'Abre 4 h antes de cada partido · Eventos culturales diarios en el International District',
+      features: [
+        '⚽ Pantallas gigantes junto a la Space Needle para todos los partidos',
+        '🌲 Fan Zone más verde: 100% energía renovable + Food waste zero',
+        '☕ El mejor café del mundo: activaciones de las mejores tostadoras de Seattle',
+        '🍺 Craft beer festival: más de 50 cervezas artesanales del Pacífico Noroeste',
+        '🐟 Mercado de mariscos y salmón del Pacífico al estilo Pike Place',
+        '🎵 Escena musical en vivo: grunge, indie y jazz de los artistas de Seattle',
+        '🎮 Xbox & FIFA Gaming Zone (Microsoft patrocina la Fan Zone)',
+        '🚑 Asistencia médica de primer nivel con gestión inteligente de multitudes',
+      ],
+    },
+    coords: { lat: 47.5952, lng: -122.3316 },
+    address: '800 Occidental Ave S, Seattle, WA 98134, United States',
+    mapsQuery: 'Lumen+Field+Seattle+Washington',
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // 10. ATLANTA
+  // ─────────────────────────────────────────────────────────────────────────────
+  {
+    slug: 'atlanta',
+    ciudad: 'Atlanta',
+    pais: 'Estados Unidos',
+    flag: '🇺🇸',
+    estadio: 'Mercedes-Benz Stadium',
+    capacidad: '71,000',
+    fase: 'Cuartos de Final',
+    faseClass: 'bg-orange-600',
+    heroGradient: 'linear-gradient(160deg,#0a0a14 0%,#1a0a20 40%,#2a0a30 70%,#0a0a14 100%)',
+    descripcion:
+      'El estadio más moderno y sostenible del mundo alberga un Cuarto de Final. El Mercedes-Benz Stadium de Atlanta ganó la certificación LEED Platino y tiene el techo retráctil más innovador del planeta —una apertura que simula el ojo de una cámara.',
+    intro: [
+      'Atlanta es la capital del sur de Estados Unidos: ciudad de Martin Luther King Jr., cuna de Coca-Cola, epicentro del hip-hop del sur y uno de los principales hubs aéreos del mundo (Hartsfield-Jackson es el aeropuerto más transitado del planeta). Con una comunidad afroamericana poderosa, una escena gastronómica en plena efervescencia y una energía que mezcla historia profunda con futuro vibrante, Atlanta será una de las ciudades más sorprendentes del torneo.',
+      'El Mercedes-Benz Stadium, inaugurado en 2017 e inmediatamente galardonado como el mejor estadio del mundo, es una obra maestra del diseño sostenible: genera el 100% de su energía solar, recicla el 99.9% de sus residuos y tiene la certificación medioambiental más alta de cualquier estadio deportivo del planeta. Su techo de 8 pétalos que se abre como el iris de una cámara es visualmente inigualable.',
+    ],
+    transportes: [
+      {
+        icon: '🚇',
+        metodo: 'MARTA — Vine City Station',
+        descripcion: 'El metro de Atlanta para a 5 min caminando del Mercedes-Benz Stadium.',
+        detalle:
+          'Línea Roja o Dorada de MARTA hasta Vine City Station (a 400 metros del estadio). Conecta desde el Aeropuerto Hartsfield-Jackson en 20 min sin transbordo. En días de partido, servicio ampliado con trenes extra cada 3 min.',
+        tiempo: '~5 min desde el Downtown · ~20 min desde el aeropuerto ATL',
+        costo: '$2.50 USD (tarjeta Breeze)',
+      },
+      {
+        icon: '🚌',
+        metodo: 'Lanzadera Oficial FIFA',
+        descripcion: 'Buses directos desde puntos turísticos y hoteles del área metropolitana.',
+        detalle:
+          'Salidas desde: Centennial Olympic Park, Georgia World Congress Center, Buckhead District y Georgia Tech. Frecuencia de 10 min en días de partido. Compra anticipada en la app del Mundial.',
+        tiempo: '~20–40 min según origen',
+        costo: 'Incluido con la entrada al partido',
+      },
+      {
+        icon: '🚕',
+        metodo: 'Uber / Lyft',
+        descripcion: 'Sencillo en una ciudad con buena conectividad de rideshare.',
+        detalle:
+          'Zona de pickup/dropoff en Northside Drive frente al estadio. Post-partido: surge pricing esperado. Considera el MARTA para el regreso (más rápido y sin surge). Reserva el Lyft al entrar al estadio.',
+        tiempo: '~15–25 min desde Midtown · ~25–35 desde Buckhead',
+        costo: '$12–$25 USD desde Downtown/Midtown',
+      },
+      {
+        icon: '🚶',
+        metodo: 'A pie desde el Centennial Park',
+        descripcion: 'Si te hospedas en el Downtown, el estadio está a una caminata.',
+        detalle:
+          'Desde el Centennial Olympic Park (legado de los Juegos 1996): 15 min a pie. Desde el Georgia Aquarium: 20 min. El paseo a través del Westside BeltLine es agradable y pintoresco.',
+        tiempo: '15–25 min desde el Downtown',
+        costo: 'Gratis 🎉',
+      },
+    ],
+    hoteles: [
+      {
+        nombre: 'Four Seasons Hotel Atlanta',
+        estrellas: 5,
+        precio: 'Desde $380 USD/noche',
+        distancia: '4 km del estadio (Midtown)',
+        descripcion:
+          'El hotel de referencia de Midtown Atlanta, en el corazón cultural de la ciudad: museos, restaurantes de chef con estrella y el High Museum of Art a distancia de paseo. Spa de clase mundial y servicio impecable.',
+        badge: 'Lujo',
+        badgeClass: 'bg-gold text-navy-900',
+      },
+      {
+        nombre: 'Omni Hotel at Centennial Olympic Park',
+        estrellas: 4,
+        precio: 'Desde $195 USD/noche',
+        distancia: '1.5 km del estadio',
+        descripcion:
+          'En el Centennial Olympic Park, a 15 min a pie del Mercedes-Benz Stadium. El hotel del parque olímpico de los Juegos del 96: historia palpable, acceso a MARTA y las mejores atracciones del Downtown a la puerta.',
+        badge: 'Más cercano',
+        badgeClass: 'bg-green-700 text-white',
+      },
+      {
+        nombre: 'The Glenn Hotel, Autograph Collection',
+        estrellas: 4,
+        precio: 'Desde $155 USD/noche',
+        distancia: '2 km del estadio',
+        descripcion:
+          'Boutique hotel en el Downtown histórico de Atlanta, con rooftop bar de referencia y acceso directo a MARTA. Excelente relación calidad-precio en el epicentro del barrio más animado de la ciudad.',
+        badge: 'Recomendado',
+        badgeClass: 'bg-blue-600 text-white',
+      },
+    ],
+    fanZone: {
+      nombre: 'Fan Zone FIFA — Centennial Olympic Park',
+      ubicacion: 'Centennial Olympic Park, 265 Park Ave W NW, Atlanta, GA',
+      descripcion:
+        'El Centennial Olympic Park, legado vivo de los Juegos Olímpicos de Atlanta 1996, se convierte en la Fan Zone oficial del Mundial 2026. En la ciudad que ya vivió el mayor evento deportivo del mundo, la energía de las gradas afroamericanas del sur de Estados Unidos mezclada con la pasión latina del Cuarto de Final hará historia.',
+      capacidad: 'Hasta 70,000 personas',
+      horario: 'Abre 5 h antes de cada partido · Eventos Olimpic Legacy toda la semana',
+      features: [
+        '⚽ Pantallas en el escenario principal del Centennial Park para todos los partidos',
+        '🏅 Zona Legado Olímpico: homenaje a los JJOO Atlanta 96 en el mismo parque',
+        '🍑 Georgia Peach Festival gastronómico: cocina sureña, soul food y peach everything',
+        '🎵 Hip-hop del Sur en vivo: artistas de Atlanta en el escenario principal',
+        '🥤 Coca-Cola World: activaciones de la marca Atlanta más global del planeta',
+        '🎮 Gaming Zone patrocinada por EA Sports (sede de EA en Atlanta)',
+        '🌿 Fan Zone certificada LEED: el estadio más sostenible, también la zona más verde',
+        '🚑 Médicos y seguridad con nivel olímpico de preparación',
+      ],
+    },
+    coords: { lat: 33.7554, lng: -84.4010 },
+    address: '1 AMB Dr NW, Atlanta, GA 30313, United States',
+    mapsQuery: 'Mercedes-Benz+Stadium+Atlanta+Georgia',
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // 11. BOSTON / FOXBOROUGH
+  // ─────────────────────────────────────────────────────────────────────────────
+  {
+    slug: 'boston',
+    ciudad: 'Boston',
+    pais: 'Estados Unidos',
+    flag: '🇺🇸',
+    estadio: 'Gillette Stadium',
+    capacidad: '65,878',
+    fase: 'Fase de Grupos',
+    faseClass: 'bg-blue-700',
+    heroGradient: 'linear-gradient(160deg,#0a0818 0%,#100d28 40%,#1a1040 70%,#0a0818 100%)',
+    descripcion:
+      'La ciudad más histórica de Estados Unidos trae el fútbol a Foxborough, donde el Gillette Stadium —casa de los New England Patriots— se convierte en el escenario de la Fase de Grupos con su característica torre faro iluminada.',
+    intro: [
+      'Boston es la ciudad universitaria por excelencia de Estados Unidos: Harvard, MIT, Boston College y decenas de instituciones académicas de primer nivel conviven con los Freedom Trail y los bares del South End. La New England Patriots Football Club tiene en Foxborough su feudo, pero Boston es también la ciudad donde nació el rechazo al invasor —el Tea Party— y donde se forjó buena parte del alma norteamericana.',
+      'El Gillette Stadium, con su icónico faro iluminado en los dos extremos del campo, es uno de los estadios más reconocibles de la NFL. Sede de los New England Revolution (MLS), tiene experiencia acumulada en fútbol soccer a nivel nacional. Sus 65,878 asientos y la pasión de la afición de Nueva Inglaterra lo convierten en uno de los estadios más ruidosos del torneo.',
+    ],
+    transportes: [
+      {
+        icon: '🚂',
+        metodo: 'Commuter Rail — Foxboro Line',
+        descripcion: 'Tren directo especial en días de partido desde South Station, Boston.',
+        detalle:
+          'La MBTA activa la línea Foxboro en días de evento: trenes directos desde South Station Boston (55 min) con salidas escalonadas. La estación Foxboro queda a 5 min del estadio. Compra anticipada de tickets recomendada. Solo opera en días de partido.',
+        tiempo: '~55 min desde South Station, Boston',
+        costo: '$15–$20 USD (tren especial ida y vuelta)',
+      },
+      {
+        icon: '🚌',
+        metodo: 'Lanzadera oficial FIFA desde Boston',
+        descripcion: 'Buses directos desde puntos turísticos y estaciones de Back Bay.',
+        detalle:
+          'Salidas desde: Copley Square, Fenway Park área, South Station y Logan Airport. Frecuencia de 15–20 min en días de partido. Incluido con la entrada al partido en las rutas oficiales FIFA.',
+        tiempo: '~50–70 min según punto de salida',
+        costo: 'Incluido con la entrada al partido',
+      },
+      {
+        icon: '🚕',
+        metodo: 'Uber / Lyft',
+        descripcion: 'La opción más flexible para grupos que vienen del área de Boston.',
+        detalle:
+          'El estadio está en Foxborough, MA, ~35 millas de Boston. Zona de recogida en Patriot Place. Post-partido: alta demanda, surge 2–3x esperado. El regreso en el tren especial es más fiable y económico.',
+        tiempo: '~45–60 min desde Boston (sin tráfico)',
+        costo: '$40–$65 USD desde Boston (surge post-partido)',
+      },
+      {
+        icon: '🚗',
+        metodo: 'Vehículo propio — I-95 / Route 1',
+        descripcion: 'El acceso más directo desde Rhode Island, Connecticut y NH.',
+        detalle:
+          'Por I-95 Sur hasta Route 1, salida estadio. El complejo de Patriot Place tiene 22,000+ plazas de parking. Parking: compra anticipada obligatoria en línea. Llega 2 h antes para evitar el tapón de Route 1.',
+        tiempo: 'Variable — llega 2+ h antes',
+        costo: '$40–$60 USD parking oficial',
+      },
+    ],
+    hoteles: [
+      {
+        nombre: 'Four Seasons Hotel Boston',
+        estrellas: 5,
+        precio: 'Desde $520 USD/noche',
+        distancia: '45 km del estadio',
+        descripcion:
+          'Junto al Boston Public Garden y Commonwealth Ave, el cuatro estaciones de Boston es la dirección más prestigiosa de Nueva Inglaterra. Spa de autor, vistas al jardín y una ubicación central perfecta para explorar la ciudad.',
+        badge: 'Lujo',
+        badgeClass: 'bg-gold text-navy-900',
+      },
+      {
+        nombre: 'Renaissance Boston Patriot Place Hotel',
+        estrellas: 4,
+        precio: 'Desde $175 USD/noche',
+        distancia: '0.5 km del estadio',
+        descripcion:
+          'El hotel más cercano al Gillette Stadium, literalmente en el complejo Patriot Place. Salón de trofeos de los Patriots en el lobby, shuttle al estadio y la experiencia más inmersiva para vivir los días de partido.',
+        badge: 'Más cercano',
+        badgeClass: 'bg-green-700 text-white',
+      },
+      {
+        nombre: 'Westin Copley Place Boston',
+        estrellas: 4,
+        precio: 'Desde $270 USD/noche',
+        distancia: '44 km del estadio',
+        descripcion:
+          'En el corazón del Back Bay, conectado al Prudential Center. Acceso directo a la MBTA (Back Bay Station) para el Commuter Rail a Foxboro. La base perfecta en Boston con toda la ciudad a pie.',
+        badge: 'Recomendado Boston',
+        badgeClass: 'bg-blue-600 text-white',
+      },
+    ],
+    fanZone: {
+      nombre: 'Fan Zone FIFA — Boston Common',
+      ubicacion: 'Boston Common, 139 Tremont St, Boston, MA',
+      descripcion:
+        'El Boston Common —el parque urbano más antiguo de Estados Unidos, donde pastaban vacas en 1634— acoge la Fan Zone del Mundial 2026. La mezcla de historia colonial americana, universidades de Ivy League y la pasión latinoamericana de East Boston y Chelsea crea una atmósfera académica y apasionada a partes iguales.',
+      capacidad: 'Hasta 60,000 personas',
+      horario: 'Abre 4 h antes de cada partido · Exposición histórica toda la semana',
+      features: [
+        '⚽ Pantallas gigantes en el Boston Common para todos los partidos del torneo',
+        '🏛️ Walking tour del Freedom Trail temático del Mundial disponible cada día',
+        '🦞 New England Seafood Market: langosta, clam chowder y fish & chips',
+        '🍺 Craft beer festival de las mejores cervezas artesanales de Massachusetts',
+        '🎵 Boston Symphony pops: música clásica + bandas de rock de la escena de Boston',
+        '🎓 Activaciones académicas: MIT y Harvard presentan el futuro del fútbol con IA',
+        '📸 Fotospots en Fenway Park y el USS Constitution temáticamente decorados',
+        '🚑 Servicio médico del Massachusetts General Hospital (mejor hospital del mundo)',
+      ],
+    },
+    coords: { lat: 42.0909, lng: -71.2643 },
+    address: '1 Patriot Pl, Foxborough, MA 02035, United States',
+    mapsQuery: 'Gillette+Stadium+Foxborough+Massachusetts',
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // 12. KANSAS CITY
+  // ─────────────────────────────────────────────────────────────────────────────
+  {
+    slug: 'kansas-city',
+    ciudad: 'Kansas City',
+    pais: 'Estados Unidos',
+    flag: '🇺🇸',
+    estadio: 'GEHA Field at Arrowhead Stadium',
+    capacidad: '76,416',
+    fase: 'Fase de Grupos',
+    faseClass: 'bg-blue-700',
+    heroGradient: 'linear-gradient(160deg,#140005 0%,#240010 40%,#340020 70%,#140005 100%)',
+    descripcion:
+      'El estadio con el mayor nivel de ruido de la NFL acoge partidos de Fase de Grupos. Arrowhead, hogar de los Kansas City Chiefs, es legendario en todo el mundo del deporte americano. Los aficionados del Mundial llenarán hasta la bandera sus 76,000 asientos en el corazón del Middle West.',
+    intro: [
+      'Kansas City es una de las grandes sorpresas del viaje para cualquier aficionado que la visite por primera vez: barbecue considerado el mejor del mundo, una escena de jazz que compite con Nueva Orleans, el barrio de Power & Light repleto de bares y restaurantes, y una identidad propia y orgullosa del Middle West americano. La ciudad está dividida entre Missouri y Kansas, pero la pasión por los Chiefs y el fútbol la une.',
+      'El Arrowhead Stadium, ahora GEHA Field at Arrowhead, es el estadio de la NFL con el récord histórico de mayor ruido (142.2 decibelios registrados en 2014). Para los partidos del Mundial, su configuración en herradura, sus gradas inclinadas y la pasión de los aficionados de KC crearán una atmósfera que los visitantes internacionales recordarán de por vida.',
+    ],
+    transportes: [
+      {
+        icon: '🚌',
+        metodo: 'Lanzadera oficial FIFA desde Downtown KC',
+        descripcion: 'Servicio de bus directo desde el centro de Kansas City.',
+        detalle:
+          'Salidas desde Union Station, Country Club Plaza y el Kansas City Convention Center. Frecuencia de 20 min en días de partido. La opción más práctica dado el limitado transporte público de KC hacia el estadio.',
+        tiempo: '~25–40 min desde Downtown Kansas City',
+        costo: 'Incluido con la entrada al partido',
+      },
+      {
+        icon: '🚇',
+        metodo: 'KC Streetcar + Lanzadera',
+        descripcion: 'Combina el tranvía gratuito de KC con una lanzadera al estadio.',
+        detalle:
+          'El KC Streetcar (gratuito) conecta desde Union Station y Power & Light hasta el extremo sur de Downtown. Desde ahí, lanzadera oficial al estadio ~20 min. El streetcar va a ampliarse durante el Mundial.',
+        tiempo: '~40–50 min desde Power & Light District',
+        costo: '$0 (streetcar gratuito) + lanzadera con entrada',
+      },
+      {
+        icon: '🚕',
+        metodo: 'Uber / Lyft',
+        descripcion: 'La opción más directa en una ciudad muy dependiente del automóvil.',
+        detalle:
+          'Drop-off en Gate 1 (Red Zone). Kansas City es una ciudad relativamente asequible para rideshare. Post-partido: surge 2x esperado. Precios más bajos que en las grandes ciudades costeras.',
+        tiempo: '~20–30 min desde Downtown KC',
+        costo: '$15–$30 USD (surge post-partido ~2x)',
+      },
+      {
+        icon: '🚗',
+        metodo: 'Vehículo propio — I-70 / I-435',
+        descripcion: 'El acceso más natural en una ciudad diseñada para el automóvil.',
+        detalle:
+          'Por I-70 East hasta I-435 South, salida en Stadium Drive. El complejo tiene 26,000+ plazas de parking. Tailgating: la cultura del tailgating antes del partido es sagrada en KC. Llega 3 h antes para vivirlo.',
+        tiempo: 'Variable — llega 3 h antes para el tailgating',
+        costo: '$25–$40 USD parking oficial',
+      },
+    ],
+    hoteles: [
+      {
+        nombre: 'The Raphael Hotel, Autograph Collection',
+        estrellas: 4,
+        precio: 'Desde $175 USD/noche',
+        distancia: '8 km del estadio (Country Club Plaza)',
+        descripcion:
+          'El hotel más querido de Kansas City, en el elegante Country Club Plaza. Diseño europeo, restaurante de vanguardia y la mejor ubicación para explorar la escena gastronómica y de jazz de la ciudad.',
+        badge: 'Lujo local',
+        badgeClass: 'bg-gold text-navy-900',
+      },
+      {
+        nombre: 'Arrowhead Stadium Suites (Camping World)',
+        estrellas: 3,
+        precio: 'Desde $120 USD/noche',
+        distancia: '1 km del estadio',
+        descripcion:
+          'Alojamiento temporal premium habilitado en el complejo para el Mundial: experiencia única de dormir a metros del estadio más ruidoso del mundo. Reservas exclusivas para grupos de fans del torneo.',
+        badge: 'Experiencia única',
+        badgeClass: 'bg-green-700 text-white',
+      },
+      {
+        nombre: 'Sheraton Crown Center Kansas City',
+        estrellas: 4,
+        precio: 'Desde $145 USD/noche',
+        distancia: '7 km del estadio',
+        descripcion:
+          'Integrado en el complejo Crown Center (Hallmark). Acceso al KC Streetcar, vistas al Downtown y servicios de primera para grupos numerosos. La base logística perfecta para los días de partido.',
+        badge: 'Recomendado',
+        badgeClass: 'bg-blue-600 text-white',
+      },
+    ],
+    fanZone: {
+      nombre: 'Fan Zone FIFA — Union Station',
+      ubicacion: 'Union Station, 30 W Pershing Rd, Kansas City, MO',
+      descripcion:
+        'La Union Station de Kansas City, una de las estaciones de ferrocarril más imponentes de Estados Unidos construida en 1914, acoge la Fan Zone oficial. Con su espectacular bóveda de 95 pies de altura decorada con motivos del Mundial, el barbecue más legendario del país y la escena de jazz más auténtica del Middle West, Kansas City sorprenderá a todos.',
+      capacidad: 'Hasta 50,000 personas (interior y exterior)',
+      horario: 'Abre 5 h antes de cada partido · Kansas City Jazz Festival simultáneo',
+      features: [
+        '⚽ Pantallas en la gran sala de Union Station para todos los partidos',
+        '🥩 Kansas City BBQ Festival: el mejor barbecue del mundo durante todo el torneo',
+        '🎷 Jazz en vivo: artistas de la escena de KC tocando entre partido y partido',
+        '🍺 Boulevard Brewing Company (KC) sirve sus mejores cervezas artesanales',
+        '🏆 Exposición de los Lombardi Trophies de los Kansas City Chiefs',
+        '🎮 FIFA Gaming Zone en las salas históricas de la estación',
+        '🌽 Mercado Midwest: maíz de Kansas, steaks de Missouri y pies de manzana',
+        '🚑 Servicio médico y seguridad de nivel olímpico durante todo el torneo',
+      ],
+    },
+    coords: { lat: 39.0489, lng: -94.4839 },
+    address: '1 Arrowhead Dr, Kansas City, MO 64129, United States',
+    mapsQuery: 'Arrowhead+Stadium+Kansas+City+Missouri',
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // 13. FILADELFIA
+  // ─────────────────────────────────────────────────────────────────────────────
+  {
+    slug: 'filadelfia',
+    ciudad: 'Filadelfia',
+    pais: 'Estados Unidos',
+    flag: '🇺🇸',
+    estadio: 'Lincoln Financial Field',
+    capacidad: '69,796',
+    fase: 'Fase de Grupos',
+    faseClass: 'bg-blue-700',
+    heroGradient: 'linear-gradient(160deg,#060a14 0%,#0a1020 40%,#0c1430 70%,#060a14 100%)',
+    descripcion:
+      'La ciudad donde se firmó la Independencia de Estados Unidos acoge el Mundial en el Lincoln Financial Field. "The Linc", hogar de los Philadelphia Eagles, es famoso por tener la afición más apasionada —y exigente— de toda la NFL.',
+    intro: [
+      'Filadelfia es la ciudad más histórica de Estados Unidos: aquí se firmó la Declaración de Independencia en 1776, aquí está la Liberty Bell, el Rocky Steps del Philadelphia Museum of Art y el Cheesesteak más famoso del mundo (Pat\'s vs. Geno\'s es el debate eterno). Con más de 1.5 millones de hispanos en el área metropolitana, "Philly" tiene una comunidad latina enorme y apasionada que vibrará con el Mundial.',
+      'El Lincoln Financial Field, inaugurado en 2003 en el South Philadelphia Sports Complex, es parte de un complejo que incluye el Citizens Bank Park (béisbol), el Wells Fargo Center (hockey y baloncesto) y el Subaru Park (el equipo de fútbol de la MLS). Philly es la única ciudad del torneo donde los 4 grandes deportes tienen sus estadios literalmente codo con codo.',
+    ],
+    transportes: [
+      {
+        icon: '🚇',
+        metodo: 'SEPTA Broad Street Line — Pattison Station',
+        descripcion: 'El metro de Filadelfia para directamente en el complejo de estadios.',
+        detalle:
+          'La BSL (Broad Street Subway) tiene parada en Pattison Station, a 5 min a pie del Lincoln Financial Field. Conecta desde City Hall (Downtown) en 15 min. En días de partido, trenes extra cada 3 min y señalización especial del Mundial.',
+        tiempo: '~15 min desde City Hall · ~20 desde Jefferson Station',
+        costo: '$2.50 USD (SEPTA Key Card)',
+      },
+      {
+        icon: '🚌',
+        metodo: 'Lanzadera FIFA desde el NovaCare Complex',
+        descripcion: 'Buses especiales desde puntos estratégicos de Filadelfia.',
+        detalle:
+          'Salidas desde: 30th Street Station, Penn Medicine Station y Temple University. Lanzadera también desde el aeropuerto PHL. Frecuencia de 10–15 min en días de partido.',
+        tiempo: '~20–30 min según origen',
+        costo: 'Incluido con la entrada al partido',
+      },
+      {
+        icon: '🚕',
+        metodo: 'Uber / Lyft',
+        descripcion: 'Opción popular especialmente para grupos desde Center City.',
+        detalle:
+          'Drop-off en Pattison Ave / 11th St. El regreso por el SEPTA suele ser más rápido que el rideshare post-partido. Surge 2x esperado en los 30 min post-partido. Programa el regreso con antelación.',
+        tiempo: '~20–30 min desde Center City',
+        costo: '$15–$25 USD desde Center City (surge post-partido ~2x)',
+      },
+      {
+        icon: '🚂',
+        metodo: 'SEPTA Regional Rail desde PHL Airport',
+        descripcion: 'Conexión directa desde el aeropuerto de Filadelfia.',
+        detalle:
+          'Desde Philadelphia International Airport (PHL): Airport Line → Jefferson Station → Broad Street Line → Pattison. Completamente sin transbordo en taxi o rideshare. Total: ~35 min y $7.50 USD.',
+        tiempo: '~35 min desde el aeropuerto PHL',
+        costo: '$7.50 USD',
+      },
+    ],
+    hoteles: [
+      {
+        nombre: 'The Rittenhouse Hotel',
+        estrellas: 5,
+        precio: 'Desde $450 USD/noche',
+        distancia: '7 km del estadio',
+        descripcion:
+          'El hotel más prestigioso de Filadelfia frente a Rittenhouse Square, el parque más elegante de la ciudad. Fine dining, spa excepcional y la atmósfera más sofisticada de Philly. Acceso fácil al SEPTA Broad Street Line.',
+        badge: 'Lujo',
+        badgeClass: 'bg-gold text-navy-900',
+      },
+      {
+        nombre: 'Holiday Inn Philadelphia Stadium',
+        estrellas: 3,
+        precio: 'Desde $140 USD/noche',
+        distancia: '0.8 km del estadio',
+        descripcion:
+          'El hotel más cercano al Lincoln Financial Field, con vista directa al complejo de estadios. Shuttle gratuito en días de partido, parking disponible y la experiencia más práctica para los días de partido en Philly.',
+        badge: 'Más cercano',
+        badgeClass: 'bg-green-700 text-white',
+      },
+      {
+        nombre: 'Loews Philadelphia Hotel',
+        estrellas: 4,
+        precio: 'Desde $195 USD/noche',
+        distancia: '6 km del estadio',
+        descripcion:
+          'En el centro histórico de Filadelfia, en un rascacielos art déco de 1929. Frente al Reading Terminal Market y a 10 min del Independence Hall. Acceso directo al SEPTA para llegar al estadio.',
+        badge: 'Recomendado',
+        badgeClass: 'bg-blue-600 text-white',
+      },
+    ],
+    fanZone: {
+      nombre: 'Fan Zone FIFA — Benjamin Franklin Parkway',
+      ubicacion: 'Benjamin Franklin Pkwy & Eakins Oval, Philadelphia, PA',
+      descripcion:
+        'El Benjamin Franklin Parkway —el "Champs-Élysées de Filadelfia"— es el escenario perfecto para la Fan Zone: flanqueado por el Philadelphia Museum of Art (los famosos Rocky Steps) y rodeado de embajadas culturales, la avenida que une el City Hall con el museo más icónico de la ciudad se convierte en el corazón mundial del torneo.',
+      capacidad: 'Hasta 80,000 personas (la avenida completa)',
+      horario: 'Abre 4 h antes de cada partido · Maratón de películas en el PMA toda la semana',
+      features: [
+        '⚽ Pantallas en los Rocky Steps del Philadelphia Museum of Art',
+        '🗽 Liberty Bell Ceremony: apertura de los partidos con la campana de la independencia',
+        '🥖 Philadelphia Food Festival: cheesesteaks, soft pretzels y hoagies',
+        '🍺 Yards Brewing Company (la cervecería de los Founding Fathers) sirve en exclusiva',
+        '🎵 Rock y jazz de la escena de Filadelfia en el escenario del Parkway',
+        '🎬 Rocky Marathon en el PMA: proyecciones de la saga en la gran pantalla',
+        '🎮 FIFA Gaming Zone con los mejores jugadores de eSports de la costa este',
+        '🚑 Sistema médico de emergency del Jefferson Health disponible 24/7',
+      ],
+    },
+    coords: { lat: 39.9008, lng: -75.1675 },
+    address: '1 Lincoln Financial Field Way, Philadelphia, PA 19148, United States',
+    mapsQuery: 'Lincoln+Financial+Field+Philadelphia+Pennsylvania',
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // 14. HOUSTON
+  // ─────────────────────────────────────────────────────────────────────────────
+  {
+    slug: 'houston',
+    ciudad: 'Houston',
+    pais: 'Estados Unidos',
+    flag: '🇺🇸',
+    estadio: 'NRG Stadium',
+    capacidad: '72,220',
+    fase: 'Semifinal',
+    faseClass: 'bg-purple-700',
+    heroGradient: 'linear-gradient(160deg,#020a14 0%,#04122a 40%,#061c40 70%,#020a14 100%)',
+    descripcion:
+      'La ciudad más diversa de Estados Unidos alberga una Semifinal del Mundial. Houston, con la mayor comunidad latinoamericana del sur de Texas, será la sede con mayor ambiente hispano de todo el torneo junto a Miami.',
+    intro: [
+      'Houston es la ciudad más diversa de Estados Unidos: más del 45% de su población es hispana, habla más de 145 idiomas y acoge la colonia mexicana, hondureña, salvadoreña y venezolana más numerosa de cualquier ciudad del país. El Houston Dynamo (MLS) lleva años atrayendo aficionados de toda América Central, y cuando la Semifinal del Mundial llegue al NRG Stadium, la fiesta será de proporciones bíblicas.',
+      'El NRG Stadium tiene una particularidad única: es el primer estadio con techo retráctil que se construyó en América del Norte (2002) y el más utilizado para grandes eventos. Además del fútbol, ha acogido el Super Bowl XXXVIII y LI, la Final Four de la NCAA y los Rodeo Houston —el evento deportivo de 30 días más grande del mundo. Para la Semifinal del Mundial, estará a plena capacidad.',
+    ],
+    transportes: [
+      {
+        icon: '🚇',
+        metodo: 'METRORail Red Line — NRG Park Station',
+        descripcion: 'El tren ligero de Houston para directamente en el complejo del estadio.',
+        detalle:
+          'La Red Line de METRORail tiene parada NRG Park, a 5 min a pie del estadio. Conecta desde Downtown Houston (Main St Square) en 15 min. En días de partido, trenes extra cada 4 min. La tarjeta Q Card facilita el acceso.',
+        tiempo: '~15 min desde Downtown Houston',
+        costo: '$1.25 USD (tarjeta Q) · $3 USD day pass',
+      },
+      {
+        icon: '🚌',
+        metodo: 'Lanzadera oficial FIFA',
+        descripcion: 'Buses desde el aeropuerto Hobby, el George Bush y el Downtown.',
+        detalle:
+          'Salidas coordinadas desde: Houston Hobby Airport (HOU), Discovery Green Park, Texas Medical Center y Galleria Mall. Frecuencia de 15 min en días de partido. Compra anticipada obligatoria.',
+        tiempo: '~20–40 min según punto de salida',
+        costo: 'Incluido con la entrada al partido',
+      },
+      {
+        icon: '🚕',
+        metodo: 'Uber / Lyft',
+        descripcion: 'Houston es la segunda ciudad más grande de EE.UU. — rideshare muy disponible.',
+        detalle:
+          'Zona de pickup/dropoff en Kirby Dr / NRG Pkwy. Para el regreso de la Semifinal: surge 3–4x esperado. El METRORail es la alternativa más inteligente para el regreso post-partido.',
+        tiempo: '~20–30 min desde el Downtown / Midtown',
+        costo: '$12–$22 USD desde Downtown (surge 3–4x post-Semifinal)',
+      },
+      {
+        icon: '🚗',
+        metodo: 'Vehículo propio — TX-288 / Loop 610',
+        descripcion: 'Houston tiene acceso de autopista desde todas las direcciones.',
+        detalle:
+          'Desde el Downtown: TX-288 Sur → Loop 610 → salida Kirby. El complejo NRG tiene 26,000+ plazas de parking. Pases anticipados obligatorios. Para la Semifinal: llega 3 h antes y disfruta del ambiente.',
+        tiempo: 'Variable — llega 3 h antes para la Semifinal',
+        costo: '$30–$50 USD parking oficial para la Semifinal',
+      },
+    ],
+    hoteles: [
+      {
+        nombre: 'Post Oak Hotel at Uptown Houston',
+        estrellas: 5,
+        precio: 'Desde $420 USD/noche',
+        distancia: '10 km del estadio (Uptown/Galleria)',
+        descripcion:
+          'El único hotel de ultra-lujo de Houston, diseñado por Rottet Studio. Spa con servicio de butler, restaurante de Michelin y la energía del barrio más cosmopolita de Texas. Acceso rápido al NRG por Loop 610.',
+        badge: 'Lujo',
+        badgeClass: 'bg-gold text-navy-900',
+      },
+      {
+        nombre: 'Hilton Houston Plaza / Medical Center',
+        estrellas: 4,
+        precio: 'Desde $155 USD/noche',
+        distancia: '3 km del estadio',
+        descripcion:
+          'La opción más cercana al NRG Stadium, en el Texas Medical Center. Acceso directo al METRORail Red Line y lanzadera al estadio en días de partido. Desayuno americano incluido.',
+        badge: 'Más cercano',
+        badgeClass: 'bg-green-700 text-white',
+      },
+      {
+        nombre: 'Marriott Marquis Houston',
+        estrellas: 4,
+        precio: 'Desde $195 USD/noche',
+        distancia: '8 km del estadio (Downtown)',
+        descripcion:
+          'El hotel más grande de Houston, con su icónica piscina en forma de Texas en la azotea. Frente al Discovery Green Park y a pasos de la estación del METRORail. Centro de operaciones perfecto para el torneo.',
+        badge: 'Recomendado',
+        badgeClass: 'bg-blue-600 text-white',
+      },
+    ],
+    fanZone: {
+      nombre: 'Fan Zone FIFA — Discovery Green',
+      ubicacion: 'Discovery Green, 1500 McKinney St, Houston, TX',
+      descripcion:
+        'Discovery Green, el parque urbano del Downtown de Houston, se convierte en la Fan Zone oficial: pantallas gigantes, el Houston Rodeo BBQ Competition durante los días del torneo y la comunidad hispana más grande del sur de EE.UU. celebrando cada partido. Para la Semifinal, Houston se convertirá en la ciudad más latinoamericana de todo el torneo.',
+      capacidad: 'Hasta 75,000 personas',
+      horario: 'Abre 5 h antes de cada partido · Eventos Tex-Mex toda la semana',
+      features: [
+        '⚽ Pantallas en Discovery Green para todos los partidos del Mundial',
+        '🌮 Houston Tex-Mex Festival: los mejores tacos, tamales y mole del sur de Texas',
+        '🎵 Tejano y corrido en el escenario principal: la música del corazón de Houston',
+        '🍺 Saint Arnold Brewing Company (la cervecería más antigua de Texas) sirve en vivo',
+        '🚀 NASA Experience: activaciones del Space Center Houston junto a la Fan Zone',
+        '🎮 Gaming Zone especial para la Semifinal: torneo de FIFA 26 con premios reales',
+        '🌶️ Salsa/cumbia dance competitions en la Zona Latina de la Fan Zone',
+        '🚑 Médicos del Texas Medical Center (el mayor complejo hospitalario del mundo)',
+      ],
+    },
+    coords: { lat: 29.6847, lng: -95.4107 },
+    address: 'One NRG Pkwy, Houston, TX 77054, United States',
+    mapsQuery: 'NRG+Stadium+Houston+Texas',
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // 15. GUADALAJARA
+  // ─────────────────────────────────────────────────────────────────────────────
+  {
+    slug: 'guadalajara',
+    ciudad: 'Guadalajara',
+    pais: 'México',
+    flag: '🇲🇽',
+    estadio: 'Estadio Akron',
+    capacidad: '49,850',
+    fase: 'Fase de Grupos',
+    faseClass: 'bg-blue-700',
+    heroGradient: 'linear-gradient(160deg,#001a30 0%,#002545 40%,#003060 70%,#001a30 100%)',
+    descripcion:
+      'La Perla de Occidente acoge el Mundial en el moderno Estadio Akron, casa de las Chivas Rayadas del Guadalajara. La ciudad más mexicana de México —cuna del mariachi, del tequila y de la charrería— ofrece la experiencia cultural más auténtica de las tres sedes mexicanas.',
+    intro: [
+      'Guadalajara es la segunda ciudad más grande de México y la más orgullosamente mexicana: aquí nació el mariachi, aquí se produce el tequila más famoso del mundo (Jalisco produce el 80% del tequila global), aquí se fundó la charrería —deporte nacional de México— y aquí opera el mayor mercado de artesanías del país, la Tlaquepaque. Con una gastronomía excepcional, un centro histórico declarado Patrimonio de la Humanidad y una escena tecnológica que la convierte en el "Silicon Valley de México", Guadalajara lo tiene todo.',
+      'El Estadio Akron, inaugurado en 2010 en Zapopan, es el estadio más moderno de México: sistema de iluminación LED de alta eficiencia, 100% libre de humo y con una acústica diseñada para amplificar el famoso "Olé" de la afición de las Chivas. Durante la Fase de Grupos del Mundial, será el estadio más efervescente del torneo junto al Azteca.',
+    ],
+    transportes: [
+      {
+        icon: '🚇',
+        metodo: 'Tren Ligero de Guadalajara — Línea 3',
+        descripcion: 'La línea más nueva conecta el aeropuerto y el centro con la zona del estadio.',
+        detalle:
+          'La Línea 3 (inaugurada 2020) llega hasta Centralights, desde donde hay lanzadera al Estadio Akron (~15 min). También conecta desde el Aeropuerto GDL directamente. En días de partido, frecuencia de 5 min.',
+        tiempo: '~30 min desde el Centro Histórico · ~25 min desde el aeropuerto',
+        costo: '$8 MXN por trayecto',
+      },
+      {
+        icon: '🚌',
+        metodo: 'Macrobús / Autobuses oficiales',
+        descripcion: 'Red de autobuses rápidos de Guadalajara con rutas especiales del Mundial.',
+        detalle:
+          'El Macrobús Línea 1 (corredor Periférico) conecta con lanzaderas al estadio. Rutas especiales del Mundial desde: Centro, Tlaquepaque, Tonalá y Zapopan centro. Frecuencia de 10 min.',
+        tiempo: '~35–50 min según origen',
+        costo: '$8 MXN + lanzadera gratuita con entrada',
+      },
+      {
+        icon: '🚕',
+        metodo: 'Uber / DiDi / Cabify',
+        descripcion: 'Las apps más usadas en Guadalajara, con buena cobertura en toda la ZMG.',
+        detalle:
+          'Zona de ascenso y descenso en Av. Aviación. Los precios en Guadalajara son más accesibles que en CDMX. Post-partido: alta demanda. Reserva el regreso al entrar al estadio desde la app.',
+        tiempo: '~20–35 min desde el Centro',
+        costo: '$80–$150 MXN desde el centro de GDL',
+      },
+      {
+        icon: '🚗',
+        metodo: 'Vehículo propio',
+        descripcion: 'Acceso por el Periférico o por Av. Aviación en Zapopan.',
+        detalle:
+          'Llegada por Periférico Norte → Av. Aviación Sur → estacionamiento oficial del estadio. Compra anticipada del pase de parking obligatoria. El estadio cuenta con estacionamiento para 5,000 vehículos. Llega 2 h antes.',
+        tiempo: 'Variable — llega 2 h antes',
+        costo: '$100–$150 MXN en parking oficial',
+      },
+    ],
+    hoteles: [
+      {
+        nombre: 'One&Only Mandarina Riviera Nayarit',
+        estrellas: 5,
+        precio: 'Desde $800 USD/noche',
+        distancia: '130 km (Riviera Nayarit) — opción resort',
+        descripcion:
+          'Para quienes quieren combinar el Mundial con una experiencia de lujo en la playa: el One&Only en la Riviera Nayarit está a 2h de GDL y ofrece las mejores cabañas sobre la selva tropical del Pacífico mexicano.',
+        badge: 'Lujo resort',
+        badgeClass: 'bg-gold text-navy-900',
+      },
+      {
+        nombre: 'Hilton Guadalajara Midtown',
+        estrellas: 4,
+        precio: 'Desde $105 USD/noche',
+        distancia: '12 km del estadio',
+        descripcion:
+          'En la zona de Midtown de Guadalajara, con acceso al Tren Ligero Línea 3 y a las mejores zonas gastronómicas de la ciudad. Piscina, fitness center y excelente calidad-precio para el área metropolitana.',
+        badge: 'Recomendado',
+        badgeClass: 'bg-blue-600 text-white',
+      },
+      {
+        nombre: 'Hotel Camino Real Guadalajara',
+        estrellas: 4,
+        precio: 'Desde $85 USD/noche',
+        distancia: '5 km del estadio',
+        descripcion:
+          'El hotel con más historia en Guadalajara, en la zona residencial de Zapopan. Jardines tropicales, cocina jalisciense de autor y acceso rápido al Estadio Akron. La opción más cercana con estándar internacional.',
+        badge: 'Más cercano',
+        badgeClass: 'bg-green-700 text-white',
+      },
+    ],
+    fanZone: {
+      nombre: 'Fan Zone FIFA — Plaza Tapatía',
+      ubicacion: 'Plaza Tapatía, Centro Histórico, Guadalajara, Jalisco',
+      descripcion:
+        'La Plaza Tapatía, el corazón del Centro Histórico de Guadalajara y una de las plazas peatonales más grandes de México, se convierte en la Fan Zone oficial. Con el Hospicio Cabañas (Patrimonio de la UNESCO) de fondo, mariachis en vivo y tequila de Jalisco, esta Fan Zone ofrece la experiencia más auténticamente mexicana de todo el torneo.',
+      capacidad: 'Hasta 60,000 personas',
+      horario: 'Abre 4 h antes de partidos sede · Fiesta del Mariachi cada noche del torneo',
+      features: [
+        '⚽ Pantallas frente al Hospicio Cabañas (Patrimonio UNESCO) para todos los partidos',
+        '🎺 Mariachi Festival: el mejor mariachi de México en vivo cada noche',
+        '🥃 Tequila Jalisco: degustación de las mejores marcas artesanales de la Zona Tequilera',
+        '🌮 Birria, tortas ahogadas, pozole y carne en su jugo: lo mejor de Jalisco',
+        '🐎 Charrería: demostraciones del deporte nacional de México en el zócalo',
+        '🎨 Murales de Orozco: tour cultural nocturno por los frescos del Hospicio Cabañas',
+        '🎮 FIFA Gaming Zone en la explanada del Mercado Libertad (San Juan de Dios)',
+        '🚑 Cruz Roja Jalisco disponible con módulos en toda la plaza histórica',
+      ],
+    },
+    coords: { lat: 20.6895, lng: -103.4655 },
+    address: 'Av. de las Rosas 250, Ciudad Granja, Zapopan, Jalisco, México',
+    mapsQuery: 'Estadio+Akron+Zapopan+Guadalajara+Mexico',
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // 16. TORONTO
+  // ─────────────────────────────────────────────────────────────────────────────
+  {
+    slug: 'toronto',
+    ciudad: 'Toronto',
+    pais: 'Canadá',
+    flag: '🇨🇦',
+    estadio: 'BMO Field',
+    capacidad: '45,736',
+    fase: 'Fase de Grupos',
+    faseClass: 'bg-red-700',
+    heroGradient: 'linear-gradient(160deg,#0a1010 0%,#0a1a1a 40%,#0a2828 70%,#0a1010 100%)',
+    descripcion:
+      'La ciudad más multicultural del mundo acoge el Mundial en el BMO Field, el estadio dedicado exclusivamente al fútbol en Canadá. Toronto FC (MLS) tiene una afición increíble y el BMO Field es el único estadio del torneo construido específicamente para el soccer.',
+    intro: [
+      'Toronto es literalmente la ciudad más diversa del planeta: más del 50% de sus residentes nacieron fuera de Canadá, habla más de 200 idiomas y tiene barrios italianos, griegos, chinos, portugueses, indios, coreanos y latinoamericanos que coexisten en una mezcla única e irrepetible. Para el fútbol, que es el deporte más global del mundo, no hay ciudad más apropiada. Toronto FC tiene la afición más apasionada de la MLS y la comunidad italiana, portuguesa y latinoamericana de la ciudad vivirá el torneo con una intensidad incomparable.',
+      'El BMO Field, en el barrio de Exhibition Place junto al lago Ontario, es el único estadio del torneo construido exclusivamente para el fútbol: su diseño obedece solo a las necesidades del soccer, con gradas inclinadas para máxima visibilidad y la atmósfera de los mejores estadios europeos. Con expansiones para el Mundial hasta 45,736 asientos, será el más íntimo y eléctrico del torneo.',
+    ],
+    transportes: [
+      {
+        icon: '🚇',
+        metodo: 'TTC — 509/511 Streetcar + Exhibition Walk',
+        descripcion: 'El tranvía más pintoresco del torneo: la línea 509 Harbourfront.',
+        detalle:
+          'Toma el streetcar 509 Harbourfront o 511 Bathurst desde Union Station en el Downtown. Llega hasta la Exhibition GO Station, a 5 min a pie del BMO Field. Una de las llegadas a estadio más características de todo el torneo.',
+        tiempo: '~15 min desde Union Station',
+        costo: '$3.35 CAD (PRESTO card)',
+      },
+      {
+        icon: '🚂',
+        metodo: 'GO Transit — Exhibition Station',
+        descripcion: 'Tren regional de Ontario con parada directa en el complejo.',
+        detalle:
+          'En días de partido, GO Transit activa servicio especial con parada en Exhibition GO Station, a 5 min a pie del BMO Field. Conecta desde Hamilton, Oakville, Mississauga y otras ciudades del Greater Toronto Area.',
+        tiempo: '~15 min desde Union Station · ~35 desde Mississauga',
+        costo: '$3.45–$9 CAD según zona',
+      },
+      {
+        icon: '🚕',
+        metodo: 'Uber / Lyft',
+        descripcion: 'Disponible en toda la ciudad, aunque el tráfico de Toronto puede ser intenso.',
+        detalle:
+          'Pickup/dropoff en Princes\' Blvd frente al BMO Field. Toronto tiene intenso tráfico en horas pico. Post-partido: surge 2x. El GO o el streetcar suelen ser más rápidos.',
+        tiempo: '~15–30 min desde Downtown (según tráfico)',
+        costo: '$15–$30 CAD desde Downtown (surge post-partido)',
+      },
+      {
+        icon: '🚲',
+        metodo: 'Bicicleta — Bike Share Toronto',
+        descripcion: 'Toronto tiene cientos de estaciones de Bike Share junto al waterfront.',
+        detalle:
+          'Hay múltiples estaciones Bike Share en el Lake Shore Blvd y en Exhibition Place. El carril bici del waterfront del lago Ontario conecta con todo el Downtown de Toronto de forma segura y pintoresca.',
+        tiempo: '~15 min desde el Downtown',
+        costo: '$7 CAD (acceso diario Bike Share)',
+      },
+    ],
+    hoteles: [
+      {
+        nombre: 'Four Seasons Hotel Toronto',
+        estrellas: 5,
+        precio: 'Desde $480 CAD/noche',
+        distancia: '5 km del estadio (Yorkville)',
+        descripcion:
+          'El hotel más icónico de Toronto en el barrio más elegante de la ciudad, Yorkville. Piscina con vista a los rascacielos, restaurante Café Boulud y acceso al sistema PATH subterráneo para ir al estadio.',
+        badge: 'Lujo',
+        badgeClass: 'bg-gold text-navy-900',
+      },
+      {
+        nombre: 'Residence Inn Toronto Downtown / Entertainment District',
+        estrellas: 3,
+        precio: 'Desde $200 CAD/noche',
+        distancia: '2 km del estadio',
+        descripcion:
+          'En el Entertainment District, a 20 min a pie del BMO Field junto al lago. Suites con cocina, acceso al GO/streetcar y la vida nocturna de King St West a la puerta. Ideal para estadías largas durante el torneo.',
+        badge: 'Más cercano',
+        badgeClass: 'bg-green-700 text-white',
+      },
+      {
+        nombre: 'Westin Harbour Castle Toronto',
+        estrellas: 4,
+        precio: 'Desde $310 CAD/noche',
+        distancia: '2.5 km del estadio',
+        descripcion:
+          'Directamente en el waterfront del lago Ontario, con vista al lago y a los ferrys hacia la isla de Toronto. A 25 min a pie del BMO Field por el paseo marítimo del lago. La experiencia más fotogénica de todas las sedes.',
+        badge: 'Recomendado',
+        badgeClass: 'bg-blue-600 text-white',
+      },
+    ],
+    fanZone: {
+      nombre: 'Fan Zone FIFA — Nathan Phillips Square',
+      ubicacion: 'Nathan Phillips Square, 100 Queen St W, Toronto, ON',
+      descripcion:
+        'Nathan Phillips Square, frente al City Hall de Toronto con su arquitectura vanguardista, es el corazón cívico de la ciudad más diversa del mundo. Con el letrero "TORONTO" iluminado en los colores del Mundial, la pista de hielo convertida en zona de fútbol y las 200+ comunidades culturales de la ciudad celebrando juntas, esta Fan Zone será la más multicultural del planeta.',
+      capacidad: 'Hasta 50,000 personas',
+      horario: 'Abre 4 h antes de cada partido · Festival World Food Market toda la semana',
+      features: [
+        '⚽ Pantallas bajo el icónico City Hall con los arcos curvos de Toronto de fondo',
+        '🍁 Canadian Multicultural Festival: todas las cocinas del mundo en un mismo lugar',
+        '🍕 Little Italy, Greektown, Chinatown y Kensington Market food trucks reunidos',
+        '🍺 Craft beer de las mejores cervecerías de Ontario: Bellwoods, Amsterdam y Steam Whistle',
+        '🎵 JUNO Music Stage: los artistas canadienses más internacionales del momento',
+        '🛹 Nathan Phillips Skate Zone convertida en cancha de penaltis y skills challenges',
+        '📸 CN Tower walk en las noches de partido: la mejor vista de la ciudad desde 447m',
+        '🚑 Toronto EMS y Toronto Police Services con protocolo de evento masivo de élite',
+      ],
+    },
+    coords: { lat: 43.6332, lng: -79.4190 },
+    address: '170 Princes\' Blvd, Toronto, ON M6K 3C3, Canada',
+    mapsQuery: 'BMO+Field+Toronto+Canada',
+  },
+  ];
+
+  return sedesData.map(sede => ({
+    params: { sede: sede.slug },
+    props:  { sede },
+  }));
+}
+
+// ── Props de la página activa ──────────────────────────────────────────────────
+interface Props { sede: SedeData }
+const { sede } = Astro.props;
+
+const {
+  slug, ciudad, pais, flag, estadio, capacidad, fase, faseClass,
+  heroGradient, descripcion, intro, transportes, hoteles, fanZone,
+  coords, mapsQuery,
+} = sede;
+
+const title        = `${ciudad} — Sede Mundial 2026 | ${estadio}, Transporte y Hoteles`;
+const description  = `Guía completa de ${ciudad} como sede del Mundial FIFA 2026: ${estadio} (cap. ${capacidad}), cómo llegar en metro/autobús/rideshare, mejores hoteles cercanos y la Fan Zone oficial.`;
+const canonicalURL = `https://mundial2026guia.com/sedes/${slug}`;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'EventVenue',
+      '@id': `https://mundial2026guia.com/sedes/${slug}#venue`,
+      name: estadio,
+      description: descripcion,
+      url: canonicalURL,
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: sede.address,
+        addressLocality: ciudad,
+        addressCountry: pais === 'México' ? 'MX' : pais === 'Canadá' ? 'CA' : 'US',
+      },
+      geo: {
+        '@type': 'GeoCoordinates',
+        latitude:  coords.lat,
+        longitude: coords.lng,
+      },
+      maximumAttendeeCapacity: parseInt(capacidad.replace(/,/g, ''), 10),
+      event: {
+        '@type': 'SportsEvent',
+        name: 'Copa Mundial de Fútbol FIFA 2026',
+        startDate: '2026-06-11',
+        endDate: '2026-07-19',
+        organizer: { '@type': 'Organization', name: 'FIFA' },
+      },
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://mundial2026guia.com/' },
+        { '@type': 'ListItem', position: 2, name: 'Sedes',  item: 'https://mundial2026guia.com/sedes' },
+        { '@type': 'ListItem', position: 3, name: ciudad,   item: canonicalURL },
+      ],
+    },
+  ],
+};
+---
+
+<Layout {title} {description} {canonicalURL} {jsonLd}>
+
+  <!-- ===================================================
+       HERO DE LA SEDE
+  ==================================================== -->
+  <section
+    class="relative text-white overflow-hidden"
+    style={`background: ${heroGradient}`}
+    aria-labelledby="sede-heading"
+  >
+    <!-- Patrón decorativo -->
+    <div class="absolute inset-0 opacity-5 pointer-events-none" aria-hidden="true"
+      style="background-image:radial-gradient(circle,#d4af37 1px,transparent 1px);background-size:32px 32px;">
+    </div>
+
+    <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 text-center">
+
+      <!-- Badge fase -->
+      <div class="inline-flex items-center gap-2 mb-5">
+        <span class={`${faseClass} text-white text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wide`}>
+          {fase}
+        </span>
+      </div>
+
+      <!-- Flag + City -->
+      <div class="flex items-center justify-center gap-3 mb-3">
+        <span class="text-5xl sm:text-6xl" role="img" aria-label={pais}>{flag}</span>
+      </div>
+      <h1 id="sede-heading" class="font-black text-4xl sm:text-6xl lg:text-7xl leading-none tracking-tight mb-2">
+        {ciudad}
+      </h1>
+      <p class="text-gold font-bold text-xl sm:text-2xl mb-2">{estadio}</p>
+      <p class="text-gray-400 text-sm mb-6">{pais}</p>
+
+      <!-- Stats -->
+      <div class="flex flex-wrap justify-center gap-4 mb-8">
+        <div class="bg-white/10 border border-white/20 rounded-full px-5 py-2 text-sm">
+          <span class="text-gold font-black">{capacidad}</span>
+          <span class="text-gray-300 ml-1">espectadores</span>
+        </div>
+        <div class="bg-white/10 border border-white/20 rounded-full px-5 py-2 text-sm">
+          <span class="text-gold font-black">{fase}</span>
+        </div>
+        <a
+          href={`https://www.google.com/maps/search/?api=1&query=${mapsQuery}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="bg-white/10 border border-white/20 rounded-full px-5 py-2 text-sm text-gray-300 hover:text-gold transition-colors flex items-center gap-1.5"
+          aria-label={`Ver ${estadio} en Google Maps`}
+        >
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+          </svg>
+          Ver en mapa
+        </a>
+      </div>
+
+      <!-- Descripción -->
+      <p class="text-gray-300 text-base sm:text-lg max-w-3xl mx-auto leading-relaxed">
+        {descripcion}
+      </p>
+    </div>
+  </section>
+
+  <!-- ===================================================
+       CONTENIDO PRINCIPAL
+  ==================================================== -->
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <!-- Breadcrumb -->
+    <nav class="py-4 text-sm text-gray-500" aria-label="Migas de pan">
+      <ol class="flex items-center gap-1.5 flex-wrap">
+        <li><a href="/" class="hover:text-gold transition-colors">Inicio</a></li>
+        <li aria-hidden="true"><span class="text-gray-300">/</span></li>
+        <li><a href="/sedes" class="hover:text-gold transition-colors">Sedes</a></li>
+        <li aria-hidden="true"><span class="text-gray-300">/</span></li>
+        <li class="text-navy-900 font-medium" aria-current="page">{ciudad}</li>
+      </ol>
+    </nav>
+
+    <!-- ─── Introducción ──────────────────────────────────────────────────── -->
+    <section class="mt-8" aria-labelledby="intro-heading">
+      <h2 id="intro-heading" class="sr-only">Introducción a {ciudad}</h2>
+
+      <!-- Párrafo 1 -->
+      <p class="text-gray-700 text-lg leading-relaxed mb-6">{intro[0]}</p>
+
+      <!-- Párrafo 2 -->
+      <p class="text-gray-700 text-lg leading-relaxed mb-2">{intro[1]}</p>
+    </section>
+
+    <!-- AdSlot DESPUÉS del 2.º párrafo de la guía -->
+    <AdSlot slot="3344556677" format="horizontal" label="Publicidad" />
+
+    <!-- ─── Guía de Transporte ────────────────────────────────────────────── -->
+    <section class="mt-10" aria-labelledby="transporte-heading">
+      <div class="flex items-center gap-3 mb-8">
+        <div class="w-1 h-8 bg-gold rounded-full" aria-hidden="true"></div>
+        <h2 id="transporte-heading" class="font-black text-2xl sm:text-3xl text-navy-900">
+          Cómo llegar a {estadio}
+        </h2>
+      </div>
+
+      <div class="space-y-4">
+        {transportes.map(t => (
+          <article class="bg-white border border-gray-100 rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md transition-shadow">
+            <div class="flex gap-4">
+              <span class="text-3xl shrink-0 mt-0.5" aria-hidden="true">{t.icon}</span>
+              <div class="flex-1 min-w-0">
+                <h3 class="font-bold text-navy-900 text-base sm:text-lg mb-1">{t.metodo}</h3>
+                <p class="text-gray-600 text-sm mb-3 leading-relaxed">{t.descripcion}</p>
+                <p class="text-gray-700 text-sm leading-relaxed bg-gray-50 rounded-xl p-3 mb-3">{t.detalle}</p>
+                <div class="flex flex-wrap gap-3">
+                  <span class="inline-flex items-center gap-1.5 bg-navy-900/5 text-navy-900 text-xs font-medium px-3 py-1.5 rounded-full">
+                    <svg class="w-3.5 h-3.5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                    {t.tiempo}
+                  </span>
+                  <span class="inline-flex items-center gap-1.5 bg-gold/10 text-navy-900 text-xs font-medium px-3 py-1.5 rounded-full">
+                    <svg class="w-3.5 h-3.5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                    </svg>
+                    {t.costo}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <!-- ─── Hoteles Cercanos ──────────────────────────────────────────────── -->
+    <section class="mt-16" aria-labelledby="hoteles-heading">
+      <div class="flex items-center gap-3 mb-8">
+        <div class="w-1 h-8 bg-gold rounded-full" aria-hidden="true"></div>
+        <h2 id="hoteles-heading" class="font-black text-2xl sm:text-3xl text-navy-900">
+          Hoteles Recomendados
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+        {hoteles.map(h => (
+          <article class="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all hover:-translate-y-0.5">
+            <!-- Badge -->
+            <span class={`inline-block ${h.badgeClass} text-xs font-bold px-3 py-1 rounded-full mb-4`}>
+              {h.badge}
+            </span>
+
+            <!-- Stars -->
+            <div class="flex gap-0.5 mb-2" aria-label={`${h.estrellas} estrellas`}>
+              {Array.from({ length: h.estrellas }).map(() => (
+                <svg class="w-4 h-4 text-gold fill-current" viewBox="0 0 20 20" aria-hidden="true">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                </svg>
+              ))}
+            </div>
+
+            <h3 class="font-bold text-navy-900 text-base leading-snug mb-1">{h.nombre}</h3>
+            <p class="text-gray-500 text-xs mb-3 flex items-center gap-1">
+              <svg class="w-3.5 h-3.5 text-gold shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+              </svg>
+              {h.distancia}
+            </p>
+            <p class="text-gray-600 text-sm leading-relaxed mb-4">{h.descripcion}</p>
+            <p class="font-black text-navy-900 text-base">{h.precio}</p>
+          </article>
+        ))}
+      </div>
+
+      <p class="mt-4 text-xs text-gray-400 text-center">
+        * Precios orientativos para temporada del Mundial. Reserva con anticipación — las fechas del torneo se agotan rápido.
+      </p>
+    </section>
+
+    <!-- ─── Fan Zone ──────────────────────────────────────────────────────── -->
+    <section class="mt-16 mb-12" aria-labelledby="fanzone-heading">
+      <div class="flex items-center gap-3 mb-8">
+        <div class="w-1 h-8 bg-gold rounded-full" aria-hidden="true"></div>
+        <h2 id="fanzone-heading" class="font-black text-2xl sm:text-3xl text-navy-900">
+          Fan Zone Oficial
+        </h2>
+      </div>
+
+      <div class="bg-navy-900 text-white rounded-3xl overflow-hidden">
+        <!-- Header Fan Zone -->
+        <div class="bg-gradient-to-r from-navy-950 to-navy-800 px-6 sm:px-8 py-7 border-b border-white/10">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div>
+              <p class="text-gold font-bold text-xs uppercase tracking-widest mb-1">Fan Zone Oficial FIFA</p>
+              <h3 class="font-black text-xl sm:text-2xl">{fanZone.nombre}</h3>
+            </div>
+            <div class="flex flex-col gap-2 text-right shrink-0">
+              <span class="inline-flex items-center gap-1.5 text-xs text-gray-300">
+                <svg class="w-3.5 h-3.5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0"/>
+                </svg>
+                {fanZone.capacidad}
+              </span>
+              <span class="inline-flex items-center gap-1.5 text-xs text-gray-300">
+                <svg class="w-3.5 h-3.5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                </svg>
+                {fanZone.horario}
+              </span>
+            </div>
+          </div>
+
+          <!-- Ubicación -->
+          <div class="mt-4 flex items-start gap-2 text-sm text-gray-400">
+            <svg class="w-4 h-4 text-gold mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+            </svg>
+            <span>{fanZone.ubicacion}</span>
+          </div>
+        </div>
+
+        <!-- Descripción -->
+        <div class="px-6 sm:px-8 py-6 border-b border-white/10">
+          <p class="text-gray-300 text-base leading-relaxed">{fanZone.descripcion}</p>
+        </div>
+
+        <!-- Features -->
+        <div class="px-6 sm:px-8 py-6">
+          <p class="font-semibold text-gold text-xs uppercase tracking-widest mb-5">Qué encontrarás</p>
+          <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {fanZone.features.map(feature => (
+              <li class="flex items-start gap-3 text-sm text-gray-300">
+                <span class="text-base leading-none mt-0.5 shrink-0" aria-hidden="true">{feature.split(' ')[0]}</span>
+                <span>{feature.split(' ').slice(1).join(' ')}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- AdSlot al final de la guía -->
+    <AdSlot slot="7788990011" format="rectangle" label="Publicidad" />
+
+  </div>
+
+  <!-- ===================================================
+       NAVEGACIÓN ENTRE SEDES
+  ==================================================== -->
+  <section class="bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 mt-8" aria-labelledby="otras-sedes-heading">
+    <div class="max-w-4xl mx-auto">
+      <h2 id="otras-sedes-heading" class="font-black text-xl text-navy-900 mb-6 text-center">
+        Otras sedes del Mundial 2026
+      </h2>
+      <div class="flex flex-wrap justify-center gap-3">
+        {[
+          { href: '/sedes/ciudad-de-mexico', label: '🇲🇽 Ciudad de México' },
+          { href: '/sedes/monterrey',        label: '🇲🇽 Monterrey' },
+          { href: '/sedes/guadalajara',      label: '🇲🇽 Guadalajara' },
+          { href: '/sedes/nueva-york',       label: '🇺🇸 Nueva York' },
+          { href: '/sedes/los-angeles',      label: '🇺🇸 Los Ángeles' },
+          { href: '/sedes/dallas',           label: '🇺🇸 Dallas' },
+          { href: '/sedes/san-francisco',    label: '🇺🇸 San Francisco' },
+          { href: '/sedes/seattle',          label: '🇺🇸 Seattle' },
+          { href: '/sedes/miami',            label: '🇺🇸 Miami' },
+          { href: '/sedes/atlanta',          label: '🇺🇸 Atlanta' },
+          { href: '/sedes/boston',           label: '🇺🇸 Boston' },
+          { href: '/sedes/kansas-city',      label: '🇺🇸 Kansas City' },
+          { href: '/sedes/filadelfia',       label: '🇺🇸 Filadelfia' },
+          { href: '/sedes/houston',          label: '🇺🇸 Houston' },
+          { href: '/sedes/vancouver',        label: '🇨🇦 Vancouver' },
+          { href: '/sedes/toronto',          label: '🇨🇦 Toronto' },
+        ]
+          .filter(s => s.href !== `/sedes/${slug}`)
+          .map(s => (
+            <a
+              href={s.href}
+              class="bg-white border border-gray-200 hover:border-gold hover:text-gold text-gray-700 text-sm font-medium px-5 py-2.5 rounded-full transition-all shadow-sm"
+            >
+              {s.label}
+            </a>
+          ))
+        }
+        <a
+          href="/sedes"
+          class="bg-navy-900 text-white text-sm font-bold px-5 py-2.5 rounded-full hover:bg-navy-800 transition-colors shadow-sm"
+        >
+          Ver las 16 sedes →
+        </a>
+      </div>
+    </div>
+  </section>
+
+</Layout>

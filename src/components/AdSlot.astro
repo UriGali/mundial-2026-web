@@ -1,0 +1,31 @@
+---
+interface Props {
+  slot: string;
+  format?: 'auto' | 'rectangle' | 'horizontal' | 'vertical';
+  label?: string;
+  class?: string;
+}
+
+const {
+  slot,
+  format = 'auto',
+  label = 'Publicidad',
+  class: className = '',
+} = Astro.props;
+
+const PUB_ID = 'ca-pub-XXXXXXXXXXXXXXXXX'; // TODO: reemplazar con tu Publisher ID real
+---
+
+<div class={`ad-wrapper my-8 text-center overflow-hidden ${className}`} aria-label={label} role="complementary">
+  <p class="text-[10px] uppercase tracking-widest text-gray-400 mb-1">{label}</p>
+  <ins
+    class="adsbygoogle block"
+    style="display:block"
+    data-ad-client={PUB_ID}
+    data-ad-slot={slot}
+    data-ad-format={format}
+    data-full-width-responsive="true"
+  ></ins>
+  <!-- El push debe ejecutarse inline, una vez por unidad de anuncio -->
+  <script is:inline>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>

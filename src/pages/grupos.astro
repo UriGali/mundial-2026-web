@@ -1,0 +1,433 @@
+---
+import Layout from '../layouts/Layout.astro';
+import AdSlot from '../components/AdSlot.astro';
+
+const title       = 'Grupos Mundial 2026 — Tabla de Grupos FIFA Copa del Mundo';
+const description = 'Grupos del Mundial FIFA 2026: conoce los 12 grupos (A–L) con los 48 equipos clasificados. Tablas de posiciones, resultados y clasificados a Octavos de Final.';
+const keywords    = 'grupos mundial 2026, tabla grupos copa del mundo 2026, grupo A mundial 2026, clasificados octavos mundial 2026, fixture grupos mundial';
+const canonicalURL = 'https://mundial2026guia.com/grupos';
+
+const grupos = [
+  { id: 'A', sedes: 'Ciudad de México · Houston', equipos: ['TBD', 'TBD', 'TBD', 'TBD'] },
+  { id: 'B', sedes: 'Los Ángeles · San Francisco', equipos: ['TBD', 'TBD', 'TBD', 'TBD'] },
+  { id: 'C', sedes: 'Seattle · Vancouver',        equipos: ['TBD', 'TBD', 'TBD', 'TBD'] },
+  { id: 'D', sedes: 'Dallas · Kansas City',       equipos: ['TBD', 'TBD', 'TBD', 'TBD'] },
+  { id: 'E', sedes: 'Nueva York · Boston',        equipos: ['TBD', 'TBD', 'TBD', 'TBD'] },
+  { id: 'F', sedes: 'Miami · Atlanta',            equipos: ['TBD', 'TBD', 'TBD', 'TBD'] },
+  { id: 'G', sedes: 'Guadalajara · Monterrey',    equipos: ['TBD', 'TBD', 'TBD', 'TBD'] },
+  { id: 'H', sedes: 'Filadelfia · Toronto',       equipos: ['TBD', 'TBD', 'TBD', 'TBD'] },
+  { id: 'I', sedes: 'Houston · Dallas',           equipos: ['TBD', 'TBD', 'TBD', 'TBD'] },
+  { id: 'J', sedes: 'Los Ángeles · Seattle',      equipos: ['TBD', 'TBD', 'TBD', 'TBD'] },
+  { id: 'K', sedes: 'Atlanta · Miami',            equipos: ['TBD', 'TBD', 'TBD', 'TBD'] },
+  { id: 'L', sedes: 'Boston · Nueva York',        equipos: ['TBD', 'TBD', 'TBD', 'TBD'] },
+];
+
+// Colores alternos para los grupos
+const groupColors = [
+  'border-blue-400 bg-blue-50',
+  'border-emerald-400 bg-emerald-50',
+  'border-purple-400 bg-purple-50',
+  'border-orange-400 bg-orange-50',
+  'border-red-400 bg-red-50',
+  'border-teal-400 bg-teal-50',
+  'border-indigo-400 bg-indigo-50',
+  'border-yellow-400 bg-yellow-50',
+  'border-pink-400 bg-pink-50',
+  'border-cyan-400 bg-cyan-50',
+  'border-lime-400 bg-lime-50',
+  'border-amber-400 bg-amber-50',
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'SportsEvent',
+      name: 'Copa Mundial de Fútbol FIFA 2026 — Fase de Grupos',
+      startDate: '2026-06-11',
+      endDate: '2026-07-03',
+      location: {
+        '@type': 'Place',
+        name: 'Estados Unidos, México y Canadá',
+      },
+      organizer: {
+        '@type': 'Organization',
+        name: 'FIFA',
+        url: 'https://www.fifa.com',
+      },
+      description:
+        'Fase de grupos del Mundial FIFA 2026: 48 selecciones divididas en 12 grupos de 4 equipos. Los 2 primeros de cada grupo más los 8 mejores terceros clasifican a Octavos de Final.',
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://mundial2026guia.com/' },
+        { '@type': 'ListItem', position: 2, name: 'Grupos', item: canonicalURL },
+      ],
+    },
+    {
+      '@type': 'FAQPage',
+      mainEntity: [
+        {
+          '@type': 'Question',
+          name: '¿Cuántos grupos hay en el Mundial 2026?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'El Mundial 2026 tiene 12 grupos (del A al L) con 4 equipos cada uno, para un total de 48 selecciones participantes.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: '¿Cuántos equipos clasifican de cada grupo al Mundial 2026?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Los 2 primeros clasificados de cada grupo pasan directamente a Octavos de Final. Además, los 8 mejores terceros clasificados de todos los grupos también acceden a la siguiente ronda.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: '¿Cuándo es el sorteo de grupos del Mundial 2026?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'El sorteo del Mundial 2026 tendrá lugar en Miami, Florida, en enero de 2026. Una vez realizado el sorteo, esta página se actualizará con los equipos de cada grupo.',
+          },
+        },
+      ],
+    },
+  ],
+};
+---
+
+<Layout {title} {description} {keywords} {canonicalURL} {jsonLd}>
+
+  <!-- ===================================================
+       HERO
+  ==================================================== -->
+  <section
+    class="bg-navy-900 text-white py-20 px-4 text-center relative overflow-hidden"
+    aria-labelledby="grupos-heading"
+  >
+    <div class="absolute inset-0 opacity-5 pointer-events-none"
+      style="background-image:radial-gradient(circle,#d4af37 1px,transparent 1px);background-size:36px 36px;"
+      aria-hidden="true"></div>
+
+    <div class="relative z-10 max-w-3xl mx-auto">
+      <div class="inline-flex items-center gap-2 bg-gold/10 border border-gold/30 text-gold px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest mb-6">
+        <span class="w-2 h-2 bg-gold rounded-full animate-pulse" aria-hidden="true"></span>
+        Sorteo pendiente — Miami, enero 2026
+      </div>
+
+      <h1 id="grupos-heading" class="font-black text-4xl sm:text-6xl leading-none mb-4">
+        GRUPOS<br/>
+        <span class="text-gold">MUNDIAL 2026</span>
+      </h1>
+
+      <p class="text-gray-300 text-lg sm:text-xl mb-8 max-w-2xl mx-auto leading-relaxed">
+        12 grupos · 48 selecciones · 3 países anfitriones. El sorteo determina quién juega contra quién.
+      </p>
+
+      <!-- Stats bar -->
+      <div class="flex flex-wrap justify-center gap-4">
+        {[
+          { num: '12', label: 'Grupos' },
+          { num: '48', label: 'Selecciones' },
+          { num: '4', label: 'Equipos por grupo' },
+          { num: '32', label: 'Clasifican a Octavos' },
+        ].map(({ num, label }) => (
+          <div class="flex flex-col items-center bg-white/10 border border-white/20 rounded-xl px-4 py-3 min-w-[80px]">
+            <span class="font-black text-2xl text-gold">{num}</span>
+            <span class="text-xs text-gray-400 mt-0.5">{label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================
+       BANNER INFORMATIVO
+  ==================================================== -->
+  <section class="bg-amber-50 border-y border-amber-200 py-5 px-4" aria-label="Estado del sorteo">
+    <div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
+      <span class="text-3xl shrink-0" aria-hidden="true">🎲</span>
+      <div>
+        <p class="font-bold text-amber-900 text-sm">El sorteo de grupos aún no se ha realizado</p>
+        <p class="text-amber-800 text-xs mt-0.5 leading-relaxed">
+          Las posiciones de cada equipo en los grupos se determinarán en el sorteo oficial de Miami. Esta página muestra la estructura de los grupos y se actualizará en cuanto FIFA anuncie los emparejamientos.
+          Las sedes asignadas a cada grupo son orientativas hasta la confirmación oficial.
+        </p>
+      </div>
+      <a
+        href="#como-funciona"
+        class="shrink-0 bg-amber-200 hover:bg-amber-300 text-amber-900 font-bold text-xs px-4 py-2 rounded-full transition-colors"
+      >
+        Cómo funciona →
+      </a>
+    </div>
+  </section>
+
+  <!-- AdSlot superior -->
+  <AdSlot slot="9900112233" format="horizontal" label="Publicidad" />
+
+  <!-- ===================================================
+       CÓMO FUNCIONA LA FASE DE GRUPOS
+  ==================================================== -->
+  <section id="como-funciona" class="py-14 px-4 sm:px-6 lg:px-8 bg-white" aria-labelledby="como-heading">
+    <div class="max-w-4xl mx-auto">
+      <div class="flex items-center gap-3 mb-8">
+        <div class="w-1 h-8 bg-gold rounded-full" aria-hidden="true"></div>
+        <h2 id="como-heading" class="font-black text-2xl sm:text-3xl text-navy-900">
+          Cómo funciona la Fase de Grupos
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+        {[
+          {
+            icono: '📋',
+            titulo: 'Formato',
+            texto: '48 selecciones divididas en 12 grupos de 4 equipos. Cada selección juega contra los otros 3 equipos de su grupo: 3 partidos en total por equipo.',
+          },
+          {
+            icono: '🏆',
+            titulo: 'Clasificación',
+            texto: 'Los 2 primeros de cada grupo (24 selecciones) se clasifican directamente. Los 8 mejores terceros de los 12 grupos también pasan, completando los 32 clasificados.',
+          },
+          {
+            icono: '🎯',
+            titulo: 'Criterios de desempate',
+            texto: 'En caso de igualdad de puntos: diferencia de goles, goles a favor, resultados directos entre equipos empatados, y si persiste el empate, sorteo.',
+          },
+        ].map(({ icono, titulo, texto }) => (
+          <div class="bg-gray-50 rounded-2xl p-6">
+            <span class="text-3xl mb-3 block" aria-hidden="true">{icono}</span>
+            <h3 class="font-bold text-navy-900 text-base mb-2">{titulo}</h3>
+            <p class="text-gray-600 text-sm leading-relaxed">{texto}</p>
+          </div>
+        ))}
+      </div>
+
+      <!-- Tabla de puntuación -->
+      <div class="bg-navy-900 text-white rounded-2xl p-6">
+        <h3 class="font-bold text-gold text-sm uppercase tracking-widest mb-4">Sistema de puntuación</h3>
+        <div class="grid grid-cols-3 gap-4 text-center">
+          {[
+            { resultado: 'Victoria', pts: '3', color: 'text-green-400' },
+            { resultado: 'Empate',   pts: '1', color: 'text-gold' },
+            { resultado: 'Derrota',  pts: '0', color: 'text-red-400' },
+          ].map(({ resultado, pts, color }) => (
+            <div class="bg-white/10 rounded-xl py-4">
+              <p class={`font-black text-3xl ${color}`}>{pts}</p>
+              <p class="text-gray-300 text-xs mt-1">{resultado}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================
+       TABLAS DE LOS 12 GRUPOS
+  ==================================================== -->
+  <section class="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50" aria-labelledby="grupos-tables-heading">
+    <div class="max-w-7xl mx-auto">
+
+      <div class="text-center mb-12">
+        <h2 id="grupos-tables-heading" class="font-black text-3xl sm:text-4xl text-navy-900 mb-3">
+          Los 12 Grupos
+        </h2>
+        <p class="text-gray-500 text-base max-w-xl mx-auto">
+          Las tablas se completarán con los equipos y resultados tras el sorteo oficial y el inicio del torneo.
+        </p>
+        <div class="w-16 h-1 bg-gold mx-auto mt-4 rounded-full" aria-hidden="true"></div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {grupos.map(({ id, sedes, equipos }, i) => (
+          <article
+            class={`rounded-2xl border-2 overflow-hidden shadow-sm hover:shadow-md transition-shadow ${groupColors[i]}`}
+            aria-labelledby={`grupo-${id}-heading`}
+          >
+            <!-- Header del grupo -->
+            <div class="bg-navy-900 text-white px-5 py-4 flex items-center justify-between">
+              <div>
+                <h3 id={`grupo-${id}-heading`} class="font-black text-2xl leading-none">
+                  GRUPO <span class="text-gold">{id}</span>
+                </h3>
+                <p class="text-gray-400 text-xs mt-1">{sedes}</p>
+              </div>
+              <div class="w-10 h-10 bg-gold/20 border border-gold/40 rounded-full flex items-center justify-center">
+                <span class="font-black text-gold text-lg">{id}</span>
+              </div>
+            </div>
+
+            <!-- Tabla de posiciones -->
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm" aria-label={`Tabla del Grupo ${id}`}>
+                <caption class="sr-only">Tabla de posiciones del Grupo {id} del Mundial 2026</caption>
+                <thead>
+                  <tr class="border-b border-current/20 text-xs uppercase tracking-wide">
+                    <th scope="col" class="text-left px-3 py-2 text-gray-500 font-semibold">Equipo</th>
+                    <th scope="col" class="px-2 py-2 text-center text-gray-500 font-semibold" title="Partidos jugados">PJ</th>
+                    <th scope="col" class="px-2 py-2 text-center text-gray-500 font-semibold" title="Ganados">G</th>
+                    <th scope="col" class="px-2 py-2 text-center text-gray-500 font-semibold" title="Empatados">E</th>
+                    <th scope="col" class="px-2 py-2 text-center text-gray-500 font-semibold" title="Perdidos">P</th>
+                    <th scope="col" class="px-2 py-2 text-center text-gray-500 font-semibold" title="Diferencia de goles">DG</th>
+                    <th scope="col" class="px-3 py-2 text-center font-black text-navy-900" title="Puntos">Pts</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {equipos.map((equipo, pos) => (
+                    <tr
+                      class={`border-b border-current/10 ${pos < 2 ? 'bg-white/60' : ''}`}
+                    >
+                      <td class="px-3 py-3 flex items-center gap-2">
+                        <span class={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${pos < 2 ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-600'}`} aria-hidden="true">
+                          {pos + 1}
+                        </span>
+                        <span class={`font-medium ${equipo === 'TBD' ? 'text-gray-400 italic text-xs' : 'text-navy-900'}`}>
+                          {equipo === 'TBD' ? 'Por definir' : equipo}
+                        </span>
+                      </td>
+                      <td class="px-2 py-3 text-center text-gray-400 text-xs">—</td>
+                      <td class="px-2 py-3 text-center text-gray-400 text-xs">—</td>
+                      <td class="px-2 py-3 text-center text-gray-400 text-xs">—</td>
+                      <td class="px-2 py-3 text-center text-gray-400 text-xs">—</td>
+                      <td class="px-2 py-3 text-center text-gray-400 text-xs">—</td>
+                      <td class="px-3 py-3 text-center font-black text-navy-900">—</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Footer con indicador de clasificados -->
+            <div class="px-4 py-3 flex items-center gap-2 text-xs text-gray-500">
+              <span class="w-3 h-3 bg-green-600 rounded-full shrink-0" aria-hidden="true"></span>
+              <span>Clasifican a Octavos de Final (posiciones 1.ª y 2.ª)</span>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- AdSlot entre secciones -->
+  <AdSlot slot="1133557799" format="rectangle" label="Publicidad" />
+
+  <!-- ===================================================
+       ESTRUCTURA DE LA FASE ELIMINATORIA
+  ==================================================== -->
+  <section class="py-16 px-4 sm:px-6 lg:px-8 bg-white" aria-labelledby="elim-heading">
+    <div class="max-w-4xl mx-auto">
+      <div class="flex items-center gap-3 mb-8">
+        <div class="w-1 h-8 bg-gold rounded-full" aria-hidden="true"></div>
+        <h2 id="elim-heading" class="font-black text-2xl sm:text-3xl text-navy-900">
+          Del Grupo a la Final
+        </h2>
+      </div>
+
+      <!-- Diagrama fases -->
+      <div class="overflow-x-auto pb-2">
+        <div class="flex gap-4 min-w-[640px]">
+          {[
+            { fase: 'Fase de Grupos', detalle: '12 grupos × 4 equipos', equipos: '48', icono: '🔵', fechas: '11 jun – 3 jul' },
+            { fase: 'Octavos de Final', detalle: '24 ganadores + 8 mejores 3.ºs', equipos: '32', icono: '⚡', fechas: '4 – 11 jul' },
+            { fase: 'Cuartos de Final', detalle: 'Ganadores de Octavos', equipos: '16', icono: '🔥', fechas: '12 – 15 jul' },
+            { fase: 'Semifinales', detalle: 'Ganadores de Cuartos', equipos: '8→4', icono: '⭐', fechas: '16 – 17 jul' },
+            { fase: 'Gran Final', detalle: 'MetLife Stadium, NJ', equipos: '2', icono: '🏆', fechas: '19 jul 2026' },
+          ].map(({ fase, detalle, equipos, icono, fechas }) => (
+            <div class="flex-1 bg-gray-50 rounded-2xl p-4 text-center border-2 border-gray-200">
+              <span class="text-2xl block mb-2" aria-hidden="true">{icono}</span>
+              <p class="font-black text-navy-900 text-sm leading-tight mb-1">{fase}</p>
+              <p class="text-xs text-gray-500 leading-relaxed mb-2">{detalle}</p>
+              <p class="font-black text-gold text-lg">{equipos}</p>
+              <p class="text-xs text-gray-400 mt-1">{fechas}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================
+       FAQ
+  ==================================================== -->
+  <section class="py-14 px-4 sm:px-6 lg:px-8 bg-gray-50" aria-labelledby="faq-grupos-heading">
+    <div class="max-w-3xl mx-auto">
+      <h2 id="faq-grupos-heading" class="font-black text-2xl text-navy-900 mb-8 text-center">
+        Preguntas frecuentes sobre los grupos
+      </h2>
+
+      <div class="space-y-4">
+        {[
+          {
+            q: '¿Cuántos grupos hay en el Mundial 2026?',
+            a: 'El Mundial 2026 tiene 12 grupos (del Grupo A al Grupo L), con 4 equipos cada uno. Esto supone 48 selecciones en total, 16 más que en la edición de Qatar 2022.',
+          },
+          {
+            q: '¿Cuántos equipos clasifican de cada grupo?',
+            a: 'Los 2 primeros clasificados de cada uno de los 12 grupos se clasifican directamente a Octavos de Final (24 equipos). Además, los 8 mejores terceros clasificados de todos los grupos también acceden a la fase eliminatoria, completando los 32 equipos de Octavos.',
+          },
+          {
+            q: '¿Cuándo es el sorteo de grupos del Mundial 2026?',
+            a: 'El sorteo oficial de grupos del Mundial 2026 está programado para enero de 2026 en Miami, Florida. Esta página se actualizará en tiempo real con los emparejamientos tan pronto como FIFA los confirme.',
+          },
+          {
+            q: '¿Cuántos partidos se juegan en la Fase de Grupos?',
+            a: 'En la Fase de Grupos se juegan 72 partidos en total: cada uno de los 12 grupos disputa 6 encuentros (cada equipo juega contra los otros 3 de su grupo). Los partidos se celebran del 11 de junio al 3 de julio de 2026.',
+          },
+          {
+            q: '¿Qué pasa si dos equipos terminan empatados en puntos?',
+            a: 'En caso de empate en puntos se aplican los criterios de desempate en este orden: 1) diferencia de goles en el grupo, 2) goles a favor, 3) resultado del partido directo entre los equipos empatados, 4) goles marcados en los partidos entre los equipos empatados, 5) fair play (tarjetas), 6) sorteo.',
+          },
+          {
+            q: '¿Cómo se eligen los 8 mejores terceros que clasifican?',
+            a: 'Los 8 mejores terceros clasificados de los 12 grupos se seleccionan por puntos, diferencia de goles, goles a favor y fair play, en ese orden de preferencia. Así se garantiza que los mejores equipos que terminaron terceros tengan una segunda oportunidad.',
+          },
+        ].map(({ q, a }) => (
+          <details class="group bg-white border border-gray-200 rounded-2xl overflow-hidden">
+            <summary class="flex items-center justify-between gap-4 p-5 cursor-pointer list-none select-none hover:bg-gray-50 transition-colors">
+              <span class="font-bold text-navy-900 text-sm sm:text-base">{q}</span>
+              <svg class="w-5 h-5 text-gold shrink-0 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </summary>
+            <div class="px-5 pb-5 pt-2 text-sm text-gray-600 leading-relaxed border-t border-gray-100">
+              {a}
+            </div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- AdSlot final -->
+  <AdSlot slot="2244668800" format="auto" label="Publicidad" />
+
+  <!-- ===================================================
+       CTA — CONTENIDO RELACIONADO
+  ==================================================== -->
+  <section class="py-14 px-4 sm:px-6 lg:px-8 bg-navy-900 text-white" aria-labelledby="cta-grupos-heading">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 id="cta-grupos-heading" class="font-black text-2xl sm:text-3xl mb-8">
+        Explora más del <span class="text-gold">Mundial 2026</span>
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {[
+          { href: '/sedes/nueva-york',             label: '🏟️ Gran Final — MetLife' },
+          { href: '/horarios/mexico/ciudad-de-mexico', label: '⏰ Horarios en México' },
+          { href: '/horarios/espana/madrid',        label: '🕐 Horarios en España' },
+          { href: '/entradas',                     label: '🎫 Guía de Entradas' },
+        ].map(({ href, label }) => (
+          <a
+            href={href}
+            class="bg-white/10 border border-white/20 hover:bg-white/20 hover:border-gold text-white text-sm font-medium px-4 py-3 rounded-xl transition-all"
+          >
+            {label}
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+</Layout>
