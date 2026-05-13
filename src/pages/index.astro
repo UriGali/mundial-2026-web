@@ -748,6 +748,135 @@ const categorias = [
   </section>
 
   <!-- ===================================================
+       NOTICIAS DESTACADAS
+  ==================================================== -->
+  <section
+    id="noticias"
+    class="py-20 px-4 sm:px-6 lg:px-8"
+    style="background: linear-gradient(180deg, #020617 0%, #0a0f1e 100%);"
+    aria-labelledby="noticias-heading"
+  >
+    <div class="max-w-7xl mx-auto">
+
+      <!-- Encabezado -->
+      <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
+        <div>
+          <p class="font-oswald text-xs uppercase tracking-[0.2em] mb-2" style="color: #d4af37;">
+            Últimas novedades
+          </p>
+          <h2 id="noticias-heading" class="font-oswald font-bold text-4xl sm:text-5xl text-white leading-tight">
+            Noticias del<br/>
+            <span
+              class="bg-clip-text text-transparent"
+              style="background-image: linear-gradient(105deg,#b8922a,#d4af37,#f5d97a,#d4af37,#b8922a);"
+            >Mundial 2026</span>
+          </h2>
+        </div>
+        <a
+          href="/noticias"
+          class="shrink-0 font-oswald font-semibold text-sm uppercase tracking-wider px-6 py-2.5 rounded-full border transition-all hover:scale-105"
+          style="border-color: rgba(212,175,55,0.4); color: #d4af37; background: rgba(212,175,55,0.05);"
+        >
+          Ver todas →
+        </a>
+      </div>
+
+      <!-- Grid de noticias -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        <!-- Artículo destacado (columna grande) -->
+        <a
+          href="/noticias/ultimos-avances-estadio-azteca"
+          class="group lg:col-span-2 rounded-2xl overflow-hidden border border-white/10 hover:border-gold/30 transition-all duration-300 hover:-translate-y-1 block"
+          style="background: #0f172a;"
+        >
+          <div class="relative h-52 sm:h-64 overflow-hidden">
+            <img
+              src="https://picsum.photos/seed/azteca-obras-2026/1200/630"
+              alt="Obras Estadio Azteca Mundial 2026"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              loading="lazy"
+            />
+            <div class="absolute inset-0" style="background: linear-gradient(to bottom, transparent 30%, rgba(15,23,42,0.95) 100%);"></div>
+            <span class="absolute top-3 left-3 text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-full text-white bg-emerald-500">
+              Sedes
+            </span>
+            <span
+              class="absolute top-3 right-3 text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-full text-slate-950"
+              style="background: linear-gradient(105deg,#b8922a,#d4af37,#f5d97a);"
+            >Destacado</span>
+          </div>
+          <div class="p-5 sm:p-6">
+            <h3 class="font-oswald font-bold text-xl sm:text-2xl text-white group-hover:text-gold transition-colors leading-snug mb-2">
+              Últimos avances en las obras del Estadio Azteca para el Mundial 2026
+            </h3>
+            <p class="text-slate-400 text-sm leading-relaxed line-clamp-2 mb-4">
+              El Estadio Azteca completa su renovación: iluminación LED de 2.400 lux, 650 nuevas plazas accesibles y Wi-Fi para 90.000 conexiones simultáneas.
+            </p>
+            <span class="text-xs text-slate-500">10 mayo 2026 · 4 min lectura</span>
+          </div>
+        </a>
+
+        <!-- Columna de 2 noticias pequeñas -->
+        <div class="flex flex-col gap-6">
+
+          <a
+            href="/noticias/fifa-confirma-fechas-sorteo-oficial"
+            class="group rounded-2xl overflow-hidden border border-white/10 hover:border-gold/30 transition-all duration-300 hover:-translate-y-0.5 block"
+            style="background: #0f172a;"
+          >
+            <div class="relative h-36 overflow-hidden">
+              <img
+                src="https://picsum.photos/seed/fifa-sorteo-2026/1200/630"
+                alt="Sorteo Mundial 2026"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                loading="lazy"
+              />
+              <div class="absolute inset-0" style="background: linear-gradient(to bottom, transparent 30%, rgba(15,23,42,0.9) 100%);"></div>
+              <span class="absolute top-3 left-3 text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-full text-white bg-blue-500">
+                Organización
+              </span>
+            </div>
+            <div class="p-4">
+              <h3 class="font-oswald font-bold text-base text-white group-hover:text-gold transition-colors leading-snug mb-1.5">
+                FIFA confirma fechas y formato del sorteo oficial del Mundial 2026
+              </h3>
+              <span class="text-xs text-slate-500">8 mayo 2026 · 3 min</span>
+            </div>
+          </a>
+
+          <a
+            href="/noticias/como-evitar-estafas-alojamiento-2026"
+            class="group rounded-2xl overflow-hidden border border-white/10 hover:border-gold/30 transition-all duration-300 hover:-translate-y-0.5 block"
+            style="background: #0f172a;"
+          >
+            <div class="relative h-36 overflow-hidden">
+              <img
+                src="https://picsum.photos/seed/alojamiento-mundial-2026/1200/630"
+                alt="Alojamiento seguro Mundial 2026"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                loading="lazy"
+              />
+              <div class="absolute inset-0" style="background: linear-gradient(to bottom, transparent 30%, rgba(15,23,42,0.9) 100%);"></div>
+              <span class="absolute top-3 left-3 text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-full text-white bg-orange-500">
+                Guía de Viaje
+              </span>
+            </div>
+            <div class="p-4">
+              <h3 class="font-oswald font-bold text-base text-white group-hover:text-gold transition-colors leading-snug mb-1.5">
+                Cómo evitar estafas al buscar alojamiento para el Mundial 2026
+              </h3>
+              <span class="text-xs text-slate-500">5 mayo 2026 · 5 min</span>
+            </div>
+          </a>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===================================================
        CTA FINAL — Inmersivo
   ==================================================== -->
   <section

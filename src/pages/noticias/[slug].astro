@@ -1,0 +1,495 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import AdSlot from '../../components/AdSlot.astro';
+
+interface Section {
+  type: 'h2' | 'text' | 'list' | 'tip' | 'warning';
+  heading?: string;
+  text?: string;
+  items?: string[];
+}
+
+interface Article {
+  slug: string;
+  title: string;
+  description: string;
+  keywords: string;
+  date: string;
+  dateLabel: string;
+  category: string;
+  categoryColor: string;
+  img: string;
+  readTime: string;
+  sections: Section[];
+}
+
+const articles: Article[] = [
+  {
+    slug: 'ultimos-avances-estadio-azteca',
+    title: 'Últimos avances en las obras del Estadio Azteca para el Mundial 2026',
+    description: 'El Estadio Azteca completa su renovación para el Mundial FIFA 2026. Conoce los avances en iluminación LED, zona de fans y mejoras en accesibilidad.',
+    keywords: 'estadio azteca mundial 2026, obras azteca 2026, renovacion azteca, azteca capacidad 2026',
+    date: '2026-05-10',
+    dateLabel: '10 mayo 2026',
+    category: 'Sedes',
+    categoryColor: 'bg-emerald-500',
+    img: 'https://picsum.photos/seed/azteca-obras-2026/1200/630',
+    readTime: '4 min',
+    sections: [
+      {
+        type: 'text',
+        text: 'El icónico Estadio Azteca de Ciudad de México, con capacidad para 87.523 espectadores, se encuentra en la recta final de su proceso de renovación para albergar los partidos del Mundial FIFA 2026. Las obras, que comenzaron en 2024, están a punto de completarse con importantes mejoras en infraestructura, tecnología y experiencia del aficionado.',
+      },
+      {
+        type: 'h2',
+        heading: 'Nueva iluminación LED de última generación',
+        text: 'Uno de los cambios más visibles es el reemplazo completo del sistema de iluminación. El Azteca estrena un sistema LED de alta potencia con 800 proyectores distribuidos por todo el estadio, capaz de generar una iluminación uniforme de 2.400 lux. Esto no solo mejora la experiencia televisiva en Ultra HD, sino que reduce el consumo energético un 40% respecto al sistema anterior.',
+      },
+      {
+        type: 'h2',
+        heading: 'Mejoras en accesibilidad y zonas de fans',
+        text: 'FIFA exige estándares de accesibilidad universales en todas las sedes. El Azteca ha ampliado los accesos para personas con movilidad reducida, sumando 650 nuevas plazas adaptadas distribuidas en todos los niveles del estadio. Además, se han remodelado los pasillos de acceso para evitar cuellos de botella durante la entrada y salida masiva.',
+      },
+      {
+        type: 'list',
+        heading: 'Principales mejoras completadas',
+        items: [
+          'Sistema LED de 2.400 lux en todo el estadio',
+          '650 plazas nuevas para personas con discapacidad',
+          'Renovación completa de 320 puntos de venta de alimentos y bebidas',
+          'Wi-Fi de alta densidad en todas las gradas (capacidad para 90.000 conexiones simultáneas)',
+          'Pantallas 4K en los dos marcadores principales',
+          'Nuevos vestuarios y zonas de calentamiento según estándar FIFA Elite',
+          'Sistema de climatización evaporativa en zonas de acceso cubiertas',
+        ],
+      },
+      {
+        type: 'h2',
+        heading: 'Partidos que acogerá el Azteca en 2026',
+        text: 'Según el calendario oficial de FIFA, el Estadio Azteca albergará 5 partidos de Fase de Grupos y un partido de Cuartos de Final. El partido más esperado será el encuentro inaugural de México en el torneo, que se prevé que llene el estadio al 100% de su capacidad. Ciudad de México es la única sede que acoge partidos en los tres países del torneo con mayor expectación local.',
+      },
+      {
+        type: 'tip',
+        heading: '¿Cuándo visitar el Azteca?',
+        text: 'Si tienes entradas para el Azteca, llega con al menos 3 horas de antelación. El metro Línea 2 (estación Estadio Azteca) es la opción más cómoda. Se recomiendan las salidas A y B para las tribunas de preferencia.',
+      },
+      {
+        type: 'h2',
+        heading: 'Legado tras el Mundial',
+        text: 'Más allá de 2026, las mejoras realizadas en el Azteca tienen vocación permanente. El estadio seguirá siendo sede de la Liga MX y de la Selección Mexicana. Las obras representan una inversión de aproximadamente 120 millones de dólares, cofinanciada entre el Club América, propietario del recinto, y el Gobierno de la Ciudad de México.',
+      },
+    ],
+  },
+  {
+    slug: 'fifa-confirma-fechas-sorteo-oficial',
+    title: 'FIFA confirma las fechas y el formato del sorteo oficial del Mundial 2026',
+    description: 'FIFA ha anunciado los detalles del sorteo de grupos del Mundial 2026: fecha, sede y cómo se distribuirán las 48 selecciones en 12 grupos.',
+    keywords: 'sorteo mundial 2026, grupos mundial 2026 fecha, sorteo fifa 2026, draw world cup 2026',
+    date: '2026-05-08',
+    dateLabel: '8 mayo 2026',
+    category: 'Organización',
+    categoryColor: 'bg-blue-500',
+    img: 'https://picsum.photos/seed/fifa-sorteo-2026/1200/630',
+    readTime: '3 min',
+    sections: [
+      {
+        type: 'text',
+        text: 'FIFA ha anunciado los detalles completos del sorteo oficial de la Copa Mundial 2026, un evento que definirá los 12 grupos y determinará el camino de las 48 selecciones clasificadas hacia la Gloria en Nueva York. El sorteo se celebró en Miami, Estados Unidos, con la presencia del presidente de FIFA, Gianni Infantino, y representantes de las 48 asociaciones participantes.',
+      },
+      {
+        type: 'h2',
+        heading: 'El nuevo formato de 48 equipos explicado',
+        text: 'El Mundial 2026 estrena el formato ampliado con 48 selecciones, el mayor en la historia del torneo. Las 48 selecciones se dividen en 12 grupos de 4 equipos. Los dos primeros de cada grupo y los 8 mejores terceros clasificados avanzan a la Ronda de 32 (eliminatorias directas), una fase completamente nueva que reemplaza a los octavos de final tradicionales.',
+      },
+      {
+        type: 'list',
+        heading: 'Estructura del torneo',
+        items: [
+          '48 selecciones clasificadas',
+          '12 grupos de 4 equipos cada uno',
+          '72 partidos en Fase de Grupos (3 por grupo)',
+          'Los 2 primeros + 8 mejores terceros = 32 equipos en eliminatorias',
+          'Ronda de 32 → Cuartos de Final → Semis → Final (104 partidos en total)',
+          'Cada grupo se distribuye por zona geográfica para minimizar desplazamientos',
+        ],
+      },
+      {
+        type: 'h2',
+        heading: 'Bombos y criterios de distribución',
+        text: 'Las 48 selecciones se distribuyeron en bombos según el Ranking FIFA. El Bombo 1 incluye a los 12 equipos mejor clasificados en el momento del sorteo, encabezados por los grandes favoritos. Cada grupo tiene una selección por bombo, garantizando equilibrio competitivo. FIFA también aplica restricciones geográficas para evitar que selecciones de la misma confederación compartan grupo (con excepciones para UEFA dado su número de clasificados).',
+      },
+      {
+        type: 'tip',
+        heading: 'Sigue el fixture completo',
+        text: 'Consulta nuestro Calendario de Partidos para ver todas las fechas, sedes y horarios en tu zona horaria.',
+      },
+      {
+        type: 'h2',
+        heading: 'Claves para entender las posibilidades de tu selección',
+        text: 'Con 32 equipos avanzando a eliminatorias (frente a los 16 del formato anterior), las probabilidades de que cualquier selección llegue a octavos son históricamente altas. Sin embargo, el nuevo formato también significa que hay más partidos exigentes y menos margen para "guardar fuerzas". Los equipos tendrán que gestionar mejor sus plantillas durante la Fase de Grupos.',
+      },
+      {
+        type: 'warning',
+        heading: 'Ojo con los horarios de grupo',
+        text: 'En el nuevo formato, los dos últimos partidos de cada grupo no son simultáneos en todos los casos. Consulta el calendario oficial para asegurarte de los horarios exactos antes de comprar entradas.',
+      },
+    ],
+  },
+  {
+    slug: 'como-evitar-estafas-alojamiento-2026',
+    title: 'Cómo evitar estafas al buscar alojamiento para el Mundial 2026',
+    description: 'Guía práctica para encontrar alojamiento seguro durante el Mundial 2026. Aprende a identificar estafas, plataformas fiables y consejos clave para reservar sin riesgos.',
+    keywords: 'alojamiento mundial 2026, estafas alquiler mundial, hoteles mundial 2026, airbnb mundial 2026 seguro',
+    date: '2026-05-05',
+    dateLabel: '5 mayo 2026',
+    category: 'Guía de Viaje',
+    categoryColor: 'bg-orange-500',
+    img: 'https://picsum.photos/seed/alojamiento-mundial-2026/1200/630',
+    readTime: '5 min',
+    sections: [
+      {
+        type: 'text',
+        text: 'Con millones de aficionados de todo el mundo convergiendo en 16 ciudades de tres países, el mercado de alojamiento para el Mundial 2026 es un terreno fértil para estafadores. Según Europol y la FIFA, en cada edición del Mundial aumentan exponencialmente los fraudes relacionados con alquileres turísticos falsos. Esta guía te ayudará a reservar con total seguridad.',
+      },
+      {
+        type: 'h2',
+        heading: 'Señales de alarma que debes identificar',
+        text: 'Los estafadores suelen operar de la misma manera: precios anormalmente bajos, propietarios que no pueden hacer videollamadas para mostrar el alojamiento, solicitud de pago por transferencia bancaria directa o criptomonedas, y listados con fotos que aparecen en múltiples anuncios con nombres distintos.',
+      },
+      {
+        type: 'list',
+        heading: 'Red flags: nunca reserves si ves esto',
+        items: [
+          'El precio es un 40% o más barato que el promedio de la zona',
+          'El anfitrión pide transferencia bancaria, Bizum o pago en cripto fuera de la plataforma',
+          'El perfil del anfitrión fue creado hace menos de 6 meses',
+          'No hay reseñas verificadas de huéspedes anteriores',
+          'Las fotos del alojamiento aparecen en otras webs con distinto propietario (búscalas en Google Imágenes)',
+          'El anfitrión urge a confirmar "antes de que alguien más se quede con la reserva"',
+          'El contrato te llega en PDF editable, no en formato oficial de la plataforma',
+        ],
+      },
+      {
+        type: 'h2',
+        heading: 'Plataformas seguras para reservar',
+        text: 'Utiliza únicamente plataformas con sistema de pago integrado que actúa como intermediario: Booking.com, Airbnb, Vrbo/HomeAway y Expedia. Estas plataformas retienen el pago hasta que confirmas tu llegada y tienen sistemas de resolución de disputas. Hotels.com y Hoteles.com también son opciones seguras para establecimientos hoteleros regulados.',
+      },
+      {
+        type: 'tip',
+        heading: 'Consejo: verifica en Google Maps',
+        text: 'Antes de confirmar cualquier reserva, busca la dirección exacta en Google Maps. Comprueba que el edificio existe, que corresponde con las fotos del anuncio y que la ubicación es la que te han indicado respecto al estadio.',
+      },
+      {
+        type: 'h2',
+        heading: 'Precios de referencia por ciudad sede',
+        text: 'Para orientarte, los precios medios de alojamiento durante los días de partido en las principales sedes oscilan entre $180 y $400 USD por noche en apartamento, y entre $250 y $700 USD en hotel de 3-4 estrellas. Ciudad de México, Toronto y Vancouver son generalmente las opciones más económicas. Miami, Nueva York y Los Ángeles las más caras. Cualquier oferta por debajo del 50% de estos rangos merece investigación adicional.',
+      },
+      {
+        type: 'h2',
+        heading: 'Qué hacer si ya has caído en una estafa',
+        text: 'Si ya has realizado un pago y sospechas que es una estafa: contacta inmediatamente con tu banco para intentar revertir la transferencia, denuncia ante la policía local (guarda todos los mensajes y capturas de pantalla), reporta el anuncio a la plataforma, y si pagaste con tarjeta de crédito activa el proceso de contracargo. En EE.UU. puedes reportar a la FTC en reportfraud.ftc.gov.',
+      },
+      {
+        type: 'warning',
+        heading: 'Importante',
+        text: 'FIFA no ofrece ningún servicio oficial de alojamiento. Cualquier web que afirme ser el "alojamiento oficial FIFA" para el Mundial 2026 es una estafa. El único portal oficial de FIFA es FIFA.com.',
+      },
+    ],
+  },
+];
+
+export function getStaticPaths() {
+  const articlesData: Article[] = [
+    {
+      slug: 'ultimos-avances-estadio-azteca',
+      title: 'Últimos avances en las obras del Estadio Azteca para el Mundial 2026',
+      description: 'El Estadio Azteca completa su renovación para el Mundial FIFA 2026. Conoce los avances en iluminación LED, zona de fans y mejoras en accesibilidad.',
+      keywords: 'estadio azteca mundial 2026, obras azteca 2026, renovacion azteca, azteca capacidad 2026',
+      date: '2026-05-10',
+      dateLabel: '10 mayo 2026',
+      category: 'Sedes',
+      categoryColor: 'bg-emerald-500',
+      img: 'https://picsum.photos/seed/azteca-obras-2026/1200/630',
+      readTime: '4 min',
+      sections: [
+        { type: 'text', text: 'El icónico Estadio Azteca de Ciudad de México, con capacidad para 87.523 espectadores, se encuentra en la recta final de su proceso de renovación para albergar los partidos del Mundial FIFA 2026. Las obras, que comenzaron en 2024, están a punto de completarse con importantes mejoras en infraestructura, tecnología y experiencia del aficionado.' },
+        { type: 'h2', heading: 'Nueva iluminación LED de última generación', text: 'Uno de los cambios más visibles es el reemplazo completo del sistema de iluminación. El Azteca estrena un sistema LED de alta potencia con 800 proyectores distribuidos por todo el estadio, capaz de generar una iluminación uniforme de 2.400 lux. Esto no solo mejora la experiencia televisiva en Ultra HD, sino que reduce el consumo energético un 40% respecto al sistema anterior.' },
+        { type: 'h2', heading: 'Mejoras en accesibilidad y zonas de fans', text: 'FIFA exige estándares de accesibilidad universales en todas las sedes. El Azteca ha ampliado los accesos para personas con movilidad reducida, sumando 650 nuevas plazas adaptadas distribuidas en todos los niveles del estadio. Además, se han remodelado los pasillos de acceso para evitar cuellos de botella durante la entrada y salida masiva.' },
+        { type: 'list', heading: 'Principales mejoras completadas', items: ['Sistema LED de 2.400 lux en todo el estadio', '650 plazas nuevas para personas con discapacidad', 'Renovación completa de 320 puntos de venta de alimentos y bebidas', 'Wi-Fi de alta densidad en todas las gradas (capacidad para 90.000 conexiones simultáneas)', 'Pantallas 4K en los dos marcadores principales', 'Nuevos vestuarios y zonas de calentamiento según estándar FIFA Elite', 'Sistema de climatización evaporativa en zonas de acceso cubiertas'] },
+        { type: 'h2', heading: 'Partidos que acogerá el Azteca en 2026', text: 'Según el calendario oficial de FIFA, el Estadio Azteca albergará 5 partidos de Fase de Grupos y un partido de Cuartos de Final. El partido más esperado será el encuentro inaugural de México en el torneo, que se prevé que llene el estadio al 100% de su capacidad. Ciudad de México es la única sede que acoge partidos en los tres países del torneo con mayor expectación local.' },
+        { type: 'tip', heading: '¿Cuándo visitar el Azteca?', text: 'Si tienes entradas para el Azteca, llega con al menos 3 horas de antelación. El metro Línea 2 (estación Estadio Azteca) es la opción más cómoda. Se recomiendan las salidas A y B para las tribunas de preferencia.' },
+        { type: 'h2', heading: 'Legado tras el Mundial', text: 'Más allá de 2026, las mejoras realizadas en el Azteca tienen vocación permanente. El estadio seguirá siendo sede de la Liga MX y de la Selección Mexicana. Las obras representan una inversión de aproximadamente 120 millones de dólares, cofinanciada entre el Club América, propietario del recinto, y el Gobierno de la Ciudad de México.' },
+      ],
+    },
+    {
+      slug: 'fifa-confirma-fechas-sorteo-oficial',
+      title: 'FIFA confirma las fechas y el formato del sorteo oficial del Mundial 2026',
+      description: 'FIFA ha anunciado los detalles del sorteo de grupos del Mundial 2026: fecha, sede y cómo se distribuirán las 48 selecciones en 12 grupos.',
+      keywords: 'sorteo mundial 2026, grupos mundial 2026 fecha, sorteo fifa 2026, draw world cup 2026',
+      date: '2026-05-08',
+      dateLabel: '8 mayo 2026',
+      category: 'Organización',
+      categoryColor: 'bg-blue-500',
+      img: 'https://picsum.photos/seed/fifa-sorteo-2026/1200/630',
+      readTime: '3 min',
+      sections: [
+        { type: 'text', text: 'FIFA ha anunciado los detalles completos del sorteo oficial de la Copa Mundial 2026, un evento que definirá los 12 grupos y determinará el camino de las 48 selecciones clasificadas hacia la Gloria en Nueva York. El sorteo se celebró en Miami, Estados Unidos, con la presencia del presidente de FIFA, Gianni Infantino, y representantes de las 48 asociaciones participantes.' },
+        { type: 'h2', heading: 'El nuevo formato de 48 equipos explicado', text: 'El Mundial 2026 estrena el formato ampliado con 48 selecciones, el mayor en la historia del torneo. Las 48 selecciones se dividen en 12 grupos de 4 equipos. Los dos primeros de cada grupo y los 8 mejores terceros clasificados avanzan a la Ronda de 32 (eliminatorias directas), una fase completamente nueva que reemplaza a los octavos de final tradicionales.' },
+        { type: 'list', heading: 'Estructura del torneo', items: ['48 selecciones clasificadas', '12 grupos de 4 equipos cada uno', '72 partidos en Fase de Grupos (3 por grupo)', 'Los 2 primeros + 8 mejores terceros = 32 equipos en eliminatorias', 'Ronda de 32 → Cuartos de Final → Semis → Final (104 partidos en total)', 'Cada grupo se distribuye por zona geográfica para minimizar desplazamientos'] },
+        { type: 'h2', heading: 'Bombos y criterios de distribución', text: 'Las 48 selecciones se distribuyeron en bombos según el Ranking FIFA. El Bombo 1 incluye a los 12 equipos mejor clasificados en el momento del sorteo, encabezados por los grandes favoritos. Cada grupo tiene una selección por bombo, garantizando equilibrio competitivo. FIFA también aplica restricciones geográficas para evitar que selecciones de la misma confederación compartan grupo (con excepciones para UEFA dado su número de clasificados).' },
+        { type: 'tip', heading: 'Sigue el fixture completo', text: 'Consulta nuestro Calendario de Partidos para ver todas las fechas, sedes y horarios en tu zona horaria.' },
+        { type: 'h2', heading: 'Claves para entender las posibilidades de tu selección', text: 'Con 32 equipos avanzando a eliminatorias (frente a los 16 del formato anterior), las probabilidades de que cualquier selección llegue a octavos son históricamente altas. Sin embargo, el nuevo formato también significa que hay más partidos exigentes y menos margen para "guardar fuerzas". Los equipos tendrán que gestionar mejor sus plantillas durante la Fase de Grupos.' },
+        { type: 'warning', heading: 'Ojo con los horarios de grupo', text: 'En el nuevo formato, los dos últimos partidos de cada grupo no son simultáneos en todos los casos. Consulta el calendario oficial para asegurarte de los horarios exactos antes de comprar entradas.' },
+      ],
+    },
+    {
+      slug: 'como-evitar-estafas-alojamiento-2026',
+      title: 'Cómo evitar estafas al buscar alojamiento para el Mundial 2026',
+      description: 'Guía práctica para encontrar alojamiento seguro durante el Mundial 2026. Aprende a identificar estafas, plataformas fiables y consejos clave para reservar sin riesgos.',
+      keywords: 'alojamiento mundial 2026, estafas alquiler mundial, hoteles mundial 2026, airbnb mundial 2026 seguro',
+      date: '2026-05-05',
+      dateLabel: '5 mayo 2026',
+      category: 'Guía de Viaje',
+      categoryColor: 'bg-orange-500',
+      img: 'https://picsum.photos/seed/alojamiento-mundial-2026/1200/630',
+      readTime: '5 min',
+      sections: [
+        { type: 'text', text: 'Con millones de aficionados de todo el mundo convergiendo en 16 ciudades de tres países, el mercado de alojamiento para el Mundial 2026 es un terreno fértil para estafadores. Según Europol y la FIFA, en cada edición del Mundial aumentan exponencialmente los fraudes relacionados con alquileres turísticos falsos. Esta guía te ayudará a reservar con total seguridad.' },
+        { type: 'h2', heading: 'Señales de alarma que debes identificar', text: 'Los estafadores suelen operar de la misma manera: precios anormalmente bajos, propietarios que no pueden hacer videollamadas para mostrar el alojamiento, solicitud de pago por transferencia bancaria directa o criptomonedas, y listados con fotos que aparecen en múltiples anuncios con nombres distintos.' },
+        { type: 'list', heading: 'Red flags: nunca reserves si ves esto', items: ['El precio es un 40% o más barato que el promedio de la zona', 'El anfitrión pide transferencia bancaria, Bizum o pago en cripto fuera de la plataforma', 'El perfil del anfitrión fue creado hace menos de 6 meses', 'No hay reseñas verificadas de huéspedes anteriores', 'Las fotos del alojamiento aparecen en otras webs con distinto propietario (búscalas en Google Imágenes)', 'El anfitrión urge a confirmar "antes de que alguien más se quede con la reserva"', 'El contrato te llega en PDF editable, no en formato oficial de la plataforma'] },
+        { type: 'h2', heading: 'Plataformas seguras para reservar', text: 'Utiliza únicamente plataformas con sistema de pago integrado que actúa como intermediario: Booking.com, Airbnb, Vrbo/HomeAway y Expedia. Estas plataformas retienen el pago hasta que confirmas tu llegada y tienen sistemas de resolución de disputas. Hotels.com y Hoteles.com también son opciones seguras para establecimientos hoteleros regulados.' },
+        { type: 'tip', heading: 'Consejo: verifica en Google Maps', text: 'Antes de confirmar cualquier reserva, busca la dirección exacta en Google Maps. Comprueba que el edificio existe, que corresponde con las fotos del anuncio y que la ubicación es la que te han indicado respecto al estadio.' },
+        { type: 'h2', heading: 'Precios de referencia por ciudad sede', text: 'Para orientarte, los precios medios de alojamiento durante los días de partido en las principales sedes oscilan entre $180 y $400 USD por noche en apartamento, y entre $250 y $700 USD en hotel de 3-4 estrellas. Ciudad de México, Toronto y Vancouver son generalmente las opciones más económicas. Miami, Nueva York y Los Ángeles las más caras. Cualquier oferta por debajo del 50% de estos rangos merece investigación adicional.' },
+        { type: 'h2', heading: 'Qué hacer si ya has caído en una estafa', text: 'Si ya has realizado un pago y sospechas que es una estafa: contacta inmediatamente con tu banco para intentar revertir la transferencia, denuncia ante la policía local (guarda todos los mensajes y capturas de pantalla), reporta el anuncio a la plataforma, y si pagaste con tarjeta de crédito activa el proceso de contracargo. En EE.UU. puedes reportar a la FTC en reportfraud.ftc.gov.' },
+        { type: 'warning', heading: 'Importante', text: 'FIFA no ofrece ningún servicio oficial de alojamiento. Cualquier web que afirme ser el "alojamiento oficial FIFA" para el Mundial 2026 es una estafa. El único portal oficial de FIFA es FIFA.com.' },
+      ],
+    },
+  ];
+
+  return articlesData.map(a => ({ params: { slug: a.slug }, props: { article: a } }));
+}
+
+interface Props { article: Article; }
+const { article } = Astro.props;
+const { title, description, keywords, date, dateLabel, category, categoryColor, img, readTime, sections } = article;
+
+const canonicalURL = `https://mundial26horarios.com/noticias/${article.slug}`;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Inicio',   item: 'https://mundial26horarios.com/' },
+        { '@type': 'ListItem', position: 2, name: 'Noticias', item: 'https://mundial26horarios.com/noticias' },
+        { '@type': 'ListItem', position: 3, name: title,      item: canonicalURL },
+      ],
+    },
+    {
+      '@type': 'NewsArticle',
+      headline: title,
+      description,
+      datePublished: date,
+      dateModified: date,
+      url: canonicalURL,
+      image: img,
+      author: { '@type': 'Organization', name: 'Mundial 2026 Guía', url: 'https://mundial26horarios.com' },
+      publisher: { '@type': 'Organization', name: 'Mundial 2026 Guía', url: 'https://mundial26horarios.com' },
+      inLanguage: 'es',
+      about: { '@type': 'SportsEvent', name: 'Copa Mundial de Fútbol FIFA 2026' },
+    },
+  ],
+};
+
+// Los otros dos artículos (para sección "Sigue leyendo")
+const otherArticles = articles.filter(a => a.slug !== article.slug);
+---
+
+<Layout {title} {description} {keywords} canonicalURL={canonicalURL} jsonLd={jsonLd}>
+
+  <!-- Hero del artículo -->
+  <div class="relative h-64 sm:h-80 overflow-hidden" aria-hidden="true">
+    <img
+      src={img}
+      alt={title}
+      class="w-full h-full object-cover"
+      loading="eager"
+    />
+    <div class="absolute inset-0" style="background: linear-gradient(to bottom, rgba(2,6,23,0.3) 0%, rgba(2,6,23,0.85) 100%);"></div>
+  </div>
+
+  <!-- Contenido principal -->
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16 relative z-10 pb-20">
+
+    <!-- Card del artículo -->
+    <article
+      class="rounded-2xl overflow-hidden border border-white/10"
+      style="background: #0f172a;"
+      itemscope itemtype="https://schema.org/NewsArticle"
+    >
+
+      <!-- Cabecera -->
+      <header class="px-6 sm:px-10 pt-8 pb-6 border-b border-white/10">
+
+        <!-- Breadcrumb + meta -->
+        <div class="flex flex-wrap items-center gap-3 mb-5 text-xs">
+          <a href="/" class="text-slate-500 hover:text-gold transition-colors">Inicio</a>
+          <span class="text-slate-700" aria-hidden="true">/</span>
+          <a href="/noticias" class="text-slate-500 hover:text-gold transition-colors">Noticias</a>
+          <span class="text-slate-700" aria-hidden="true">/</span>
+          <span class="text-slate-400 line-clamp-1">{title}</span>
+        </div>
+
+        <!-- Badges -->
+        <div class="flex flex-wrap items-center gap-2 mb-4">
+          <span class={`text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full text-white ${categoryColor}`}>
+            {category}
+          </span>
+          <time datetime={date} class="text-xs text-slate-500 flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+            {dateLabel}
+          </time>
+          <span class="text-xs text-slate-500 flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            {readTime} lectura
+          </span>
+        </div>
+
+        <h1 class="font-oswald font-bold text-2xl sm:text-3xl lg:text-4xl text-white leading-tight" itemprop="headline">
+          {title}
+        </h1>
+      </header>
+
+      <!-- Cuerpo del artículo -->
+      <div class="px-6 sm:px-10 py-8 prose-article">
+
+        {sections.map((section, i) => (
+          <div>
+            {section.type === 'text' && (
+              <p class="text-slate-300 text-base sm:text-lg leading-relaxed mb-6">{section.text}</p>
+            )}
+
+            {section.type === 'h2' && (
+              <div class="mb-6">
+                <h2 class="font-oswald font-bold text-xl sm:text-2xl text-white mt-10 mb-3 flex items-center gap-2">
+                  <span class="w-1 h-6 rounded-full shrink-0" style="background: #d4af37;" aria-hidden="true"></span>
+                  {section.heading}
+                </h2>
+                {section.text && <p class="text-slate-300 text-base leading-relaxed">{section.text}</p>}
+              </div>
+            )}
+
+            {section.type === 'list' && (
+              <div class="mb-6">
+                {section.heading && (
+                  <h2 class="font-oswald font-bold text-xl sm:text-2xl text-white mt-10 mb-4 flex items-center gap-2">
+                    <span class="w-1 h-6 rounded-full shrink-0" style="background: #d4af37;" aria-hidden="true"></span>
+                    {section.heading}
+                  </h2>
+                )}
+                <ul class="space-y-2.5">
+                  {section.items?.map(item => (
+                    <li class="flex items-start gap-3 text-slate-300 text-sm sm:text-base">
+                      <span class="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0" style="background: #d4af37;" aria-hidden="true"></span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {section.type === 'tip' && (
+              <div class="my-8 rounded-xl p-5 border" style="background: rgba(212,175,55,0.06); border-color: rgba(212,175,55,0.25);">
+                <p class="font-oswald font-bold text-sm uppercase tracking-wider mb-2" style="color: #d4af37;">
+                  Consejo
+                  {section.heading && ` — ${section.heading}`}
+                </p>
+                <p class="text-slate-300 text-sm leading-relaxed">{section.text}</p>
+              </div>
+            )}
+
+            {section.type === 'warning' && (
+              <div class="my-8 rounded-xl p-5 border border-red-500/30" style="background: rgba(239,68,68,0.06);">
+                <p class="font-oswald font-bold text-sm uppercase tracking-wider mb-2 text-red-400">
+                  Advertencia
+                  {section.heading && ` — ${section.heading}`}
+                </p>
+                <p class="text-slate-300 text-sm leading-relaxed">{section.text}</p>
+              </div>
+            )}
+
+            {/* Ad entre secciones (aprox mitad del artículo) */}
+            {i === Math.floor(sections.length / 2) - 1 && (
+              <AdSlot slot="7788990011" format="horizontal" label="Publicidad" />
+            )}
+          </div>
+        ))}
+
+      </div>
+
+      <!-- Footer del artículo -->
+      <footer class="px-6 sm:px-10 pb-8 pt-4 border-t border-white/10">
+        <div class="flex flex-wrap gap-4 items-center justify-between">
+          <a
+            href="/noticias"
+            class="inline-flex items-center gap-2 text-sm font-medium hover:text-gold transition-colors"
+            style="color: #d4af37;"
+          >
+            <svg class="w-4 h-4 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+            Todas las noticias
+          </a>
+          <a
+            href="/calendario"
+            class="inline-flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-white transition-colors"
+          >
+            Ver calendario de partidos
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+      </footer>
+    </article>
+
+    <!-- Ad final -->
+    <AdSlot slot="8899001122" format="rectangle" label="Publicidad" class="mt-8" />
+
+    <!-- Sigue leyendo -->
+    <section class="mt-12" aria-labelledby="sigue-leyendo">
+      <h2 id="sigue-leyendo" class="font-oswald font-bold text-2xl text-white mb-6 flex items-center gap-2">
+        <span class="w-1 h-6 rounded-full" style="background: #d4af37;" aria-hidden="true"></span>
+        Sigue leyendo
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {otherArticles.map(a => (
+          <a
+            href={`/noticias/${a.slug}`}
+            class="group rounded-xl overflow-hidden border border-white/10 hover:border-gold/30 transition-all duration-300 hover:-translate-y-0.5"
+            style="background: #0f172a;"
+          >
+            <div class="relative h-36 overflow-hidden">
+              <img src={a.img} alt={a.title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+              <div class="absolute inset-0" style="background: linear-gradient(to bottom, transparent 40%, rgba(15,23,42,0.9) 100%);"></div>
+              <span class={`absolute top-3 left-3 text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-full text-white ${a.categoryColor}`}>
+                {a.category}
+              </span>
+            </div>
+            <div class="p-4">
+              <p class="text-sm font-semibold text-slate-200 group-hover:text-white transition-colors leading-snug line-clamp-2">{a.title}</p>
+              <p class="text-xs text-slate-500 mt-1.5">{a.dateLabel} · {a.readTime} lectura</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+  </div>
+
+</Layout>

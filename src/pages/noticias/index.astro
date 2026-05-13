@@ -1,0 +1,197 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import AdSlot from '../../components/AdSlot.astro';
+
+const title       = 'Noticias del Mundial 2026 — Últimas novedades FIFA';
+const description = 'Últimas noticias del Mundial FIFA 2026: avances en sedes, sorteo de grupos, guías para aficionados y todo lo que necesitas saber antes del torneo.';
+const keywords    = 'noticias mundial 2026, novedades mundial 2026, fifa 2026 noticias, copa mundo 2026';
+const canonicalURL = 'https://mundial26horarios.com/noticias';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: title,
+  description,
+  url: canonicalURL,
+  inLanguage: 'es',
+};
+
+const articulos = [
+  {
+    slug: 'ultimos-avances-estadio-azteca',
+    title: 'Últimos avances en las obras del Estadio Azteca para el Mundial 2026',
+    description: 'El Estadio Azteca completa su renovación para el Mundial FIFA 2026. Conoce los avances en iluminación LED, zona de fans y mejoras en accesibilidad.',
+    date: '2026-05-10',
+    dateLabel: '10 mayo 2026',
+    category: 'Sedes',
+    categoryColor: 'bg-emerald-500',
+    img: 'https://picsum.photos/seed/azteca-obras-2026/1200/630',
+    readTime: '4 min',
+    featured: true,
+  },
+  {
+    slug: 'fifa-confirma-fechas-sorteo-oficial',
+    title: 'FIFA confirma las fechas y el formato del sorteo oficial del Mundial 2026',
+    description: 'FIFA ha anunciado los detalles del sorteo de grupos del Mundial 2026: fecha, sede y cómo se distribuirán las 48 selecciones en 12 grupos.',
+    date: '2026-05-08',
+    dateLabel: '8 mayo 2026',
+    category: 'Organización',
+    categoryColor: 'bg-blue-500',
+    img: 'https://picsum.photos/seed/fifa-sorteo-2026/1200/630',
+    readTime: '3 min',
+    featured: false,
+  },
+  {
+    slug: 'como-evitar-estafas-alojamiento-2026',
+    title: 'Cómo evitar estafas al buscar alojamiento para el Mundial 2026',
+    description: 'Guía práctica para encontrar alojamiento seguro durante el Mundial 2026. Aprende a identificar estafas, plataformas fiables y consejos clave para reservar sin riesgos.',
+    date: '2026-05-05',
+    dateLabel: '5 mayo 2026',
+    category: 'Guía de Viaje',
+    categoryColor: 'bg-orange-500',
+    img: 'https://picsum.photos/seed/alojamiento-mundial-2026/1200/630',
+    readTime: '5 min',
+    featured: false,
+  },
+];
+
+const featured  = articulos.find(a => a.featured)!;
+const secondary = articulos.filter(a => !a.featured);
+---
+
+<Layout {title} {description} {keywords} canonicalURL={canonicalURL} jsonLd={jsonLd}>
+
+  <!-- Hero -->
+  <div class="pt-14 pb-10 px-4 sm:px-6 lg:px-8" style="background: linear-gradient(160deg, #020617 0%, #0f172a 100%);">
+    <div class="max-w-7xl mx-auto">
+      <p class="font-oswald text-xs uppercase tracking-[0.2em] mb-3" style="color: #d4af37;">
+        Últimas novedades
+      </p>
+      <h1 class="font-oswald font-bold text-4xl sm:text-5xl text-white leading-tight mb-3">
+        Noticias<br/>
+        <span
+          class="bg-clip-text text-transparent"
+          style="background-image: linear-gradient(105deg,#b8922a,#d4af37,#f5d97a,#d4af37,#b8922a);"
+        >Mundial 2026</span>
+      </h1>
+      <p class="text-slate-400 text-base max-w-xl">
+        Todo lo que ocurre antes del pitido inicial: obras, sorteos, guías y análisis.
+      </p>
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- Artículo destacado -->
+    <a
+      href={`/noticias/${featured.slug}`}
+      class="group block mb-10 rounded-2xl overflow-hidden border border-white/10 hover:border-gold/30 transition-all duration-300 lg:grid lg:grid-cols-2"
+      style="background: #0f172a;"
+      aria-label={`Leer: ${featured.title}`}
+    >
+      <!-- Imagen -->
+      <div class="relative h-56 lg:h-auto overflow-hidden">
+        <img
+          src={featured.img}
+          alt={featured.title}
+          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          loading="eager"
+        />
+        <div class="absolute inset-0 lg:hidden" style="background: linear-gradient(to bottom, transparent 40%, rgba(15,23,42,0.95) 100%);"></div>
+        <!-- Badge "Destacado" -->
+        <span
+          class="absolute top-4 left-4 text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full text-slate-950"
+          style="background: linear-gradient(105deg,#b8922a,#d4af37,#f5d97a,#d4af37,#b8922a);"
+        >Destacado</span>
+      </div>
+
+      <!-- Texto -->
+      <div class="p-6 sm:p-8 lg:p-10 flex flex-col justify-center">
+        <span class={`inline-block text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-full text-white mb-4 w-fit ${featured.categoryColor}`}>
+          {featured.category}
+        </span>
+        <h2 class="font-oswald font-bold text-2xl sm:text-3xl text-white leading-tight group-hover:text-gold transition-colors mb-3">
+          {featured.title}
+        </h2>
+        <p class="text-slate-400 text-sm leading-relaxed mb-5">{featured.description}</p>
+        <div class="flex items-center gap-4 text-xs text-slate-500">
+          <span>{featured.dateLabel}</span>
+          <span aria-hidden="true">·</span>
+          <span>{featured.readTime} lectura</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Ad horizontal -->
+    <AdSlot slot="9900112233" format="horizontal" label="Publicidad" />
+
+    <!-- Grid de artículos secundarios -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-10">
+      {secondary.map(art => (
+        <a
+          href={`/noticias/${art.slug}`}
+          class="group rounded-2xl overflow-hidden border border-white/10 hover:border-gold/30 transition-all duration-300 hover:-translate-y-1"
+          style="background: #0f172a;"
+          aria-label={`Leer: ${art.title}`}
+        >
+          <!-- Imagen -->
+          <div class="relative h-48 overflow-hidden">
+            <img
+              src={art.img}
+              alt={art.title}
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              loading="lazy"
+            />
+            <div class="absolute inset-0" style="background: linear-gradient(to bottom, transparent 40%, rgba(15,23,42,0.9) 100%);"></div>
+            <span class={`absolute top-3 left-3 text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-full text-white ${art.categoryColor}`}>
+              {art.category}
+            </span>
+          </div>
+
+          <!-- Texto -->
+          <div class="p-5">
+            <h2 class="font-oswald font-bold text-lg text-white group-hover:text-gold transition-colors leading-snug mb-2">
+              {art.title}
+            </h2>
+            <p class="text-slate-400 text-sm leading-relaxed line-clamp-2 mb-4">{art.description}</p>
+            <div class="flex items-center gap-3 text-xs text-slate-500">
+              <span>{art.dateLabel}</span>
+              <span aria-hidden="true">·</span>
+              <span>{art.readTime} lectura</span>
+              <span class="ml-auto font-medium group-hover:text-gold transition-colors" style="color: #d4af37;">
+                Leer →
+              </span>
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+
+    <!-- CTA a otras secciones -->
+    <div
+      class="mt-16 rounded-2xl p-8 text-center border border-white/10"
+      style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);"
+    >
+      <p class="font-oswald text-xs uppercase tracking-[0.2em] mb-2" style="color: #d4af37;">Explora más</p>
+      <h2 class="font-oswald font-bold text-2xl text-white mb-6">¿Buscas información específica?</h2>
+      <div class="flex flex-wrap justify-center gap-3">
+        {[
+          { href: '/calendario',        label: 'Calendario de Partidos' },
+          { href: '/sedes/ciudad-de-mexico', label: 'Sedes del Torneo' },
+          { href: '/blog/guia-completa', label: 'Guía Completa' },
+          { href: '/entradas',          label: 'Cómo Comprar Entradas' },
+        ].map(({ href, label }) => (
+          <a
+            href={href}
+            class="text-sm font-medium px-5 py-2.5 rounded-full border transition-all hover:scale-105"
+            style="border-color: rgba(212,175,55,0.35); color: #d4af37; background: rgba(212,175,55,0.05);"
+          >
+            {label}
+          </a>
+        ))}
+      </div>
+    </div>
+
+  </div>
+
+</Layout>
