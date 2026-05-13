@@ -294,7 +294,7 @@ const todasLasCiudadesHorarios = [
 // ── SEO metadata ───────────────────────────────────────────────────────────────
 const title       = `Horarios Mundial 2026 en ${ciudad.nombre}, ${pais.nombre} — Hora Local (${ciudad.offsetLabel})`;
 const description = `¿A qué hora son los partidos del Mundial 2026 en ${ciudad.nombre}? Tabla completa con los horarios convertidos a ${ciudad.abbr} (${ciudad.offsetLabel}). Fase de Grupos y Fases Eliminatorias con horario local exacto.`;
-const canonicalURL = `https://mundial2026guia.com/horarios/${pais.slug}/${ciudad.slug}`;
+const canonicalURL = `https://mundial26horarios.com/horarios/${pais.slug}/${ciudad.slug}`;
 
 // ── JSON-LD ────────────────────────────────────────────────────────────────────
 const finalConv   = horaLocal('2026-07-19', '22:00', tz, loc);
@@ -305,9 +305,9 @@ const jsonLd = {
     {
       '@type': 'BreadcrumbList',
       itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Inicio',   item: 'https://mundial2026guia.com/' },
-        { '@type': 'ListItem', position: 2, name: 'Horarios', item: 'https://mundial2026guia.com/horarios' },
-        { '@type': 'ListItem', position: 3, name: pais.nombre, item: `https://mundial2026guia.com/horarios/${pais.slug}` },
+        { '@type': 'ListItem', position: 1, name: 'Inicio',   item: 'https://mundial26horarios.com/' },
+        { '@type': 'ListItem', position: 2, name: 'Horarios', item: 'https://mundial26horarios.com/horarios' },
+        { '@type': 'ListItem', position: 3, name: pais.nombre, item: `https://mundial26horarios.com/horarios/${pais.slug}` },
         { '@type': 'ListItem', position: 4, name: ciudad.nombre, item: canonicalURL },
       ],
     },

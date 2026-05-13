@@ -2,7 +2,7 @@ import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
 import sitemap from '@astrojs/sitemap';
 
-const SITE = 'https://mundial2026guia.com';
+const SITE = 'https://mundial26horarios.com';
 
 export default defineConfig({
   site: SITE,

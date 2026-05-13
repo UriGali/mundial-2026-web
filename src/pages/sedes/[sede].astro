@@ -1894,14 +1894,14 @@ const {
 
 const title        = `${ciudad} — Sede Mundial 2026 | ${estadio}, Transporte y Hoteles`;
 const description  = `Guía completa de ${ciudad} como sede del Mundial FIFA 2026: ${estadio} (cap. ${capacidad}), cómo llegar en metro/autobús/rideshare, mejores hoteles cercanos y la Fan Zone oficial.`;
-const canonicalURL = `https://mundial2026guia.com/sedes/${slug}`;
+const canonicalURL = `https://mundial26horarios.com/sedes/${slug}`;
 
 const jsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
     {
       '@type': 'EventVenue',
-      '@id': `https://mundial2026guia.com/sedes/${slug}#venue`,
+      '@id': `https://mundial26horarios.com/sedes/${slug}#venue`,
       name: estadio,
       description: descripcion,
       url: canonicalURL,
@@ -1928,8 +1928,8 @@ const jsonLd = {
     {
       '@type': 'BreadcrumbList',
       itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://mundial2026guia.com/' },
-        { '@type': 'ListItem', position: 2, name: 'Sedes',  item: 'https://mundial2026guia.com/sedes' },
+        { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://mundial26horarios.com/' },
+        { '@type': 'ListItem', position: 2, name: 'Sedes',  item: 'https://mundial26horarios.com/sedes' },
         { '@type': 'ListItem', position: 3, name: ciudad,   item: canonicalURL },
       ],
     },
