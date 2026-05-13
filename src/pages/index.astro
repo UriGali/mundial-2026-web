@@ -18,10 +18,7 @@ const jsonLd = {
       inLanguage: 'es',
       potentialAction: {
         '@type': 'SearchAction',
-        target: {
-          '@type': 'EntryPoint',
-          urlTemplate: 'https://mundial2026guia.com/buscar?q={search_term_string}',
-        },
+        target: { '@type': 'EntryPoint', urlTemplate: 'https://mundial2026guia.com/buscar?q={search_term_string}' },
         'query-input': 'required name=search_term_string',
       },
     },
@@ -32,366 +29,502 @@ const jsonLd = {
       startDate: '2026-06-11',
       endDate: '2026-07-19',
       eventStatus: 'https://schema.org/EventScheduled',
-      location: {
-        '@type': 'Place',
-        name: 'Estados Unidos, México y Canadá',
-      },
-      organizer: {
-        '@type': 'Organization',
-        name: 'FIFA',
-        url: 'https://www.fifa.com',
-      },
-      description:
-        'El torneo de fútbol más grande de la historia. 48 selecciones, 16 sedes y 3 países anfitriones del 11 de junio al 19 de julio de 2026.',
+      location: { '@type': 'Place', name: 'Estados Unidos, México y Canadá' },
+      organizer: { '@type': 'Organization', name: 'FIFA', url: 'https://www.fifa.com' },
+      description: 'El torneo de fútbol más grande de la historia. 48 selecciones, 16 sedes y 3 países anfitriones del 11 de junio al 19 de julio de 2026.',
     },
     {
       '@type': 'FAQPage',
       mainEntity: [
-        {
-          '@type': 'Question',
-          name: '¿Cuándo empieza el Mundial 2026?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'El Mundial FIFA 2026 empieza el 11 de junio de 2026 y termina el 19 de julio de 2026 con la Gran Final en el MetLife Stadium de Nueva York / New Jersey.',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: '¿Cuántos equipos participan en el Mundial 2026?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: '48 selecciones nacionales participan en el Mundial 2026, distribuidas en 12 grupos de 4 equipos. Esto representa un aumento de 16 equipos respecto a Qatar 2022, que tuvo 32 selecciones.',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: '¿Dónde se juega la Final del Mundial 2026?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'La Final del Mundial 2026 se juega el 19 de julio de 2026 en el MetLife Stadium, ubicado en East Rutherford, Nueva Jersey (área metropolitana de Nueva York), con capacidad para 82,500 espectadores.',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: '¿En qué países se juega el Mundial 2026?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'El Mundial 2026 se juega en tres países: Estados Unidos (11 sedes), México (3 sedes: Ciudad de México, Guadalajara y Monterrey) y Canadá (2 sedes: Toronto y Vancouver). Es la primera vez en la historia que un Mundial se celebra en tres naciones de forma simultánea.',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: '¿Cómo comprar entradas para el Mundial 2026?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'Las entradas para el Mundial 2026 se venden exclusivamente a través del portal oficial de FIFA. Para comprar: 1) Crea una cuenta en FIFA.com, 2) Selecciona los partidos y categoría de entrada, 3) Completa el pago. Las entradas son nominales. Evita revendedores no autorizados.',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: '¿Cuántos partidos se juegan en el Mundial 2026?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'En el Mundial 2026 se juegan 104 partidos en total: 72 en la Fase de Grupos, 16 en Octavos de Final, 8 en Cuartos de Final, 4 Semifinales, 1 partido por el tercer puesto y 1 Gran Final.',
-          },
-        },
+        { '@type': 'Question', name: '¿Cuándo empieza el Mundial 2026?', acceptedAnswer: { '@type': 'Answer', text: 'El Mundial FIFA 2026 empieza el 11 de junio de 2026 y termina el 19 de julio con la Gran Final en MetLife Stadium, Nueva York.' } },
+        { '@type': 'Question', name: '¿Cuántos equipos participan en el Mundial 2026?', acceptedAnswer: { '@type': 'Answer', text: '48 selecciones nacionales participan en el Mundial 2026, divididas en 12 grupos de 4 equipos.' } },
+        { '@type': 'Question', name: '¿Dónde se juega la Final del Mundial 2026?', acceptedAnswer: { '@type': 'Answer', text: 'La Final del Mundial 2026 es el 19 de julio de 2026 en MetLife Stadium, East Rutherford, Nueva Jersey (área metropolitana de Nueva York).' } },
+        { '@type': 'Question', name: '¿En qué países se juega el Mundial 2026?', acceptedAnswer: { '@type': 'Answer', text: 'En tres países: Estados Unidos (11 sedes), México (3: Ciudad de México, Guadalajara, Monterrey) y Canadá (2: Toronto, Vancouver).' } },
+        { '@type': 'Question', name: '¿Cómo comprar entradas para el Mundial 2026?', acceptedAnswer: { '@type': 'Answer', text: 'Solo a través del portal oficial de FIFA. Pasos: 1) Crea tu ID en FIFA.com, 2) Selecciona partidos, 3) Paga y confirma. Las entradas son nominales.' } },
+        { '@type': 'Question', name: '¿Cuántos partidos se juegan en el Mundial 2026?', acceptedAnswer: { '@type': 'Answer', text: '104 partidos: 72 en Fase de Grupos + 32 en eliminatorias (Octavos, Cuartos, Semis, 3.er puesto y Final).' } },
       ],
     },
   ],
 };
 
-const sedes = [
+// Bento grid: 10 sedes clave con datos visuales
+const bentoSedes = [
   {
-    ciudad: 'Ciudad de México',
-    pais: 'México',
-    flag: '🇲🇽',
-    estadio: 'Estadio Azteca',
-    capacidad: '87,523',
-    fase: 'Cuartos de Final',
-    badge: 'bg-green-700',
-    gradient: 'from-green-950 to-green-800',
+    slug: 'ciudad-de-mexico', ciudad: 'Ciudad de México', estadio: 'Estadio Azteca',
+    fase: 'Cuartos · Final', faseClass: 'bg-orange-500', flag: '🇲🇽', capacidad: '87,523',
+    tag: 'SEDE HISTÓRICA',
+    gradient: 'linear-gradient(160deg,#0a2200 0%,#1a4f00 50%,#2d6600 100%)',
+    img: 'https://picsum.photos/seed/azteca-cdmx-wc/1200/800',
+    size: 'feature',
   },
   {
-    ciudad: 'Nueva York / NJ',
-    pais: 'Estados Unidos',
-    flag: '🇺🇸',
-    estadio: 'MetLife Stadium',
-    capacidad: '82,500',
-    fase: '⭐ FINAL',
-    badge: 'bg-gold text-navy-900',
-    gradient: 'from-indigo-950 to-indigo-800',
+    slug: 'nueva-york', ciudad: 'Nueva York', estadio: 'MetLife Stadium',
+    fase: '⭐ GRAN FINAL', faseClass: 'bg-gold text-slate-950', flag: '🇺🇸', capacidad: '82,500',
+    tag: 'GRAN FINAL',
+    gradient: 'linear-gradient(160deg,#010314 0%,#060d1f 50%,#0f1a3e 100%)',
+    img: 'https://picsum.photos/seed/metlife-ny-wc/1200/700',
+    size: 'tall',
   },
   {
-    ciudad: 'Los Ángeles',
-    pais: 'Estados Unidos',
-    flag: '🇺🇸',
-    estadio: 'SoFi Stadium',
-    capacidad: '70,240',
-    fase: 'Semifinal',
-    badge: 'bg-blue-700',
-    gradient: 'from-blue-950 to-blue-800',
+    slug: 'houston', ciudad: 'Houston', estadio: 'NRG Stadium',
+    fase: 'Semifinal', faseClass: 'bg-purple-600', flag: '🇺🇸', capacidad: '72,220',
+    tag: 'SEMIFINAL',
+    gradient: 'linear-gradient(160deg,#130a20 0%,#200d35 50%,#2e0f4a 100%)',
+    img: 'https://picsum.photos/seed/nrg-houston-wc/1200/700',
+    size: 'tall',
   },
   {
-    ciudad: 'Dallas',
-    pais: 'Estados Unidos',
-    flag: '🇺🇸',
-    estadio: "AT&T Stadium",
-    capacidad: '80,000',
-    fase: 'Cuartos de Final',
-    badge: 'bg-sky-700',
-    gradient: 'from-slate-900 to-slate-700',
+    slug: 'los-angeles', ciudad: 'Los Ángeles', estadio: 'SoFi Stadium',
+    fase: 'Semifinal', faseClass: 'bg-blue-600', flag: '🇺🇸', capacidad: '70,240',
+    tag: 'SEMIFINAL',
+    gradient: 'linear-gradient(160deg,#000d2e 0%,#001a56 50%,#002b85 100%)',
+    img: 'https://picsum.photos/seed/sofi-la-wc/1200/600',
+    size: 'medium',
   },
   {
-    ciudad: 'Vancouver',
-    pais: 'Canadá',
-    flag: '🇨🇦',
-    estadio: 'BC Place',
-    capacidad: '54,500',
-    fase: 'Octavos de Final',
-    badge: 'bg-red-700',
-    gradient: 'from-red-950 to-red-800',
+    slug: 'dallas', ciudad: 'Dallas', estadio: "AT&T Stadium",
+    fase: 'Cuartos', faseClass: 'bg-sky-600', flag: '🇺🇸', capacidad: '80,000',
+    tag: 'CUARTOS',
+    gradient: 'linear-gradient(160deg,#050510 0%,#0a0a20 50%,#101030 100%)',
+    img: 'https://picsum.photos/seed/att-dallas-wc/1200/600',
+    size: 'medium',
   },
   {
-    ciudad: 'Guadalajara',
-    pais: 'México',
-    flag: '🇲🇽',
-    estadio: 'Estadio Akron',
-    capacidad: '49,850',
-    fase: 'Fase de Grupos',
-    badge: 'bg-emerald-700',
-    gradient: 'from-emerald-950 to-emerald-800',
+    slug: 'atlanta', ciudad: 'Atlanta', estadio: 'Mercedes-Benz Stadium',
+    fase: 'Cuartos', faseClass: 'bg-orange-600', flag: '🇺🇸', capacidad: '71,000',
+    tag: 'CUARTOS',
+    gradient: 'linear-gradient(160deg,#0a0a14 0%,#1a0a20 50%,#2a0a30 100%)',
+    img: 'https://picsum.photos/seed/mb-atlanta-wc/1200/600',
+    size: 'medium',
+  },
+  {
+    slug: 'guadalajara', ciudad: 'Guadalajara', estadio: 'Estadio Akron',
+    fase: 'Fase de Grupos', faseClass: 'bg-blue-700', flag: '🇲🇽', capacidad: '49,850',
+    tag: 'SEDE MEXICO',
+    gradient: 'linear-gradient(160deg,#001a30 0%,#002545 50%,#003060 100%)',
+    img: 'https://picsum.photos/seed/akron-gdl-wc/1200/500',
+    size: 'small',
+  },
+  {
+    slug: 'miami', ciudad: 'Miami', estadio: 'Hard Rock Stadium',
+    fase: 'Octavos', faseClass: 'bg-teal-600', flag: '🇺🇸', capacidad: '64,767',
+    tag: 'OCTAVOS',
+    gradient: 'linear-gradient(160deg,#001a2e 0%,#002d4a 50%,#004466 100%)',
+    img: 'https://picsum.photos/seed/hardrock-miami-wc/1200/500',
+    size: 'small',
+  },
+  {
+    slug: 'seattle', ciudad: 'Seattle', estadio: 'Lumen Field',
+    fase: 'Octavos', faseClass: 'bg-teal-700', flag: '🇺🇸', capacidad: '69,000',
+    tag: 'OCTAVOS',
+    gradient: 'linear-gradient(160deg,#001a10 0%,#002a18 50%,#003a20 100%)',
+    img: 'https://picsum.photos/seed/lumen-seattle-wc/1200/500',
+    size: 'small',
+  },
+  {
+    slug: 'vancouver', ciudad: 'Vancouver', estadio: 'BC Place',
+    fase: 'Octavos', faseClass: 'bg-red-700', flag: '🇨🇦', capacidad: '54,500',
+    tag: 'SEDE CANADÁ',
+    gradient: 'linear-gradient(160deg,#001020 0%,#001a30 50%,#002a40 100%)',
+    img: 'https://picsum.photos/seed/bcplace-vancouver-wc/1200/500',
+    size: 'small',
   },
 ];
 
 const categorias = [
-  {
-    num: '1',
-    nombre: 'Categoría 1 — Premium',
-    desc: 'Mejor visibilidad y experiencia. Asientos centrales, zonas premium.',
-    precio: 'Desde $210 USD',
-    border: 'border-gold',
-    badgeBg: 'bg-gold text-navy-900',
-    badge: 'Top',
-  },
-  {
-    num: '2',
-    nombre: 'Categoría 2 — Estándar',
-    desc: 'Excelente vista del campo. Relación calidad-precio ideal.',
-    precio: 'Desde $105 USD',
-    border: 'border-blue-400',
-    badgeBg: 'bg-blue-600 text-white',
-    badge: 'Popular',
-  },
-  {
-    num: '3',
-    nombre: 'Categoría 3 — General',
-    desc: 'Acceso general con el mejor ambiente de la tribuna.',
-    precio: 'Desde $70 USD',
-    border: 'border-gray-300',
-    badgeBg: 'bg-gray-600 text-white',
-    badge: 'Accesible',
-  },
-  {
-    num: '4',
-    nombre: 'Categoría 4 — Residentes',
-    desc: 'Reservada para residentes del país sede. Requiere acreditación.',
-    precio: 'Desde $35 USD',
-    border: 'border-green-400',
-    badgeBg: 'bg-green-700 text-white',
-    badge: 'Local',
-  },
+  { num: '1', nombre: 'Categoría Premium', desc: 'Mejor visibilidad, asientos centrales, zonas VIP', precio: 'Desde $210 USD', color: 'gold' },
+  { num: '2', nombre: 'Categoría Estándar', desc: 'Excelente vista. La mejor relación calidad-precio', precio: 'Desde $105 USD', color: 'blue' },
+  { num: '3', nombre: 'Categoría General', desc: 'Acceso general. El mejor ambiente de la tribuna', precio: 'Desde $70 USD', color: 'slate' },
+  { num: '4', nombre: 'Categoría Residentes', desc: 'Solo para residentes acreditados del país sede', precio: 'Desde $35 USD', color: 'green' },
 ];
 ---
 
 <Layout {title} {description} {keywords} {jsonLd}>
 
   <!-- ===================================================
-       HERO
+       HERO — Premium magazine style
   ==================================================== -->
   <section
-    class="relative overflow-hidden min-h-[92vh] flex flex-col justify-center items-center text-white text-center px-4 py-20"
-    style="background: linear-gradient(160deg,#060d1f 0%,#0d1b3e 45%,#1e3360 75%,#0d1b3e 100%)"
+    class="relative overflow-hidden min-h-screen flex flex-col justify-center items-center text-white text-center px-4 py-24"
     aria-labelledby="hero-heading"
+    style="background: linear-gradient(160deg,#020617 0%,#0f172a 45%,#1e293b 75%,#020617 100%);"
   >
-    <!-- Patrón decorativo de fondo -->
-    <div class="absolute inset-0 opacity-5 pointer-events-none" aria-hidden="true">
-      <div class="absolute inset-0" style="background-image:radial-gradient(circle, #d4af37 1px, transparent 1px); background-size:40px 40px;"></div>
-    </div>
+    <!-- Textura de puntos dorados -->
+    <div
+      class="absolute inset-0 opacity-100 pointer-events-none"
+      style="background-image: radial-gradient(rgba(212,175,55,0.08) 1px, transparent 1px); background-size: 28px 28px;"
+      aria-hidden="true"
+    ></div>
 
-    <!-- Badge urgencia -->
-    <div class="relative z-10 mb-6 inline-flex items-center gap-2 bg-gold/10 border border-gold/40 text-gold px-4 py-2 rounded-full text-sm font-semibold tracking-wide">
-      <span class="w-2 h-2 bg-gold rounded-full animate-pulse" aria-hidden="true"></span>
-      Copa Mundial FIFA 2026 &mdash; 11 Jun &ndash; 19 Jul
-    </div>
+    <!-- Líneas de grid sutiles -->
+    <div
+      class="absolute inset-0 pointer-events-none"
+      style="background-image: linear-gradient(rgba(212,175,55,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(212,175,55,0.03) 1px, transparent 1px); background-size: 80px 80px;"
+      aria-hidden="true"
+    ></div>
 
-    <!-- Titular principal H1 -->
-    <h1
-      id="hero-heading"
-      class="relative z-10 font-black text-5xl sm:text-6xl lg:text-8xl leading-none tracking-tight mb-4"
+    <!-- Resplandor central -->
+    <div
+      class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full pointer-events-none"
+      style="background: radial-gradient(circle, rgba(212,175,55,0.05) 0%, transparent 70%);"
+      aria-hidden="true"
+    ></div>
+
+    <!-- Número fantasma 2026 de fondo -->
+    <div
+      class="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden"
+      aria-hidden="true"
     >
-      <span class="block text-white">COPA MUNDIAL</span>
-      <span class="block text-gold drop-shadow-[0_0_30px_rgba(212,175,55,0.4)]">FIFA 2026</span>
-    </h1>
-
-    <!-- Subtítulo con países -->
-    <p class="relative z-10 text-xl sm:text-2xl font-semibold text-gray-300 mb-4 tracking-wide">
-      🇺🇸 USA &nbsp;&middot;&nbsp; 🇲🇽 México &nbsp;&middot;&nbsp; 🇨🇦 Canadá
-    </p>
-
-    <!-- Countdown -->
-    <div id="countdown-wrapper" class="relative z-10 mb-10 flex gap-3 sm:gap-5" aria-live="polite" aria-label="Cuenta regresiva para el Mundial">
-      {['cd-days','cd-hours','cd-minutes','cd-seconds'].map((id, i) => (
-        <div class="flex flex-col items-center bg-white/10 backdrop-blur-sm rounded-xl px-3 sm:px-5 py-3 border border-white/20 min-w-[60px] sm:min-w-[72px]">
-          <span id={id} class="font-black text-2xl sm:text-4xl text-gold tabular-nums">--</span>
-          <span class="text-[10px] sm:text-xs text-gray-400 uppercase tracking-widest mt-1">
-            {['Días','Horas','Min','Seg'][i]}
-          </span>
-        </div>
-      ))}
+      <span
+        class="font-oswald font-bold leading-none text-white/[0.03]"
+        style="font-size: clamp(10rem, 30vw, 28rem); letter-spacing: -0.02em;"
+      >2026</span>
     </div>
 
-    <!-- Buscador -->
-    <form
-      action="/buscar"
-      method="get"
-      role="search"
-      class="relative z-10 w-full max-w-xl mb-10"
-      aria-label="Buscar en Mundial 2026"
-    >
-      <label for="hero-search" class="sr-only">Buscar sede, equipo o ciudad</label>
-      <div class="relative shadow-2xl">
-        <input
-          id="hero-search"
-          type="search"
-          name="q"
-          placeholder="Busca sede, equipo, ciudad..."
-          class="w-full pl-5 pr-36 py-4 rounded-full text-gray-900 text-base focus:outline-none focus:ring-4 focus:ring-gold/50"
-          autocomplete="off"
-        />
-        <button
-          type="submit"
-          class="absolute right-2 top-1/2 -translate-y-1/2 bg-gold hover:bg-gold-dark text-navy-900 font-bold px-5 py-2.5 rounded-full transition-colors text-sm"
-        >
-          Buscar
-        </button>
+    <div class="relative z-10 max-w-5xl mx-auto">
+
+      <!-- Badge urgencia -->
+      <div class="inline-flex items-center gap-2.5 border rounded-full px-5 py-2 text-xs font-medium tracking-widest uppercase mb-8"
+        style="background: rgba(212,175,55,0.08); border-color: rgba(212,175,55,0.3); color: #d4af37;">
+        <span class="w-2 h-2 rounded-full animate-pulse" style="background-color: #d4af37;" aria-hidden="true"></span>
+        Copa Mundial FIFA 2026 &mdash; 11 Jun &ndash; 19 Jul
       </div>
-    </form>
 
-    <!-- Chips de estadísticas -->
-    <div class="relative z-10 flex flex-wrap justify-center gap-3 text-sm">
-      {[
-        { num: '48', label: 'Equipos' },
-        { num: '16', label: 'Ciudades' },
-        { num: '3',  label: 'Países' },
-        { num: '104', label: 'Partidos' },
-      ].map(({ num, label }) => (
-        <div class="flex items-center gap-1.5 bg-white/10 border border-white/20 rounded-full px-4 py-1.5">
-          <span class="font-black text-gold text-base">{num}</span>
-          <span class="text-gray-300">{label}</span>
-        </div>
-      ))}
+      <!-- Headline principal con Oswald -->
+      <h1
+        id="hero-heading"
+        class="font-oswald font-bold leading-[0.9] tracking-tight mb-6"
+        style="font-size: clamp(3.5rem, 10vw, 8.5rem);"
+      >
+        <span class="block text-white">COPA</span>
+        <span class="block text-white">MUNDIAL</span>
+        <span
+          class="block bg-clip-text text-transparent"
+          style="background-image: linear-gradient(105deg,#b8922a 0%,#d4af37 30%,#f5d97a 50%,#d4af37 70%,#b8922a 100%);"
+        >FIFA 2026</span>
+      </h1>
+
+      <!-- Países -->
+      <p class="font-oswald text-xl sm:text-2xl text-slate-400 tracking-[0.15em] uppercase mb-10">
+        🇺🇸 <span class="text-slate-300">USA</span>
+        <span class="text-slate-600 mx-3">·</span>
+        🇲🇽 <span class="text-slate-300">México</span>
+        <span class="text-slate-600 mx-3">·</span>
+        🇨🇦 <span class="text-slate-300">Canadá</span>
+      </p>
+
+      <!-- Countdown — glass morphism -->
+      <div
+        id="countdown-wrapper"
+        class="flex justify-center gap-3 sm:gap-4 mb-10"
+        aria-live="polite"
+        aria-label="Cuenta regresiva para el Mundial"
+      >
+        {['cd-days','cd-hours','cd-minutes','cd-seconds'].map((id, i) => (
+          <div
+            class="flex flex-col items-center rounded-2xl px-4 sm:px-6 py-4 border min-w-[68px] sm:min-w-[84px]"
+            style="background: rgba(255,255,255,0.04); backdrop-filter: blur(12px); border-color: rgba(212,175,55,0.2);"
+          >
+            <span id={id} class="font-oswald font-bold text-3xl sm:text-5xl tabular-nums"
+              style="background-image: linear-gradient(180deg,#f5d97a,#d4af37); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+              --
+            </span>
+            <span class="text-[10px] sm:text-xs text-slate-500 uppercase tracking-[0.15em] mt-1 font-medium">
+              {['Días','Horas','Min','Seg'][i]}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      <!-- CTA Buttons -->
+      <div class="flex flex-col sm:flex-row justify-center gap-4 mb-14">
+        <a
+          href="#sedes"
+          class="font-oswald font-semibold tracking-wider text-sm px-8 py-3.5 rounded-full text-slate-950 transition-all duration-200 hover:scale-105 hover:shadow-gold uppercase"
+          style="background-image: linear-gradient(105deg,#b8922a 0%,#d4af37 40%,#f5d97a 60%,#d4af37 80%,#b8922a 100%);"
+        >
+          Ver las 16 Sedes
+        </a>
+        <a
+          href="/entradas"
+          class="font-oswald font-semibold tracking-wider text-sm px-8 py-3.5 rounded-full text-white transition-all duration-200 hover:scale-105 uppercase border"
+          style="border-color: rgba(212,175,55,0.4); background: rgba(212,175,55,0.05);"
+          onmouseover="this.style.background='rgba(212,175,55,0.1)'"
+          onmouseout="this.style.background='rgba(212,175,55,0.05)'"
+        >
+          Comprar Entradas
+        </a>
+      </div>
+
+      <!-- Stats — glass chips -->
+      <div class="flex flex-wrap justify-center gap-3 text-sm">
+        {[
+          { num: '48', label: 'Selecciones' },
+          { num: '16', label: 'Ciudades' },
+          { num: '3',  label: 'Países' },
+          { num: '104',label: 'Partidos' },
+        ].map(({ num, label }) => (
+          <div
+            class="flex items-center gap-2 rounded-full px-5 py-2 border"
+            style="background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.1);"
+          >
+            <span class="font-oswald font-bold text-base" style="color: #d4af37;">{num}</span>
+            <span class="text-slate-400 font-medium">{label}</span>
+          </div>
+        ))}
+      </div>
     </div>
 
-    <!-- Flecha scroll -->
+    <!-- Scroll indicator -->
     <a
       href="#sedes"
-      class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 text-gray-500 hover:text-gold transition-colors animate-bounce"
+      class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 text-slate-600 hover:text-gold transition-colors animate-bounce"
       aria-label="Ver sedes"
     >
       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7" />
       </svg>
     </a>
   </section>
 
   <!-- ===================================================
-       BANNER DATOS CLAVE
+       BANNER DE DATOS RÁPIDOS
   ==================================================== -->
-  <section class="bg-navy-900 text-white py-6" aria-label="Datos clave del Mundial 2026">
+  <section
+    class="border-y py-5"
+    style="background: rgba(212,175,55,0.04); border-color: rgba(212,175,55,0.12);"
+    aria-label="Datos clave del Mundial 2026"
+  >
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
         {[
           { icon: '🏟️', text: 'El mundial más grande de la historia' },
-          { icon: '📅', text: '11 junio – 19 julio 2026' },
-          { icon: '🌎', text: 'Primera vez en 3 naciones simultáneas' },
+          { icon: '📅', text: '11 junio — 19 julio 2026' },
+          { icon: '🌎', text: 'Primera vez en 3 naciones a la vez' },
           { icon: '🏆', text: '48 selecciones clasificadas' },
         ].map(({ icon, text }) => (
           <div class="flex flex-col items-center gap-1.5">
             <span class="text-2xl" aria-hidden="true">{icon}</span>
-            <p class="text-xs sm:text-sm text-gray-300 font-medium">{text}</p>
+            <p class="text-xs sm:text-sm text-slate-400 font-medium">{text}</p>
           </div>
         ))}
       </div>
     </div>
   </section>
 
-  <!-- Ad: Leaderboard tras el hero -->
+  <!-- Ad: Leaderboard -->
   <AdSlot slot="1234567890" format="horizontal" label="Publicidad" />
 
   <!-- ===================================================
-       SEDES DESTACADAS
+       BENTO GRID — SEDES
   ==================================================== -->
-  <section id="sedes" class="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50" aria-labelledby="sedes-heading">
+  <section
+    id="sedes"
+    class="py-20 px-4 sm:px-6 lg:px-8"
+    style="background: #020617;"
+    aria-labelledby="sedes-heading"
+  >
     <div class="max-w-7xl mx-auto">
 
       <!-- Encabezado sección -->
-      <div class="text-center mb-14">
-        <p class="text-gold font-bold text-sm uppercase tracking-widest mb-2">16 ciudades en 3 países</p>
-        <h2 id="sedes-heading" class="font-black text-4xl sm:text-5xl text-navy-900 leading-tight">
-          Sedes Destacadas
-        </h2>
-        <div class="w-16 h-1 bg-gold mx-auto mt-4 rounded-full" aria-hidden="true"></div>
-        <p class="mt-5 text-gray-600 text-lg max-w-2xl mx-auto">
-          El torneo se disputará en los estadios más icónicos de Norteamérica. Conoce las sedes confirmadas.
-        </p>
-      </div>
-
-      <!-- Grid de sedes -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {sedes.map(({ ciudad, pais, flag, estadio, capacidad, fase, badge, gradient }) => (
-          <article
-            class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 cursor-pointer"
-            aria-label={`${ciudad}, ${pais} — ${estadio}`}
-          >
-            <!-- Gradiente de fondo -->
-            <div class={`absolute inset-0 bg-gradient-to-br ${gradient}`} aria-hidden="true"></div>
-            <!-- Patrón sutil -->
-            <div class="absolute inset-0 opacity-10" style="background-image:radial-gradient(circle, white 1px, transparent 1px); background-size:20px 20px;" aria-hidden="true"></div>
-
-            <div class="relative z-10 p-6 text-white">
-              <!-- Flag + badge fase -->
-              <div class="flex items-center justify-between mb-4">
-                <span class="text-4xl" role="img" aria-label={pais}>{flag}</span>
-                <span class={`${badge} text-white text-xs font-bold px-3 py-1 rounded-full`}>{fase}</span>
-              </div>
-
-              <!-- Ciudad -->
-              <h3 class="font-black text-2xl leading-tight mb-1">{ciudad}</h3>
-              <p class="text-sm font-medium text-white/70 mb-4">{pais}</p>
-
-              <!-- Estadio info -->
-              <div class="border-t border-white/20 pt-4 flex justify-between items-end">
-                <div>
-                  <p class="text-xs text-white/60 uppercase tracking-wide">Estadio</p>
-                  <p class="font-semibold text-sm mt-0.5">{estadio}</p>
-                </div>
-                <div class="text-right">
-                  <p class="text-xs text-white/60 uppercase tracking-wide">Capacidad</p>
-                  <p class="font-bold text-gold text-sm mt-0.5">{capacidad}</p>
-                </div>
-              </div>
-            </div>
-          </article>
-        ))}
-      </div>
-
-      <!-- CTA ver todas las sedes -->
-      <div class="text-center mt-12">
+      <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
+        <div>
+          <p class="font-oswald text-xs uppercase tracking-[0.2em] mb-2" style="color: #d4af37;">
+            16 ciudades · 3 países
+          </p>
+          <h2 id="sedes-heading" class="font-oswald font-bold text-4xl sm:text-5xl text-white leading-tight">
+            Las Sedes del<br/>
+            <span
+              class="bg-clip-text text-transparent"
+              style="background-image: linear-gradient(105deg,#b8922a,#d4af37,#f5d97a,#d4af37,#b8922a);"
+            >Mundial 2026</span>
+          </h2>
+        </div>
         <a
           href="/sedes"
-          class="inline-flex items-center gap-2 bg-navy-900 hover:bg-navy-800 text-white font-bold px-8 py-4 rounded-full transition-colors shadow-lg"
+          class="shrink-0 font-oswald font-semibold text-sm uppercase tracking-wider px-6 py-2.5 rounded-full border transition-all hover:scale-105"
+          style="border-color: rgba(212,175,55,0.4); color: #d4af37; background: rgba(212,175,55,0.05);"
         >
-          Ver las 16 sedes completas
+          Ver las 16 →
+        </a>
+      </div>
+
+      <!-- Bento Grid asimétrico -->
+      <div class="grid gap-3">
+
+        <!-- Fila 1: Feature (3/5) + 2 stacked (2/5) -->
+        <div class="grid grid-cols-1 lg:grid-cols-5 gap-3">
+
+          <!-- CDMX — Feature Card grande -->
+          <a
+            href="/sedes/ciudad-de-mexico"
+            class="lg:col-span-3 relative overflow-hidden rounded-2xl group cursor-pointer block"
+            style="height: 460px; background: linear-gradient(160deg,#0a2200 0%,#1a4f00 50%,#2d6600 100%);"
+            aria-label="Ciudad de México — Sede del Mundial 2026"
+          >
+            <img
+              src="https://picsum.photos/seed/azteca-cdmx-wc/1200/800"
+              alt="Ciudad de México"
+              class="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+              loading="lazy"
+            />
+            <!-- Overlay -->
+            <div class="absolute inset-0 transition-opacity duration-500" style="background: linear-gradient(to top, rgba(2,6,23,0.95) 0%, rgba(2,6,23,0.5) 50%, rgba(2,6,23,0.1) 100%);"></div>
+            <!-- Gold glow hover -->
+            <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style="background: radial-gradient(circle at 50% 100%, rgba(212,175,55,0.1) 0%, transparent 70%);"></div>
+            <!-- Gold border hover -->
+            <div class="absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/10 group-hover:ring-gold/40 transition-all duration-300"></div>
+            <!-- Tag -->
+            <div class="absolute top-4 left-4 z-10">
+              <span class="font-oswald font-semibold text-[10px] tracking-[0.2em] uppercase px-3 py-1.5 rounded-full text-slate-950"
+                style="background-image: linear-gradient(105deg,#b8922a,#d4af37,#f5d97a,#d4af37,#b8922a);">
+                SEDE HISTÓRICA
+              </span>
+            </div>
+            <!-- Content -->
+            <div class="absolute bottom-0 left-0 right-0 z-10 p-7">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="font-oswald text-xs uppercase tracking-[0.15em] px-2.5 py-1 rounded-full bg-orange-500/80 text-white">Cuartos de Final</span>
+              </div>
+              <p class="text-slate-400 text-sm font-medium mb-1">🇲🇽 México</p>
+              <h3 class="font-oswald font-bold text-4xl sm:text-5xl text-white leading-tight mb-2">Ciudad de México</h3>
+              <p class="text-slate-400 text-sm mb-3">Estadio Azteca</p>
+              <div class="flex items-center gap-4">
+                <span class="font-oswald font-bold text-lg" style="color: #d4af37;">87,523</span>
+                <span class="text-slate-500 text-xs uppercase tracking-wider">espectadores</span>
+              </div>
+            </div>
+          </a>
+
+          <!-- Columna derecha: NY + Houston apilados -->
+          <div class="lg:col-span-2 grid grid-rows-2 gap-3" style="height: 460px;">
+
+            <!-- NY Final -->
+            <a
+              href="/sedes/nueva-york"
+              class="relative overflow-hidden rounded-2xl group cursor-pointer block"
+              style="background: linear-gradient(160deg,#010314 0%,#060d1f 50%,#0f1a3e 100%);"
+              aria-label="Nueva York — Gran Final del Mundial 2026"
+            >
+              <img
+                src="https://picsum.photos/seed/metlife-ny-wc/1200/700"
+                alt="Nueva York"
+                class="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                loading="lazy"
+              />
+              <div class="absolute inset-0" style="background: linear-gradient(to top, rgba(2,6,23,0.95) 0%, rgba(2,6,23,0.4) 60%, transparent 100%);"></div>
+              <div class="absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/10 group-hover:ring-gold/40 transition-all duration-300"></div>
+              <div class="absolute top-3 left-3 z-10">
+                <span class="font-oswald font-semibold text-[10px] tracking-widest uppercase px-3 py-1.5 rounded-full text-slate-950"
+                  style="background-image: linear-gradient(105deg,#b8922a,#d4af37,#f5d97a,#d4af37,#b8922a);">
+                  ⭐ GRAN FINAL
+                </span>
+              </div>
+              <div class="absolute bottom-0 left-0 right-0 z-10 p-5">
+                <p class="text-slate-400 text-xs mb-0.5">🇺🇸 Nueva York / NJ</p>
+                <h3 class="font-oswald font-bold text-2xl text-white">MetLife Stadium</h3>
+                <p class="text-sm font-bold mt-1" style="color: #d4af37;">82,500 espectadores</p>
+              </div>
+            </a>
+
+            <!-- Houston Semifinal -->
+            <a
+              href="/sedes/houston"
+              class="relative overflow-hidden rounded-2xl group cursor-pointer block"
+              style="background: linear-gradient(160deg,#130a20 0%,#200d35 50%,#2e0f4a 100%);"
+              aria-label="Houston — Semifinal del Mundial 2026"
+            >
+              <img
+                src="https://picsum.photos/seed/nrg-houston-wc/1200/700"
+                alt="Houston"
+                class="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                loading="lazy"
+              />
+              <div class="absolute inset-0" style="background: linear-gradient(to top, rgba(2,6,23,0.95) 0%, rgba(2,6,23,0.4) 60%, transparent 100%);"></div>
+              <div class="absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/10 group-hover:ring-gold/40 transition-all duration-300"></div>
+              <div class="absolute top-3 left-3 z-10">
+                <span class="font-oswald font-semibold text-[10px] tracking-widest uppercase px-2.5 py-1 rounded-full bg-purple-600/80 text-white">Semifinal</span>
+              </div>
+              <div class="absolute bottom-0 left-0 right-0 z-10 p-5">
+                <p class="text-slate-400 text-xs mb-0.5">🇺🇸 Houston, Texas</p>
+                <h3 class="font-oswald font-bold text-2xl text-white">NRG Stadium</h3>
+                <p class="text-sm font-bold mt-1" style="color: #d4af37;">72,220 espectadores</p>
+              </div>
+            </a>
+
+          </div>
+        </div>
+
+        <!-- Fila 2: 3 medium cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {[bentoSedes[3], bentoSedes[4], bentoSedes[5]].map((s) => (
+            <a
+              href={`/sedes/${s.slug}`}
+              class="relative overflow-hidden rounded-2xl group cursor-pointer block"
+              style={`height: 240px; background: ${s.gradient};`}
+              aria-label={`${s.ciudad} — Sede del Mundial 2026`}
+            >
+              <img
+                src={s.img}
+                alt={s.ciudad}
+                class="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                loading="lazy"
+              />
+              <div class="absolute inset-0" style="background: linear-gradient(to top, rgba(2,6,23,0.95) 0%, rgba(2,6,23,0.3) 60%, transparent 100%);"></div>
+              <div class="absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/10 group-hover:ring-gold/40 transition-all duration-300"></div>
+              <div class="absolute top-3 left-3 z-10">
+                <span class={`font-oswald font-semibold text-[10px] tracking-widest uppercase px-2.5 py-1 rounded-full text-white ${s.faseClass}`}>
+                  {s.fase}
+                </span>
+              </div>
+              <div class="absolute bottom-0 left-0 right-0 z-10 p-5">
+                <p class="text-slate-400 text-xs mb-0.5">{s.flag} {s.pais ?? ''}</p>
+                <h3 class="font-oswald font-bold text-2xl text-white leading-tight">{s.ciudad}</h3>
+                <div class="flex items-center justify-between mt-1.5">
+                  <p class="text-slate-400 text-xs truncate pr-2">{s.estadio}</p>
+                  <p class="text-xs font-bold shrink-0" style="color: #d4af37;">{s.capacidad}</p>
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+
+        <!-- Fila 3: 4 small cards -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          {[bentoSedes[6], bentoSedes[7], bentoSedes[8], bentoSedes[9]].map((s) => (
+            <a
+              href={`/sedes/${s.slug}`}
+              class="relative overflow-hidden rounded-2xl group cursor-pointer block"
+              style={`height: 180px; background: ${s.gradient};`}
+              aria-label={`${s.ciudad} — Sede del Mundial 2026`}
+            >
+              <img
+                src={s.img}
+                alt={s.ciudad}
+                class="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                loading="lazy"
+              />
+              <div class="absolute inset-0" style="background: linear-gradient(to top, rgba(2,6,23,0.97) 0%, rgba(2,6,23,0.4) 70%, transparent 100%);"></div>
+              <div class="absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/10 group-hover:ring-gold/40 transition-all duration-300"></div>
+              <div class="absolute bottom-0 left-0 right-0 z-10 p-4">
+                <p class="text-slate-500 text-[10px] uppercase tracking-wider mb-0.5">{s.flag}</p>
+                <h3 class="font-oswald font-bold text-xl text-white leading-tight">{s.ciudad}</h3>
+                <p class="text-[10px] font-bold mt-0.5" style="color: #d4af37;">{s.fase}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+
+      </div>
+
+      <!-- CTA ver todas -->
+      <div class="text-center mt-8">
+        <a
+          href="/sedes"
+          class="inline-flex items-center gap-2 font-oswald font-semibold text-sm uppercase tracking-wider px-8 py-3.5 rounded-full text-white border transition-all hover:scale-105 hover:border-gold/60"
+          style="border-color: rgba(255,255,255,0.15); background: rgba(255,255,255,0.04);"
+        >
+          Explorar las 16 sedes completas
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
           </svg>
@@ -400,79 +533,104 @@ const categorias = [
     </div>
   </section>
 
-  <!-- Ad: Rectángulo entre secciones -->
+  <!-- Ad entre secciones -->
   <AdSlot slot="0987654321" format="rectangle" label="Publicidad" class="max-w-3xl mx-auto px-4" />
 
   <!-- ===================================================
-       GUÍA DE ENTRADAS
+       GUÍA DE ENTRADAS — Glass Cards
   ==================================================== -->
-  <section id="entradas" class="py-20 px-4 sm:px-6 lg:px-8 bg-white" aria-labelledby="entradas-heading">
-    <div class="max-w-7xl mx-auto">
+  <section
+    id="entradas"
+    class="py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden"
+    style="background: linear-gradient(180deg, #020617 0%, #0f172a 50%, #020617 100%);"
+    aria-labelledby="entradas-heading"
+  >
+    <!-- Textura fondo -->
+    <div
+      class="absolute inset-0 opacity-100 pointer-events-none"
+      style="background-image: radial-gradient(rgba(212,175,55,0.05) 1px, transparent 1px); background-size: 36px 36px;"
+      aria-hidden="true"
+    ></div>
 
-      <!-- Encabezado sección -->
+    <div class="relative z-10 max-w-7xl mx-auto">
+
       <div class="text-center mb-14">
-        <p class="text-gold font-bold text-sm uppercase tracking-widest mb-2">Cómo conseguir tu lugar</p>
-        <h2 id="entradas-heading" class="font-black text-4xl sm:text-5xl text-navy-900 leading-tight">
+        <p class="font-oswald text-xs uppercase tracking-[0.2em] mb-3" style="color: #d4af37;">
+          Cómo conseguir tu lugar
+        </p>
+        <h2 id="entradas-heading" class="font-oswald font-bold text-4xl sm:text-5xl text-white leading-tight">
           Guía de Entradas
         </h2>
-        <div class="w-16 h-1 bg-gold mx-auto mt-4 rounded-full" aria-hidden="true"></div>
-        <p class="mt-5 text-gray-600 text-lg max-w-2xl mx-auto">
+        <div class="w-16 h-px mx-auto mt-5 rounded-full" style="background: linear-gradient(90deg, transparent, #d4af37, transparent);" aria-hidden="true"></div>
+        <p class="mt-5 text-slate-400 text-lg max-w-2xl mx-auto leading-relaxed">
           Las entradas se venden exclusivamente a través de FIFA. Conoce las categorías, precios y cómo comprar.
         </p>
       </div>
 
-      <!-- Categorías de entradas -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-16">
-        {categorias.map(({ num, nombre, desc, precio, border, badgeBg, badge }) => (
-          <div class={`relative rounded-2xl border-2 ${border} p-6 hover:shadow-xl transition-shadow`}>
-            <span class={`absolute -top-3 left-5 ${badgeBg} text-xs font-bold px-3 py-1 rounded-full`}>
-              {badge}
-            </span>
-            <div class="font-black text-5xl text-gray-100 absolute top-4 right-5 select-none" aria-hidden="true">{num}</div>
-            <h3 class="font-bold text-navy-900 text-sm mt-4 mb-2 pr-8">{nombre}</h3>
-            <p class="text-gray-500 text-sm leading-relaxed mb-4">{desc}</p>
-            <p class="font-black text-navy-900 text-lg">{precio}</p>
-          </div>
-        ))}
+      <!-- Glass cards de categorías -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-16">
+        {categorias.map(({ num, nombre, desc, precio, color }) => {
+          const borderColor = color === 'gold'  ? 'rgba(212,175,55,0.4)' :
+                              color === 'blue'  ? 'rgba(59,130,246,0.4)' :
+                              color === 'green' ? 'rgba(34,197,94,0.4)' :
+                              'rgba(255,255,255,0.1)';
+          const glowColor   = color === 'gold'  ? 'rgba(212,175,55,0.06)' :
+                              color === 'blue'  ? 'rgba(59,130,246,0.06)' :
+                              color === 'green' ? 'rgba(34,197,94,0.06)' :
+                              'rgba(255,255,255,0.02)';
+          return (
+            <div
+              class="relative rounded-2xl p-6 overflow-hidden group transition-all duration-300 hover:-translate-y-1"
+              style={`background: ${glowColor}; backdrop-filter: blur(12px); border: 1px solid ${borderColor}; box-shadow: 0 4px 24px rgba(0,0,0,0.4);`}
+            >
+              <!-- Número fantasma -->
+              <div
+                class="absolute top-3 right-4 font-oswald font-bold text-7xl leading-none select-none pointer-events-none opacity-[0.06] text-white"
+                aria-hidden="true"
+              >{num}</div>
+              <p class="text-slate-400 text-xs uppercase tracking-[0.15em] font-medium mb-3">Categoría {num}</p>
+              <h3 class="font-oswald font-bold text-white text-lg leading-tight mb-2">{nombre}</h3>
+              <p class="text-slate-500 text-sm leading-relaxed mb-5">{desc}</p>
+              <p
+                class="font-oswald font-bold text-2xl"
+                style={color === 'gold' ? 'background-image: linear-gradient(105deg,#b8922a,#d4af37,#f5d97a); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;' : 'color: #e2e8f0;'}
+              >{precio}</p>
+            </div>
+          );
+        })}
       </div>
 
-      <!-- Cómo comprar -->
-      <div class="bg-navy-900 rounded-3xl p-8 sm:p-12 text-white mb-12">
-        <h3 class="font-black text-2xl sm:text-3xl mb-8 text-center">
-          Cómo Comprar Entradas en <span class="text-gold">3 Pasos</span>
+      <!-- Cómo comprar — panel oscuro con bordes gold -->
+      <div
+        class="rounded-3xl p-8 sm:p-12 mb-12 border"
+        style="background: rgba(212,175,55,0.04); border-color: rgba(212,175,55,0.2); backdrop-filter: blur(12px);"
+      >
+        <h3 class="font-oswald font-bold text-2xl sm:text-3xl text-white mb-10 text-center">
+          Cómo Comprar en <span style="background-image: linear-gradient(105deg,#b8922a,#d4af37,#f5d97a); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">3 Pasos</span>
         </h3>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
           {[
-            {
-              step: '01',
-              titulo: 'Regístrate en FIFA',
-              desc: 'Crea tu cuenta en el portal oficial de FIFA. Necesitas un ID de FIFA para acceder al sistema de venta.',
-            },
-            {
-              step: '02',
-              titulo: 'Selecciona partidos',
-              desc: 'Escoge los partidos que quieres ver: Fase de Grupos, Octavos, Cuartos, Semifinales o la Gran Final.',
-            },
-            {
-              step: '03',
-              titulo: 'Compra y confirma',
-              desc: 'Completa el pago. Las entradas son nominales y se vinculan a tu identidad. Recibirás confirmación por email.',
-            },
+            { step: '01', titulo: 'Regístrate en FIFA', desc: 'Crea tu cuenta y obtén tu FIFA ID en el portal oficial. Es tu llave de acceso para todo el sistema de venta.' },
+            { step: '02', titulo: 'Selecciona partidos', desc: 'Elige los partidos: Fase de Grupos, Octavos, Cuartos, Semifinales o la Gran Final del 19 de julio.' },
+            { step: '03', titulo: 'Compra y confirma', desc: 'Completa el pago. Las entradas son nominales y van vinculadas a tu identidad. Recibirás confirmación por email.' },
           ].map(({ step, titulo, desc }) => (
             <div class="flex flex-col items-center text-center sm:items-start sm:text-left">
-              <div class="w-12 h-12 bg-gold rounded-full flex items-center justify-center font-black text-navy-900 text-lg mb-4 shrink-0">
+              <div
+                class="w-12 h-12 rounded-full flex items-center justify-center font-oswald font-bold text-slate-950 text-lg mb-4 shrink-0"
+                style="background-image: linear-gradient(105deg,#b8922a,#d4af37,#f5d97a);"
+              >
                 {step}
               </div>
-              <h4 class="font-bold text-lg mb-2">{titulo}</h4>
-              <p class="text-gray-400 text-sm leading-relaxed">{desc}</p>
+              <h4 class="font-oswald font-bold text-lg text-white mb-2">{titulo}</h4>
+              <p class="text-slate-500 text-sm leading-relaxed">{desc}</p>
             </div>
           ))}
         </div>
-
         <div class="text-center mt-10">
           <a
             href="/entradas"
-            class="inline-flex items-center gap-2 bg-gold hover:bg-gold-dark text-navy-900 font-black px-8 py-4 rounded-full transition-colors text-base shadow-lg"
+            class="inline-flex items-center gap-2 font-oswald font-semibold text-sm uppercase tracking-wider px-8 py-4 rounded-full text-slate-950 transition-all hover:scale-105 hover:shadow-gold"
+            style="background-image: linear-gradient(105deg,#b8922a 0%,#d4af37 40%,#f5d97a 60%,#d4af37 80%,#b8922a 100%);"
           >
             Ver Guía Completa de Entradas
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -482,76 +640,75 @@ const categorias = [
         </div>
       </div>
 
-      <!-- Aviso importante -->
-      <div class="flex gap-4 bg-amber-50 border border-amber-200 rounded-2xl p-5">
+      <!-- Aviso revendedores -->
+      <div
+        class="flex gap-4 rounded-2xl p-5 border"
+        style="background: rgba(217,119,6,0.06); border-color: rgba(217,119,6,0.3);"
+      >
         <span class="text-2xl shrink-0" aria-hidden="true">⚠️</span>
         <div>
-          <p class="font-bold text-amber-900 mb-1">¡Atención! Evita revendedores no autorizados</p>
-          <p class="text-amber-800 text-sm leading-relaxed">
-            Las entradas solo se venden a través del portal oficial de FIFA. Los revendedores no autorizados son ilegales y FIFA puede invalidar esas entradas. Compra siempre en los canales oficiales.
+          <p class="font-bold text-amber-400 mb-1 text-sm">Evita revendedores no autorizados</p>
+          <p class="text-slate-500 text-sm leading-relaxed">
+            Las entradas solo se venden a través del portal oficial de FIFA. Los revendedores no autorizados son ilegales y FIFA puede invalidar esas entradas en el acceso.
           </p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Ad: Final de página -->
+  <!-- Ad: Final página -->
   <AdSlot slot="1122334455" format="auto" label="Publicidad" class="max-w-4xl mx-auto px-4" />
 
   <!-- ===================================================
-       PREGUNTAS FRECUENTES (FAQ)
+       FAQ
   ==================================================== -->
-  <section id="faqs" class="py-20 px-4 sm:px-6 lg:px-8 bg-navy-900 text-white" aria-labelledby="faq-heading">
-    <div class="max-w-4xl mx-auto">
+  <section
+    id="faqs"
+    class="py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden"
+    style="background: #020617;"
+    aria-labelledby="faq-heading"
+  >
+    <!-- Línea decorativa superior -->
+    <div class="absolute top-0 left-0 right-0 h-px" style="background: linear-gradient(90deg, transparent, rgba(212,175,55,0.3) 30%, rgba(245,217,122,0.6) 50%, rgba(212,175,55,0.3) 70%, transparent);" aria-hidden="true"></div>
+
+    <div class="max-w-4xl mx-auto relative z-10">
 
       <div class="text-center mb-12">
-        <p class="text-gold font-bold text-sm uppercase tracking-widest mb-2">Todo lo que necesitas saber</p>
-        <h2 id="faq-heading" class="font-black text-4xl sm:text-5xl leading-tight mb-4">
-          Preguntas Frecuentes
+        <p class="font-oswald text-xs uppercase tracking-[0.2em] mb-3" style="color: #d4af37;">
+          Todo lo que necesitas saber
+        </p>
+        <h2 id="faq-heading" class="font-oswald font-bold text-4xl sm:text-5xl text-white">
+          Preguntas<br/>
+          <span
+            class="bg-clip-text text-transparent"
+            style="background-image: linear-gradient(105deg,#b8922a,#d4af37,#f5d97a,#d4af37,#b8922a);"
+          >Frecuentes</span>
         </h2>
-        <div class="w-16 h-1 bg-gold mx-auto rounded-full" aria-hidden="true"></div>
       </div>
 
-      <div class="space-y-3">
+      <div class="space-y-2">
         {[
-          {
-            q: '¿Cuándo empieza el Mundial 2026?',
-            a: 'El Mundial FIFA 2026 empieza el 11 de junio de 2026 y termina el 19 de julio de 2026 con la Gran Final en el MetLife Stadium de Nueva York / New Jersey. Son 39 días de competición con 104 partidos.',
-          },
-          {
-            q: '¿Cuántos equipos participan en el Mundial 2026?',
-            a: '48 selecciones nacionales. Es la primera vez que el torneo tiene este formato ampliado, divididas en 12 grupos de 4 equipos. Son 16 selecciones más que en Qatar 2022, lo que da oportunidades a más países del mundo.',
-          },
-          {
-            q: '¿Dónde se juega la Final del Mundial 2026?',
-            a: 'La Gran Final es el 19 de julio de 2026 en el MetLife Stadium, East Rutherford (Nueva York / New Jersey). Con capacidad para 82,500 espectadores, será la final mundialista más concurrida de la historia.',
-          },
-          {
-            q: '¿En qué países se juega el Mundial 2026?',
-            a: 'En tres países: Estados Unidos (11 sedes), México (3: Ciudad de México, Guadalajara, Monterrey) y Canadá (2: Toronto, Vancouver). Es la primera vez en la historia que un Mundial se celebra simultáneamente en tres naciones.',
-          },
-          {
-            q: '¿Cómo comprar entradas para el Mundial 2026?',
-            a: 'Solo a través del portal oficial de FIFA. Pasos: 1) Crea tu ID en FIFA.com, 2) Selecciona partidos y categoría de entrada (desde $35 residentes hasta $210 Categoría 1), 3) Paga y recibe confirmación. Las entradas son nominales. Evita siempre revendedores no autorizados: FIFA puede invalidarlas.',
-          },
-          {
-            q: '¿Cuántos partidos se juegan en el Mundial 2026?',
-            a: '104 partidos en total: 72 en Fase de Grupos + 16 Octavos + 8 Cuartos + 4 Semifinales + 1 partido por el 3.er puesto + 1 Gran Final. Son 15 partidos más que en Qatar 2022.',
-          },
-          {
-            q: '¿Cuáles son las 16 sedes del Mundial 2026?',
-            a: 'Las 16 sedes son: Ciudad de México (Azteca), Guadalajara (Akron) y Monterrey (BBVA) en México; Toronto (BMO Field) y Vancouver (BC Place) en Canadá; y en EE.UU.: Nueva York/NJ (MetLife), Los Ángeles (SoFi), Dallas (AT&T), San Francisco (Levi\'s), Seattle (Lumen), Miami (Hard Rock), Atlanta (Mercedes-Benz), Boston (Gillette), Kansas City (Arrowhead), Filadelfia (Lincoln Financial) y Houston (NRG).',
-          },
-          {
-            q: '¿Cuándo se conocerán los grupos del Mundial 2026?',
-            a: 'El sorteo de grupos del Mundial 2026 está programado para enero de 2026 en Miami, Florida. Hasta entonces, los 48 equipos clasificados están divididos en bombos por su ranking FIFA, pero los emparejamientos definitivos se conocerán en esa fecha.',
-          },
+          { q: '¿Cuándo empieza el Mundial 2026?', a: 'El 11 de junio de 2026. La Gran Final es el 19 de julio en el MetLife Stadium de Nueva York / New Jersey. Son 39 días de competición con 104 partidos en total.' },
+          { q: '¿Cuántos equipos participan?', a: '48 selecciones nacionales divididas en 12 grupos de 4 equipos. Son 16 equipos más que en Qatar 2022, representando el formato ampliado más grande en la historia del torneo.' },
+          { q: '¿Dónde se juega la Final del Mundial 2026?', a: 'La Gran Final es el 19 de julio de 2026 en el MetLife Stadium, East Rutherford (área metropolitana de Nueva York), con capacidad para 82,500 espectadores. Será la final más concurrida de la historia.' },
+          { q: '¿En qué países se celebra el Mundial 2026?', a: 'En tres países simultáneamente: Estados Unidos (11 sedes), México (3: Ciudad de México, Guadalajara y Monterrey) y Canadá (2: Toronto y Vancouver). Primera vez en la historia que se celebra en 3 naciones a la vez.' },
+          { q: '¿Cómo comprar entradas para el Mundial 2026?', a: 'Exclusivamente en el portal oficial de FIFA. Pasos: 1) Crea tu FIFA ID en FIFA.com, 2) Selecciona los partidos y categoría (desde $35 residentes hasta $210 Cat. Premium), 3) Paga y recibe confirmación. Las entradas son nominales. Nunca compres en revendedores.' },
+          { q: '¿Cuántos partidos se juegan en total?', a: '104 partidos: 72 en Fase de Grupos (12 grupos × 6 partidos) + 16 Octavos + 8 Cuartos + 4 Semifinales + 1 tercer puesto + 1 Gran Final.' },
+          { q: '¿Cuándo es el sorteo de grupos?', a: 'El sorteo oficial de grupos está programado para enero de 2026 en Miami, Florida. Una vez realizado, la página /grupos se actualizará con todos los emparejamientos.' },
+          { q: '¿Cuáles son las 16 sedes?', a: 'USA (11): Nueva York, Los Ángeles, Dallas, San Francisco, Seattle, Miami, Atlanta, Boston, Kansas City, Filadelfia y Houston. México (3): Ciudad de México, Guadalajara y Monterrey. Canadá (2): Vancouver y Toronto.' },
         ].map(({ q, a }) => (
-          <details class="group bg-white/10 border border-white/20 rounded-2xl overflow-hidden hover:border-gold/50 transition-colors">
-            <summary class="flex items-center justify-between gap-4 p-5 cursor-pointer list-none select-none hover:bg-white/5 transition-colors">
-              <span class="font-bold text-white text-sm sm:text-base pr-2">{q}</span>
+          <details
+            class="group rounded-2xl overflow-hidden border transition-all duration-200"
+            style="background: rgba(255,255,255,0.03); border-color: rgba(255,255,255,0.08);"
+          >
+            <summary
+              class="flex items-center justify-between gap-4 p-5 cursor-pointer list-none select-none transition-colors"
+              style=""
+            >
+              <span class="font-oswald font-semibold text-white text-base sm:text-lg pr-2 leading-tight">{q}</span>
               <svg
-                class="w-5 h-5 text-gold shrink-0 transition-transform duration-200 group-open:rotate-180"
+                class="w-5 h-5 shrink-0 transition-transform duration-300 group-open:rotate-180"
+                style="color: #d4af37;"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -560,7 +717,7 @@ const categorias = [
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
               </svg>
             </summary>
-            <div class="px-5 pb-5 pt-2 text-sm text-gray-300 leading-relaxed border-t border-white/10">
+            <div class="px-5 pb-5 pt-1 text-sm text-slate-400 leading-relaxed border-t" style="border-color: rgba(255,255,255,0.05);">
               {a}
             </div>
           </details>
@@ -570,9 +727,10 @@ const categorias = [
       <div class="text-center mt-10">
         <a
           href="/grupos"
-          class="inline-flex items-center gap-2 bg-gold hover:bg-gold-dark text-navy-900 font-black px-8 py-4 rounded-full transition-colors shadow-lg"
+          class="inline-flex items-center gap-2 font-oswald font-semibold text-sm uppercase tracking-wider px-8 py-4 rounded-full text-slate-950 transition-all hover:scale-105 hover:shadow-gold"
+          style="background-image: linear-gradient(105deg,#b8922a 0%,#d4af37 40%,#f5d97a 60%,#d4af37 80%,#b8922a 100%);"
         >
-          Ver tablas de grupos completas
+          Ver Tablas de Grupos
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
           </svg>
@@ -582,27 +740,52 @@ const categorias = [
   </section>
 
   <!-- ===================================================
-       CTA FINAL
+       CTA FINAL — Inmersivo
   ==================================================== -->
-  <section class="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50" aria-labelledby="cta-heading">
-    <div class="max-w-3xl mx-auto text-center">
-      <span class="text-4xl mb-4 block" aria-hidden="true">🏆</span>
-      <h2 id="cta-heading" class="font-black text-3xl sm:text-4xl text-navy-900 mb-4">
-        ¿Listo para el Mundial?
+  <section
+    class="py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden text-center"
+    style="background: linear-gradient(160deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);"
+    aria-labelledby="cta-heading"
+  >
+    <!-- Textura -->
+    <div
+      class="absolute inset-0 pointer-events-none"
+      style="background-image: radial-gradient(rgba(212,175,55,0.07) 1px, transparent 1px); background-size: 28px 28px;"
+      aria-hidden="true"
+    ></div>
+    <!-- Glow central -->
+    <div
+      class="absolute inset-0 pointer-events-none"
+      style="background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(212,175,55,0.08) 0%, transparent 70%);"
+      aria-hidden="true"
+    ></div>
+    <!-- Borde superior gold -->
+    <div class="absolute top-0 left-0 right-0 h-px" style="background: linear-gradient(90deg, transparent, #d4af37 30%, #f5d97a 50%, #d4af37 70%, transparent);" aria-hidden="true"></div>
+
+    <div class="relative z-10 max-w-3xl mx-auto">
+      <span class="text-5xl mb-6 block" aria-hidden="true">🏆</span>
+      <h2 id="cta-heading" class="font-oswald font-bold text-4xl sm:text-6xl text-white mb-4 leading-tight">
+        ¿Listo para<br/>
+        <span
+          class="bg-clip-text text-transparent"
+          style="background-image: linear-gradient(105deg,#b8922a,#d4af37,#f5d97a,#d4af37,#b8922a);"
+        >el Mundial?</span>
       </h2>
-      <p class="text-gray-600 text-lg mb-8">
-        Descubre todo lo que necesitas saber: sedes, equipos, guía de viaje y cómo vivir el torneo más grande de la historia del fútbol.
+      <p class="text-slate-400 text-lg mb-10 leading-relaxed">
+        Descubre todo lo que necesitas: sedes, equipos, guía de viaje y cómo vivir el torneo más grande de la historia del fútbol.
       </p>
       <div class="flex flex-col sm:flex-row justify-center gap-4">
         <a
           href="/guia-completa"
-          class="bg-navy-900 hover:bg-navy-800 text-white font-bold px-8 py-4 rounded-full transition-colors shadow-lg"
+          class="font-oswald font-semibold uppercase tracking-wider text-sm px-9 py-4 rounded-full text-slate-950 transition-all hover:scale-105 hover:shadow-gold"
+          style="background-image: linear-gradient(105deg,#b8922a 0%,#d4af37 40%,#f5d97a 60%,#d4af37 80%,#b8922a 100%);"
         >
           Ver Guía Completa
         </a>
         <a
           href="/sedes"
-          class="border-2 border-navy-900 text-navy-900 hover:bg-navy-900 hover:text-white font-bold px-8 py-4 rounded-full transition-colors"
+          class="font-oswald font-semibold uppercase tracking-wider text-sm px-9 py-4 rounded-full text-white transition-all hover:scale-105 border"
+          style="border-color: rgba(212,175,55,0.35); background: rgba(212,175,55,0.05);"
         >
           Explorar Sedes
         </a>
@@ -628,7 +811,7 @@ const categorias = [
 
     if (diff <= 0) {
       const wrapper = document.getElementById('countdown-wrapper');
-      if (wrapper) wrapper.innerHTML = '<p class="text-gold font-black text-2xl animate-pulse">¡El Mundial ha comenzado! ⚽🎉</p>';
+      if (wrapper) wrapper.innerHTML = '<p class="font-oswald text-gold font-bold text-2xl animate-pulse">¡El Mundial ha comenzado! ⚽🎉</p>';
       return;
     }
 
