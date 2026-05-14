@@ -4,5 +4,12 @@
       "path": "/api/redeploy",
       "schedule": "0 7 * * *"
     }
+  ],
+  "redirects": [
+    { "source": "/entradas",      "destination": "/calendario", "permanent": false },
+    { "source": "/equipos",       "destination": "/grupos",     "permanent": false },
+    { "source": "/sobre-nosotros","destination": "/",           "permanent": false },
+    { "source": "/contacto",      "destination": "/",           "permanent": false },
+    { "source": "/buscar",        "destination": "/",           "permanent": false }
   ]
 }

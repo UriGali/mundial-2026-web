@@ -23,4 +23,4 @@ Disallow: /404
 # Disallow: /
 
 # ── Sitemap ───────────────────────────────────────────────────────────────────
-Sitemap: https://mundial2026guia.com/sitemap-index.xml
+Sitemap: https://mundial26horarios.com/sitemap-index.xml
