@@ -1,0 +1,517 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import AdSlot from '../../components/AdSlot.astro';
+
+const title       = 'Sedes del Mundial 2026 en EE. UU. — Las 11 Ciudades y Estadios';
+const description = 'Guía completa de las 11 sedes del Mundial FIFA 2026 en Estados Unidos: estadios, fases, distancias entre ciudades y horarios de los partidos en tu zona horaria.';
+
+interface Sede {
+  slug: string;
+  ciudad: string;
+  estadio: string;
+  capacidad: string;
+  fase: string;
+  faseClass: string;
+  seed: string;
+  estado: string;
+  partidos: number;
+  highlight: boolean;
+}
+
+const sedes: Sede[] = [
+  {
+    slug: 'nueva-york',
+    ciudad: 'Nueva York / NJ',
+    estadio: 'MetLife Stadium',
+    capacidad: '82,500',
+    fase: '⭐ Gran Final',
+    faseClass: 'bg-gold text-navy-900',
+    seed: 'stadium-nyc',
+    estado: 'New York / New Jersey',
+    partidos: 8,
+    highlight: true,
+  },
+  {
+    slug: 'los-angeles',
+    ciudad: 'Los Ángeles',
+    estadio: 'SoFi Stadium',
+    capacidad: '70,240',
+    fase: 'Semifinal',
+    faseClass: 'bg-purple-700 text-white',
+    seed: 'stadium-la',
+    estado: 'California',
+    partidos: 6,
+    highlight: true,
+  },
+  {
+    slug: 'dallas',
+    ciudad: 'Dallas',
+    estadio: "AT&T Stadium",
+    capacidad: '80,000',
+    fase: 'Cuartos de Final',
+    faseClass: 'bg-sky-700 text-white',
+    seed: 'stadium-dallas',
+    estado: 'Texas',
+    partidos: 6,
+    highlight: false,
+  },
+  {
+    slug: 'miami',
+    ciudad: 'Miami',
+    estadio: 'Hard Rock Stadium',
+    capacidad: '64,767',
+    fase: 'Grupos + Octavos',
+    faseClass: 'bg-teal-700 text-white',
+    seed: 'stadium-miami',
+    estado: 'Florida',
+    partidos: 5,
+    highlight: false,
+  },
+  {
+    slug: 'atlanta',
+    ciudad: 'Atlanta',
+    estadio: 'Mercedes-Benz Stadium',
+    capacidad: '71,000',
+    fase: 'Fase de Grupos',
+    faseClass: 'bg-red-700 text-white',
+    seed: 'stadium-atlanta',
+    estado: 'Georgia',
+    partidos: 4,
+    highlight: false,
+  },
+  {
+    slug: 'boston',
+    ciudad: 'Boston',
+    estadio: 'Gillette Stadium',
+    capacidad: '65,878',
+    fase: 'Fase de Grupos',
+    faseClass: 'bg-red-700 text-white',
+    seed: 'stadium-boston',
+    estado: 'Massachusetts',
+    partidos: 4,
+    highlight: false,
+  },
+  {
+    slug: 'filadelfia',
+    ciudad: 'Filadelfia',
+    estadio: 'Lincoln Financial Field',
+    capacidad: '69,796',
+    fase: 'Fase de Grupos',
+    faseClass: 'bg-red-700 text-white',
+    seed: 'stadium-philly',
+    estado: 'Pennsylvania',
+    partidos: 4,
+    highlight: false,
+  },
+  {
+    slug: 'houston',
+    ciudad: 'Houston',
+    estadio: 'NRG Stadium',
+    capacidad: '72,220',
+    fase: 'Fase de Grupos',
+    faseClass: 'bg-red-700 text-white',
+    seed: 'stadium-houston',
+    estado: 'Texas',
+    partidos: 4,
+    highlight: false,
+  },
+  {
+    slug: 'kansas-city',
+    ciudad: 'Kansas City',
+    estadio: 'Arrowhead Stadium',
+    capacidad: '76,416',
+    fase: 'Fase de Grupos',
+    faseClass: 'bg-red-700 text-white',
+    seed: 'stadium-kc',
+    estado: 'Missouri',
+    partidos: 4,
+    highlight: false,
+  },
+  {
+    slug: 'san-francisco',
+    ciudad: 'San Francisco / Bay Area',
+    estadio: "Levi's Stadium",
+    capacidad: '68,500',
+    fase: 'Fase de Grupos',
+    faseClass: 'bg-red-700 text-white',
+    seed: 'stadium-sf',
+    estado: 'California',
+    partidos: 4,
+    highlight: false,
+  },
+  {
+    slug: 'seattle',
+    ciudad: 'Seattle',
+    estadio: 'Lumen Field',
+    capacidad: '68,740',
+    fase: 'Fase de Grupos',
+    faseClass: 'bg-red-700 text-white',
+    seed: 'stadium-seattle',
+    estado: 'Washington',
+    partidos: 4,
+    highlight: false,
+  },
+];
+
+const clusters = [
+  {
+    nombre: '🗽 Costa Este',
+    colorBorder: 'border-l-blue-500',
+    rutas: [
+      { origen: 'Nueva York',  destino: 'Filadelfia', km: 151,  tiempo: '1h 30min en auto' },
+      { origen: 'Nueva York',  destino: 'Boston',     km: 346,  tiempo: '3h 30min en auto' },
+      { origen: 'Nueva York',  destino: 'Miami',      km: 2044, tiempo: '2h 45min en avión' },
+      { origen: 'Miami',       destino: 'Atlanta',    km: 1093, tiempo: '1h 30min en avión' },
+    ],
+  },
+  {
+    nombre: '🤠 Centro-Sur',
+    colorBorder: 'border-l-orange-500',
+    rutas: [
+      { origen: 'Dallas',      destino: 'Houston',     km: 386,  tiempo: '3h 45min en auto' },
+      { origen: 'Dallas',      destino: 'Kansas City', km: 1000, tiempo: '1h 30min en avión' },
+      { origen: 'Dallas',      destino: 'Atlanta',     km: 1288, tiempo: '2h en avión' },
+      { origen: 'Houston',     destino: 'Kansas City', km: 1480, tiempo: '2h 15min en avión' },
+    ],
+  },
+  {
+    nombre: '🌊 Costa Oeste',
+    colorBorder: 'border-l-emerald-500',
+    rutas: [
+      { origen: 'Los Ángeles', destino: 'San Francisco', km: 617,  tiempo: '5h 30min en auto' },
+      { origen: 'San Francisco',destino: 'Seattle',       km: 1296, tiempo: '2h en avión' },
+      { origen: 'Los Ángeles', destino: 'Seattle',       km: 1953, tiempo: '2h 45min en avión' },
+      { origen: 'Los Ángeles', destino: 'Dallas',        km: 2247, tiempo: '3h en avión' },
+    ],
+  },
+];
+
+const regiones = [
+  {
+    titulo: '🗽 Costa Este',
+    bg: 'bg-blue-50',
+    border: 'border-blue-200',
+    titleColor: 'text-blue-800',
+    ciudades: [
+      { nombre: 'Nueva York / NJ', slug: 'nueva-york',  fase: '⭐ Final' },
+      { nombre: 'Boston',          slug: 'boston',       fase: 'Grupos' },
+      { nombre: 'Filadelfia',      slug: 'filadelfia',   fase: 'Grupos' },
+      { nombre: 'Miami',           slug: 'miami',        fase: 'Grupos + Octavos' },
+      { nombre: 'Atlanta',         slug: 'atlanta',      fase: 'Grupos' },
+    ],
+  },
+  {
+    titulo: '🤠 Centro-Sur',
+    bg: 'bg-orange-50',
+    border: 'border-orange-200',
+    titleColor: 'text-orange-800',
+    ciudades: [
+      { nombre: 'Dallas',       slug: 'dallas',      fase: 'Cuartos' },
+      { nombre: 'Houston',      slug: 'houston',     fase: 'Grupos' },
+      { nombre: 'Kansas City',  slug: 'kansas-city', fase: 'Grupos' },
+    ],
+  },
+  {
+    titulo: '🌊 Costa Oeste',
+    bg: 'bg-emerald-50',
+    border: 'border-emerald-200',
+    titleColor: 'text-emerald-800',
+    ciudades: [
+      { nombre: 'Los Ángeles',         slug: 'los-angeles',  fase: 'Semifinal' },
+      { nombre: 'San Francisco / Bay', slug: 'san-francisco',fase: 'Grupos' },
+      { nombre: 'Seattle',             slug: 'seattle',      fase: 'Grupos' },
+    ],
+  },
+];
+
+// JSON-LD estructurado
+const jsonld = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Sedes del Mundial FIFA 2026 en Estados Unidos',
+  numberOfItems: sedes.length,
+  itemListElement: sedes.map((s, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: `${s.ciudad} — ${s.estadio}`,
+    url: `https://mundial26horarios.com/sedes/${s.slug}`,
+  })),
+};
+---
+
+<Layout title={title} description={description} jsonLd={jsonld}>
+
+  <!-- ===================================================
+       HERO
+  ==================================================== -->
+  <section
+    class="relative text-white overflow-hidden pt-24 pb-16 px-4 sm:px-6 lg:px-8"
+    style="background: linear-gradient(160deg,#020614 0%,#0a1230 45%,#0d1b3e 80%,#020614 100%);"
+    aria-labelledby="hero-heading"
+  >
+    <!-- Patrón punteado -->
+    <div
+      class="absolute inset-0 opacity-5 pointer-events-none"
+      style="background-image:radial-gradient(circle,#d4af37 1px,transparent 1px);background-size:36px 36px;"
+      aria-hidden="true"
+    ></div>
+
+    <!-- Franjas decorativas bandera USA -->
+    <div class="absolute top-0 left-0 right-0 h-1.5 flex" aria-hidden="true">
+      {Array.from({ length: 13 }).map((_, i) => (
+        <div class={`flex-1 ${i % 2 === 0 ? 'bg-red-600' : 'bg-white/90'}`}></div>
+      ))}
+    </div>
+
+    <div class="relative z-10 max-w-7xl mx-auto text-center">
+      <p class="text-gold font-bold text-sm uppercase tracking-widest mb-4">
+        🇺🇸 Mundial FIFA 2026
+      </p>
+
+      <h1
+        id="hero-heading"
+        class="font-black text-4xl sm:text-6xl leading-tight mb-6"
+      >
+        Sedes en<br />
+        <span
+          class="bg-clip-text text-transparent"
+          style="background-image: linear-gradient(105deg,#b8922a 0%,#d4af37 40%,#f5d97a 60%,#d4af37 80%,#b8922a 100%);"
+        >Estados Unidos</span>
+      </h1>
+
+      <p class="text-slate-400 text-base sm:text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
+        11 ciudades, más de 60 partidos y la Gran Final en Nueva York.
+        La Copa del Mundo más grande de la historia se juega en suelo estadounidense.
+      </p>
+
+      <!-- Stats -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl mx-auto mb-12">
+        {[
+          { num: '11',     label: 'Ciudades sede' },
+          { num: '60+',    label: 'Partidos en USA' },
+          { num: '82,500', label: 'Aforo Final (MetLife)' },
+          { num: '19 Jul', label: 'Fecha de la Final' },
+        ].map(({ num, label }) => (
+          <div class="bg-white/5 border border-white/10 rounded-2xl p-4 backdrop-blur-sm">
+            <p class="font-black text-2xl sm:text-3xl text-gold">{num}</p>
+            <p class="text-xs text-slate-400 mt-1 leading-tight">{label}</p>
+          </div>
+        ))}
+      </div>
+
+      <!-- CTA principal -->
+      <a
+        href="/horarios/usa/nueva-york"
+        class="inline-flex items-center gap-2 px-8 py-4 font-black text-navy-900 rounded-full transition-all hover:scale-105 shadow-lg text-base sm:text-lg"
+        style="background-image: linear-gradient(105deg,#b8922a 0%,#d4af37 40%,#f5d97a 60%,#d4af37 80%,#b8922a 100%);"
+      >
+        📅 Ver Calendario en USA
+      </a>
+    </div>
+  </section>
+
+  <!-- AdSlot top -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <AdSlot slot="3947291810" label="Publicidad" />
+  </div>
+
+  <!-- ===================================================
+       GRID DE SEDES
+  ==================================================== -->
+  <section
+    class="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50"
+    aria-labelledby="sedes-heading"
+  >
+    <div class="max-w-7xl mx-auto">
+      <h2
+        id="sedes-heading"
+        class="font-black text-2xl sm:text-3xl text-navy-900 text-center mb-3"
+      >
+        Las 11 Ciudades Sede
+      </h2>
+      <p class="text-center text-slate-500 mb-10 max-w-xl mx-auto text-sm sm:text-base">
+        Desde la Gran Final en Nueva York hasta el futurismo del SoFi Stadium en Los Ángeles.
+      </p>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {sedes.map((s) => (
+          <a
+            href={`/sedes/${s.slug}`}
+            class={`group bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 ${s.highlight ? 'border-gold' : 'border-transparent hover:border-gold/30'}`}
+          >
+            <!-- Foto Picsum -->
+            <div class="relative overflow-hidden aspect-video bg-slate-200">
+              <img
+                src={`https://picsum.photos/seed/${s.seed}/800/450`}
+                alt={`${s.ciudad} — ${s.estadio}`}
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                loading="lazy"
+                width="800"
+                height="450"
+              />
+              <!-- Badge fase -->
+              <span class={`absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-black shadow ${s.faseClass}`}>
+                {s.fase}
+              </span>
+              <!-- Estado -->
+              <span class="absolute top-3 right-3 bg-black/60 backdrop-blur-sm text-white text-xs px-2.5 py-1 rounded-full">
+                {s.estado}
+              </span>
+            </div>
+
+            <!-- Datos -->
+            <div class="p-5">
+              <h3 class="font-black text-navy-900 text-lg mb-0.5 group-hover:text-gold transition-colors duration-200">
+                {s.ciudad}
+              </h3>
+              <p class="text-slate-500 text-sm mb-4">🏟️ {s.estadio}</p>
+              <div class="flex items-center justify-between text-sm">
+                <span class="text-slate-600">
+                  <span class="font-bold text-navy-900">{s.capacidad}</span> aficionados
+                </span>
+                <span class="text-gold font-bold text-xs group-hover:gap-2 transition-all">
+                  {s.partidos} partidos →
+                </span>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================
+       DISTANCIAS ENTRE CIUDADES
+  ==================================================== -->
+  <section
+    class="py-16 px-4 sm:px-6 lg:px-8"
+    style="background: linear-gradient(160deg,#020614 0%,#0a1230 50%,#020614 100%);"
+    aria-labelledby="distancias-heading"
+  >
+    <div class="max-w-5xl mx-auto">
+      <h2
+        id="distancias-heading"
+        class="font-black text-2xl sm:text-3xl text-white text-center mb-3"
+      >
+        ✈️ Distancias entre Sedes
+      </h2>
+      <p class="text-center text-slate-400 text-sm sm:text-base mb-10 max-w-xl mx-auto">
+        Planifica tu ruta entre ciudades. Distancias aproximadas en línea recta.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {clusters.map((cluster) => (
+          <div class={`bg-white/5 border border-white/10 border-l-4 ${cluster.colorBorder} rounded-2xl p-6`}>
+            <h3 class="font-black text-white text-sm uppercase tracking-wide mb-5">
+              {cluster.nombre}
+            </h3>
+            <ul class="space-y-4">
+              {cluster.rutas.map((r) => (
+                <li>
+                  <div class="flex items-start justify-between gap-2 mb-0.5">
+                    <span class="text-slate-300 text-sm font-medium leading-snug">
+                      {r.origen} → {r.destino}
+                    </span>
+                    <span class="text-gold font-black text-sm shrink-0">
+                      {r.km.toLocaleString('es')} km
+                    </span>
+                  </div>
+                  <span class="text-slate-500 text-xs">{r.tiempo}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+
+      <p class="text-center text-slate-600 text-xs mt-8">
+        * Distancias aproximadas en línea recta. Tiempos de vuelo sin escalas desde los aeropuertos más cercanos.
+      </p>
+    </div>
+  </section>
+
+  <!-- AdSlot mid -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-white">
+    <AdSlot slot="7261849320" label="Publicidad" />
+  </div>
+
+  <!-- ===================================================
+       MAPA POR REGIÓN
+  ==================================================== -->
+  <section
+    class="py-16 px-4 sm:px-6 lg:px-8 bg-white"
+    aria-labelledby="regiones-heading"
+  >
+    <div class="max-w-4xl mx-auto">
+      <h2
+        id="regiones-heading"
+        class="font-black text-2xl sm:text-3xl text-navy-900 text-center mb-3"
+      >
+        🗺️ Sedes por Región
+      </h2>
+      <p class="text-center text-slate-500 text-sm mb-10">
+        Agrupa tu itinerario y ahorra en vuelos entre sedes cercanas.
+      </p>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        {regiones.map(({ titulo, bg, border, titleColor, ciudades }) => (
+          <div class={`rounded-2xl border-2 p-5 ${bg} ${border}`}>
+            <h3 class={`font-black text-base mb-5 ${titleColor}`}>{titulo}</h3>
+            <ul class="space-y-3">
+              {ciudades.map((c) => (
+                <li>
+                  <a
+                    href={`/sedes/${c.slug}`}
+                    class="flex items-center justify-between group"
+                  >
+                    <span class="text-navy-900 font-medium text-sm group-hover:text-gold transition-colors">
+                      {c.nombre}
+                    </span>
+                    <span class="text-slate-500 text-xs">{c.fase}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================
+       CTA FINAL
+  ==================================================== -->
+  <section
+    class="py-20 px-4 sm:px-6 lg:px-8"
+    style="background: linear-gradient(160deg,#020614 0%,#0a1230 50%,#020614 100%);"
+    aria-labelledby="cta-heading"
+  >
+    <div class="max-w-2xl mx-auto text-center">
+      <p class="text-gold font-bold text-sm uppercase tracking-widest mb-4">¿Listo para el Mundial?</p>
+      <h2
+        id="cta-heading"
+        class="font-black text-3xl sm:text-4xl text-white mb-6 leading-tight"
+      >
+        Consulta los horarios<br />de cada partido en USA
+      </h2>
+      <p class="text-slate-400 mb-8 leading-relaxed">
+        Horarios convertidos a tu zona horaria: Nueva York (ET), Los Ángeles (PT) o Chicago (CT).
+      </p>
+      <div class="flex flex-col sm:flex-row justify-center gap-4">
+        <a
+          href="/horarios/usa/nueva-york"
+          class="inline-flex items-center justify-center gap-2 px-8 py-4 font-black text-navy-900 rounded-full transition-all hover:scale-105 shadow-lg"
+          style="background-image: linear-gradient(105deg,#b8922a 0%,#d4af37 40%,#f5d97a 60%,#d4af37 80%,#b8922a 100%);"
+        >
+          📅 Ver Calendario en USA
+        </a>
+        <a
+          href="/horarios/usa/los-angeles"
+          class="inline-flex items-center justify-center gap-2 px-8 py-4 font-bold text-white border-2 border-white/30 hover:border-gold hover:text-gold rounded-full transition-all"
+        >
+          🌊 Hora en Los Ángeles
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>

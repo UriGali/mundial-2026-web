@@ -10,6 +10,7 @@
     { "source": "/equipos",       "destination": "/grupos",     "permanent": false },
     { "source": "/sobre-nosotros","destination": "/",           "permanent": false },
     { "source": "/contacto",      "destination": "/",           "permanent": false },
-    { "source": "/buscar",        "destination": "/",           "permanent": false }
+    { "source": "/buscar",        "destination": "/",           "permanent": false },
+    { "source": "/sedes",         "destination": "/sedes/usa",  "permanent": false }
   ]
 }
