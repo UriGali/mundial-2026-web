@@ -7,19 +7,82 @@ const description = 'Grupos del Mundial FIFA 2026: conoce los 12 grupos (A–L) 
 const keywords    = 'grupos mundial 2026, tabla grupos copa del mundo 2026, grupo A mundial 2026, clasificados octavos mundial 2026, fixture grupos mundial';
 const canonicalURL = 'https://mundial26horarios.com/grupos';
 
-const grupos = [
-  { id: 'A', sedes: 'Ciudad de México · Houston', equipos: ['TBD', 'TBD', 'TBD', 'TBD'] },
-  { id: 'B', sedes: 'Los Ángeles · San Francisco', equipos: ['TBD', 'TBD', 'TBD', 'TBD'] },
-  { id: 'C', sedes: 'Seattle · Vancouver',        equipos: ['TBD', 'TBD', 'TBD', 'TBD'] },
-  { id: 'D', sedes: 'Dallas · Kansas City',       equipos: ['TBD', 'TBD', 'TBD', 'TBD'] },
-  { id: 'E', sedes: 'Nueva York · Boston',        equipos: ['TBD', 'TBD', 'TBD', 'TBD'] },
-  { id: 'F', sedes: 'Miami · Atlanta',            equipos: ['TBD', 'TBD', 'TBD', 'TBD'] },
-  { id: 'G', sedes: 'Guadalajara · Monterrey',    equipos: ['TBD', 'TBD', 'TBD', 'TBD'] },
-  { id: 'H', sedes: 'Filadelfia · Toronto',       equipos: ['TBD', 'TBD', 'TBD', 'TBD'] },
-  { id: 'I', sedes: 'Houston · Dallas',           equipos: ['TBD', 'TBD', 'TBD', 'TBD'] },
-  { id: 'J', sedes: 'Los Ángeles · Seattle',      equipos: ['TBD', 'TBD', 'TBD', 'TBD'] },
-  { id: 'K', sedes: 'Atlanta · Miami',            equipos: ['TBD', 'TBD', 'TBD', 'TBD'] },
-  { id: 'L', sedes: 'Boston · Nueva York',        equipos: ['TBD', 'TBD', 'TBD', 'TBD'] },
+interface Equipo { flag: string; nombre: string; host?: boolean }
+interface GrupoData { id: string; sedes: string; equipos: Equipo[] }
+
+const grupos: GrupoData[] = [
+  { id: 'A', sedes: 'Ciudad de México · Houston', equipos: [
+    { flag: '🇲🇽', nombre: 'México',        host: true },
+    { flag: '🇰🇷', nombre: 'Corea del Sur' },
+    { flag: '🇿🇦', nombre: 'Sudáfrica' },
+    { flag: '🇨🇿', nombre: 'Chequia' },
+  ]},
+  { id: 'B', sedes: 'Los Ángeles · San Francisco', equipos: [
+    { flag: '🇨🇦', nombre: 'Canadá',        host: true },
+    { flag: '🇨🇭', nombre: 'Suiza' },
+    { flag: '🇶🇦', nombre: 'Qatar' },
+    { flag: '🇧🇦', nombre: 'Bosnia-Herzegovina' },
+  ]},
+  { id: 'C', sedes: 'Seattle · Vancouver', equipos: [
+    { flag: '🇧🇷', nombre: 'Brasil' },
+    { flag: '🇲🇦', nombre: 'Marruecos' },
+    { flag: '🏴󠁧󠁢󠁳󠁣󠁴󠁿', nombre: 'Escocia' },
+    { flag: '🇭🇹', nombre: 'Haití' },
+  ]},
+  { id: 'D', sedes: 'Dallas · Kansas City', equipos: [
+    { flag: '🇺🇸', nombre: 'Estados Unidos', host: true },
+    { flag: '🇵🇾', nombre: 'Paraguay' },
+    { flag: '🇦🇺', nombre: 'Australia' },
+    { flag: '🇹🇷', nombre: 'Turquía' },
+  ]},
+  { id: 'E', sedes: 'Nueva York · Boston', equipos: [
+    { flag: '🇩🇪', nombre: 'Alemania' },
+    { flag: '🇪🇨', nombre: 'Ecuador' },
+    { flag: '🇨🇮', nombre: 'Costa de Marfil' },
+    { flag: '🇨🇼', nombre: 'Curazao' },
+  ]},
+  { id: 'F', sedes: 'Miami · Atlanta', equipos: [
+    { flag: '🇳🇱', nombre: 'Países Bajos' },
+    { flag: '🇯🇵', nombre: 'Japón' },
+    { flag: '🇹🇳', nombre: 'Túnez' },
+    { flag: '🇸🇪', nombre: 'Suecia' },
+  ]},
+  { id: 'G', sedes: 'Guadalajara · Monterrey', equipos: [
+    { flag: '🇧🇪', nombre: 'Bélgica' },
+    { flag: '🇮🇷', nombre: 'Irán' },
+    { flag: '🇪🇬', nombre: 'Egipto' },
+    { flag: '🇳🇿', nombre: 'Nueva Zelanda' },
+  ]},
+  { id: 'H', sedes: 'Filadelfia · Toronto', equipos: [
+    { flag: '🇪🇸', nombre: 'España' },
+    { flag: '🇺🇾', nombre: 'Uruguay' },
+    { flag: '🇸🇦', nombre: 'Arabia Saudita' },
+    { flag: '🇨🇻', nombre: 'Cabo Verde' },
+  ]},
+  { id: 'I', sedes: 'Houston · Dallas', equipos: [
+    { flag: '🇫🇷', nombre: 'Francia' },
+    { flag: '🇸🇳', nombre: 'Senegal' },
+    { flag: '🇳🇴', nombre: 'Noruega' },
+    { flag: '🇮🇶', nombre: 'Irak' },
+  ]},
+  { id: 'J', sedes: 'Los Ángeles · Seattle', equipos: [
+    { flag: '🇦🇷', nombre: 'Argentina' },
+    { flag: '🇦🇹', nombre: 'Austria' },
+    { flag: '🇩🇿', nombre: 'Argelia' },
+    { flag: '🇯🇴', nombre: 'Jordania' },
+  ]},
+  { id: 'K', sedes: 'Atlanta · Miami', equipos: [
+    { flag: '🇵🇹', nombre: 'Portugal' },
+    { flag: '🇨🇴', nombre: 'Colombia' },
+    { flag: '🇺🇿', nombre: 'Uzbekistán' },
+    { flag: '🇨🇩', nombre: 'RD Congo' },
+  ]},
+  { id: 'L', sedes: 'Boston · Nueva York', equipos: [
+    { flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', nombre: 'Inglaterra' },
+    { flag: '🇭🇷', nombre: 'Croacia' },
+    { flag: '🇵🇦', nombre: 'Panamá' },
+    { flag: '🇬🇭', nombre: 'Ghana' },
+  ]},
 ];
 
 // Colores alternos para los grupos
@@ -86,10 +149,10 @@ const jsonLd = {
         },
         {
           '@type': 'Question',
-          name: '¿Cuándo es el sorteo de grupos del Mundial 2026?',
+          name: '¿Cuándo fue el sorteo de grupos del Mundial 2026?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'El sorteo del Mundial 2026 tendrá lugar en Miami, Florida, en enero de 2026. Una vez realizado el sorteo, esta página se actualizará con los equipos de cada grupo.',
+            text: 'El sorteo oficial de grupos del Mundial 2026 se realizó el 5 de diciembre de 2025 en el John F. Kennedy Center for the Performing Arts de Washington D.C. Los 12 grupos completos están disponibles en esta página.',
           },
         },
       ],
@@ -113,8 +176,8 @@ const jsonLd = {
 
     <div class="relative z-10 max-w-3xl mx-auto">
       <div class="inline-flex items-center gap-2 bg-gold/10 border border-gold/30 text-gold px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest mb-6">
-        <span class="w-2 h-2 bg-gold rounded-full animate-pulse" aria-hidden="true"></span>
-        Sorteo pendiente — Miami, enero 2026
+        <span class="w-2 h-2 bg-green-400 rounded-full" aria-hidden="true"></span>
+        Sorteo realizado — Washington D.C., 5 dic 2025
       </div>
 
       <h1 id="grupos-heading" class="font-black text-4xl sm:text-6xl leading-none mb-4">
@@ -146,19 +209,19 @@ const jsonLd = {
   <!-- ===================================================
        BANNER INFORMATIVO
   ==================================================== -->
-  <section class="bg-amber-50 border-y border-amber-200 py-5 px-4" aria-label="Estado del sorteo">
+  <section class="bg-green-50 border-y border-green-200 py-5 px-4" aria-label="Estado del sorteo">
     <div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
-      <span class="text-3xl shrink-0" aria-hidden="true">🎲</span>
+      <span class="text-3xl shrink-0" aria-hidden="true">✅</span>
       <div>
-        <p class="font-bold text-amber-900 text-sm">El sorteo de grupos aún no se ha realizado</p>
-        <p class="text-amber-800 text-xs mt-0.5 leading-relaxed">
-          Las posiciones de cada equipo en los grupos se determinarán en el sorteo oficial de Miami. Esta página muestra la estructura de los grupos y se actualizará en cuanto FIFA anuncie los emparejamientos.
-          Las sedes asignadas a cada grupo son orientativas hasta la confirmación oficial.
+        <p class="font-bold text-green-900 text-sm">Sorteo oficial completado el 5 de diciembre de 2025</p>
+        <p class="text-green-800 text-xs mt-0.5 leading-relaxed">
+          El sorteo se celebró en el John F. Kennedy Center for the Performing Arts de Washington D.C.
+          Las 48 selecciones ya conocen sus rivales. Los anfitriones 🇺🇸 🇲🇽 🇨🇦 lideran sus respectivos grupos.
         </p>
       </div>
       <a
         href="#como-funciona"
-        class="shrink-0 bg-amber-200 hover:bg-amber-300 text-amber-900 font-bold text-xs px-4 py-2 rounded-full transition-colors"
+        class="shrink-0 bg-green-200 hover:bg-green-300 text-green-900 font-bold text-xs px-4 py-2 rounded-full transition-colors"
       >
         Cómo funciona →
       </a>
@@ -236,7 +299,7 @@ const jsonLd = {
           Los 12 Grupos
         </h2>
         <p class="text-gray-500 text-base max-w-xl mx-auto">
-          Las tablas se completarán con los equipos y resultados tras el sorteo oficial y el inicio del torneo.
+          Sorteo realizado el 5 dic 2025. Los resultados se actualizarán al inicio del torneo (11 jun 2026).
         </p>
         <div class="w-16 h-1 bg-gold mx-auto mt-4 rounded-full" aria-hidden="true"></div>
       </div>
@@ -277,16 +340,18 @@ const jsonLd = {
                 </thead>
                 <tbody>
                   {equipos.map((equipo, pos) => (
-                    <tr
-                      class={`border-b border-current/10 ${pos < 2 ? 'bg-white/60' : ''}`}
-                    >
-                      <td class="px-3 py-3 flex items-center gap-2">
-                        <span class={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${pos < 2 ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-600'}`} aria-hidden="true">
-                          {pos + 1}
-                        </span>
-                        <span class={`font-medium ${equipo === 'TBD' ? 'text-gray-400 italic text-xs' : 'text-navy-900'}`}>
-                          {equipo === 'TBD' ? 'Por definir' : equipo}
-                        </span>
+                    <tr class={`border-b border-current/10 ${pos < 2 ? 'bg-white/60' : ''}`}>
+                      <td class="px-3 py-3">
+                        <div class="flex items-center gap-2">
+                          <span class={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${pos < 2 ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-600'}`} aria-hidden="true">
+                            {pos + 1}
+                          </span>
+                          <span class="text-base leading-none shrink-0" aria-hidden="true">{equipo.flag}</span>
+                          <span class="font-medium text-navy-900 text-sm leading-tight">
+                            {equipo.nombre}
+                            {equipo.host && <span class="ml-1 text-[10px] font-bold text-gold uppercase">Anfitrión</span>}
+                          </span>
+                        </div>
                       </td>
                       <td class="px-2 py-3 text-center text-gray-400 text-xs">—</td>
                       <td class="px-2 py-3 text-center text-gray-400 text-xs">—</td>
@@ -369,8 +434,8 @@ const jsonLd = {
             a: 'Los 2 primeros clasificados de cada uno de los 12 grupos se clasifican directamente a Octavos de Final (24 equipos). Además, los 8 mejores terceros clasificados de todos los grupos también acceden a la fase eliminatoria, completando los 32 equipos de Octavos.',
           },
           {
-            q: '¿Cuándo es el sorteo de grupos del Mundial 2026?',
-            a: 'El sorteo oficial de grupos del Mundial 2026 está programado para enero de 2026 en Miami, Florida. Esta página se actualizará en tiempo real con los emparejamientos tan pronto como FIFA los confirme.',
+            q: '¿Cuándo fue el sorteo de grupos del Mundial 2026?',
+            a: 'El sorteo oficial de grupos del Mundial 2026 se celebró el 5 de diciembre de 2025 en el John F. Kennedy Center for the Performing Arts de Washington D.C. Las 48 selecciones ya conocen sus rivales y sus grupos están publicados en esta página.',
           },
           {
             q: '¿Cuántos partidos se juegan en la Fase de Grupos?',
