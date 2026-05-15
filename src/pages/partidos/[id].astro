@@ -1,0 +1,551 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import { MATCHES } from '../../data/matches';
+import type { Match } from '../../data/matches';
+
+export async function getStaticPaths() {
+  return MATCHES.map(m => ({ params: { id: m.id }, props: { match: m } }));
+}
+
+interface Props { match: Match; }
+const { match: m } = Astro.props;
+
+const sedeName = m.sedeSlug.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase());
+const matchDate = new Date(m.utc);
+
+const dateStrUTC = matchDate.toLocaleDateString('es-ES', {
+  weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC',
+});
+const timeStrUTC = matchDate.toLocaleTimeString('es-ES', {
+  hour: '2-digit', minute: '2-digit', timeZone: 'UTC',
+}) + ' UTC';
+
+const isFinal = m.id === 'f01';
+const matchTitle = `${m.e1} vs ${m.e2}`;
+const title = `${matchTitle} — ${m.fase} | Mundial 2026`;
+const description = `¿Dónde ver ${matchTitle}? Horario oficial, canales de TV por país (Televisa, Telemundo, RTVE) y recordatorio. ${m.fase} del Mundial FIFA 2026 en ${sedeName}.`;
+
+// Google Calendar URL
+const gcStart = matchDate.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+const endDate = new Date(matchDate.getTime() + 2 * 3600000);
+const gcEnd = endDate.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+const gcUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(`⚽ ${matchTitle} — Mundial 2026`)}&dates=${gcStart}/${gcEnd}&details=${encodeURIComponent(`${m.fase} del Mundial FIFA 2026\nSede: ${sedeName}\nhttps://mundial26horarios.com/partidos/${m.id}`)}&location=${encodeURIComponent(`${sedeName}, FIFA World Cup 2026`)}`;
+
+// Outlook Web calendar URL
+const outlookUrl = `https://outlook.live.com/calendar/0/deeplink/compose?subject=${encodeURIComponent(`⚽ ${matchTitle} — Mundial 2026`)}&startdt=${matchDate.toISOString()}&enddt=${endDate.toISOString()}&body=${encodeURIComponent(`${m.fase} del Mundial FIFA 2026. Sede: ${sedeName}`)}&location=${encodeURIComponent(`${sedeName}, FIFA World Cup 2026`)}`;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'SportsEvent',
+  'name': `${matchTitle} — Mundial FIFA 2026`,
+  'startDate': m.utc,
+  'endDate': endDate.toISOString(),
+  'location': { '@type': 'Place', 'name': sedeName },
+  'sport': 'Soccer',
+  'description': description,
+  'url': `https://mundial26horarios.com/partidos/${m.id}`,
+  'organizer': { '@type': 'Organization', 'name': 'FIFA' },
+};
+
+const TV_CHANNELS = [
+  {
+    country: 'México', flag: '🇲🇽',
+    channels: [
+      { name: 'TUDN', type: 'Cable / Streaming' },
+      { name: 'Canal 5 · Televisa', type: 'TV Abierta' },
+      { name: 'TV Azteca 7', type: 'TV Abierta' },
+      { name: 'ViX+', type: 'Streaming' },
+    ],
+  },
+  {
+    country: 'EE.UU.', flag: '🇺🇸',
+    channels: [
+      { name: 'Telemundo', type: 'TV Abierta (Español)' },
+      { name: 'Fox Sports', type: 'Cable (Inglés)' },
+      { name: 'Universo', type: 'Cable (Español)' },
+      { name: 'Peacock', type: 'Streaming' },
+    ],
+  },
+  {
+    country: 'España', flag: '🇪🇸',
+    channels: [
+      { name: 'La 1 · RTVE', type: 'TV Pública gratuita' },
+      { name: 'Telecinco', type: 'TV Privada' },
+      { name: 'Cuatro', type: 'TV Privada' },
+      { name: 'RTVE Play', type: 'Streaming gratuito' },
+    ],
+  },
+  {
+    country: 'Argentina', flag: '🇦🇷',
+    channels: [
+      { name: 'TyC Sports', type: 'Cable' },
+      { name: 'TV Pública', type: 'TV Abierta' },
+      { name: 'Canal 13', type: 'TV Abierta' },
+    ],
+  },
+  {
+    country: 'Colombia', flag: '🇨🇴',
+    channels: [
+      { name: 'Caracol TV', type: 'TV Abierta' },
+      { name: 'RCN', type: 'TV Abierta' },
+      { name: 'Win Sports+', type: 'Cable / Streaming' },
+    ],
+  },
+  {
+    country: 'Brasil', flag: '🇧🇷',
+    channels: [
+      { name: 'TV Globo', type: 'TV Abierta' },
+      { name: 'SporTV', type: 'Cable' },
+      { name: 'Cazé TV', type: 'Streaming (YouTube)' },
+    ],
+  },
+  {
+    country: 'Canadá', flag: '🇨🇦',
+    channels: [
+      { name: 'TSN', type: 'Cable (Inglés)' },
+      { name: 'RDS', type: 'Cable (Francés)' },
+      { name: 'CTV', type: 'TV Abierta' },
+    ],
+  },
+];
+---
+
+<Layout
+  title={title}
+  description={description}
+  jsonLd={jsonLd}
+  canonicalURL={`https://mundial26horarios.com/partidos/${m.id}`}
+>
+
+  <!-- ===== HERO: EQUIPOS ===== -->
+  <section
+    class="relative py-14 sm:py-20 px-4 overflow-hidden"
+    style="background: linear-gradient(180deg, #080d28 0%, #020617 100%);"
+    aria-label={`${matchTitle} — ${m.fase}`}
+  >
+    <!-- Decorative glow -->
+    <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full opacity-10" style="background: radial-gradient(circle, #d4af37 0%, transparent 70%);"></div>
+    </div>
+
+    <div class="relative max-w-3xl mx-auto text-center">
+      <!-- Phase badge -->
+      <span class={`inline-block font-oswald text-[11px] tracking-[0.2em] uppercase px-4 py-1.5 rounded-full mb-8 border ${isFinal ? 'bg-gold/15 text-gold border-gold/40' : 'bg-green-400/10 text-green-400 border-green-400/20'}`}>
+        {m.fase}
+      </span>
+
+      <!-- Teams -->
+      <div class="flex items-center justify-center gap-6 sm:gap-16 mb-8">
+        <div class="text-center flex-1">
+          <div class="text-5xl sm:text-7xl mb-3" role="img" aria-label={m.e1}>{m.f1}</div>
+          <div class="font-oswald font-bold text-lg sm:text-2xl text-white leading-tight">{m.e1}</div>
+        </div>
+        <div class="shrink-0 text-center px-2">
+          <div class="font-oswald font-bold text-2xl sm:text-4xl" style="color: rgba(212,175,55,0.5);">VS</div>
+        </div>
+        <div class="text-center flex-1">
+          <div class="text-5xl sm:text-7xl mb-3" role="img" aria-label={m.e2}>{m.f2}</div>
+          <div class="font-oswald font-bold text-lg sm:text-2xl text-white leading-tight">{m.e2}</div>
+        </div>
+      </div>
+
+      <!-- Meta info chips -->
+      <div class="flex flex-wrap items-center justify-center gap-3 text-xs font-mono text-slate-400">
+        <span class="flex items-center gap-1.5 bg-slate-800/80 border border-slate-700 rounded-full px-3 py-1.5">
+          <span aria-hidden="true">📅</span>
+          <span class="capitalize">{dateStrUTC}</span>
+        </span>
+        <span class="flex items-center gap-1.5 bg-slate-800/80 border border-slate-700 rounded-full px-3 py-1.5">
+          <span aria-hidden="true">⏰</span>
+          {timeStrUTC}
+        </span>
+        <a
+          href={`/sedes/${m.sedeSlug}`}
+          class="flex items-center gap-1.5 bg-slate-800/80 border border-slate-700 hover:border-gold/40 hover:text-gold rounded-full px-3 py-1.5 transition-colors"
+        >
+          <span aria-hidden="true">📍</span>
+          {sedeName}
+        </a>
+      </div>
+
+      <!-- Local time (injected by JS) -->
+      <p id="local-time-note" class="mt-3 text-xs text-slate-600 font-mono min-h-[1.25rem]"></p>
+    </div>
+  </section>
+
+  <!-- ===== CUENTA REGRESIVA ===== -->
+  <section class="py-8 px-4" aria-label="Cuenta regresiva">
+    <div class="max-w-xl mx-auto">
+      <div class="bg-slate-900 border border-slate-700/60 rounded-2xl p-6 sm:p-8">
+        <p class="text-center font-oswald text-[11px] tracking-[0.2em] text-gold uppercase mb-5">Cuenta Regresiva al Partido</p>
+        <div id="countdown" class="grid grid-cols-4 gap-2 sm:gap-4 text-center" data-utc={m.utc}>
+          <div>
+            <div class="font-mono font-bold text-green-400 text-3xl sm:text-5xl tabular-nums leading-none count-d">--</div>
+            <div class="text-slate-600 text-[9px] sm:text-xs uppercase tracking-widest mt-2">días</div>
+          </div>
+          <div>
+            <div class="font-mono font-bold text-green-400 text-3xl sm:text-5xl tabular-nums leading-none count-h">--</div>
+            <div class="text-slate-600 text-[9px] sm:text-xs uppercase tracking-widest mt-2">horas</div>
+          </div>
+          <div>
+            <div class="font-mono font-bold text-green-400 text-3xl sm:text-5xl tabular-nums leading-none count-m">--</div>
+            <div class="text-slate-600 text-[9px] sm:text-xs uppercase tracking-widest mt-2">min</div>
+          </div>
+          <div>
+            <div class="font-mono font-bold text-green-400 text-3xl sm:text-5xl tabular-nums leading-none count-s">--</div>
+            <div class="text-slate-600 text-[9px] sm:text-xs uppercase tracking-widest mt-2">seg</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ad Slot -->
+  <div class="max-w-4xl mx-auto px-4">
+    <AdSlot slot="3456789012" format="horizontal" label="Publicidad" />
+  </div>
+
+  <!-- ===== DÓNDE VER ===== -->
+  <section class="py-14 px-4" aria-labelledby="donde-ver-heading">
+    <div class="max-w-5xl mx-auto">
+
+      <div class="text-center mb-10">
+        <p class="font-oswald text-xs tracking-[0.2em] text-gold uppercase mb-2">Transmisión Oficial</p>
+        <h2
+          id="donde-ver-heading"
+          class="font-oswald font-bold text-white mb-3"
+          style="font-size: clamp(1.6rem, 4vw, 2.4rem);"
+        >
+          📺 Dónde Ver el Partido
+        </h2>
+        <p class="text-slate-400 text-sm max-w-lg mx-auto leading-relaxed">
+          Canales de televisión y plataformas de streaming con derechos oficiales FIFA por país.
+        </p>
+      </div>
+
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {TV_CHANNELS.map(tc => (
+          <div class="bg-slate-900 border border-slate-700/60 hover:border-gold/30 rounded-2xl p-5 transition-all hover:shadow-[0_0_20px_rgba(212,175,55,0.07)]">
+            <div class="flex items-center gap-3 mb-4 pb-3 border-b border-slate-800">
+              <span class="text-2xl" role="img" aria-label={tc.country}>{tc.flag}</span>
+              <h3 class="font-oswald font-bold text-white text-base">{tc.country}</h3>
+            </div>
+            <ul class="space-y-2.5" role="list">
+              {tc.channels.map(ch => (
+                <li class="flex flex-col gap-0.5">
+                  <span class="text-slate-200 text-sm font-medium leading-tight">{ch.name}</span>
+                  <span class="text-slate-600 text-[11px] font-mono">{ch.type}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+
+      <p class="text-center text-xs text-slate-700 font-mono mt-8">
+        * Los derechos de transmisión pueden variar según región y operador de cable. Consulta tu proveedor local.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== RECORDAR PARTIDO CTA ===== -->
+  <section class="py-12 px-4" aria-labelledby="recordar-heading">
+    <div class="max-w-2xl mx-auto">
+      <div
+        class="relative overflow-hidden rounded-3xl border border-gold/20 p-8 sm:p-12 text-center"
+        style="background: linear-gradient(135deg, #0a1020 0%, #0f1a35 50%, #0a1020 100%);"
+      >
+        <!-- Glow -->
+        <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+          <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-64 h-32 rounded-full blur-3xl opacity-20" style="background: #d4af37;"></div>
+        </div>
+
+        <div class="relative">
+          <div class="text-5xl mb-4" aria-hidden="true">🔔</div>
+          <h2 id="recordar-heading" class="font-oswald font-bold text-white text-2xl sm:text-3xl mb-2">
+            No te pierdas el partido
+          </h2>
+          <p class="text-slate-400 text-sm mb-8 max-w-sm mx-auto leading-relaxed">
+            Añade un recordatorio a tu calendario o activa una notificación del navegador para que no se te pase.
+          </p>
+          <button
+            id="btn-recordar"
+            class="inline-flex items-center gap-3 px-8 py-4 rounded-full font-oswald font-bold text-slate-950 text-lg transition-all duration-200 hover:scale-105"
+            style="background-image: linear-gradient(105deg,#b8922a 0%,#d4af37 40%,#f5d97a 60%,#d4af37 80%,#b8922a 100%); box-shadow: 0 0 30px rgba(212,175,55,0.3);"
+            aria-haspopup="dialog"
+          >
+            <span aria-hidden="true">🔔</span> Recordar partido
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== MODAL RECORDATORIO ===== -->
+  <div
+    id="reminder-modal"
+    class="hidden fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="modal-title"
+  >
+    <!-- Backdrop -->
+    <div id="modal-backdrop" class="absolute inset-0 bg-black/75" style="backdrop-filter: blur(4px);"></div>
+
+    <!-- Panel -->
+    <div class="relative bg-slate-900 border border-gold/25 rounded-3xl p-6 sm:p-8 w-full max-w-md" style="box-shadow: 0 0 80px rgba(212,175,55,0.12);">
+      <button
+        id="modal-close"
+        class="absolute top-4 right-4 text-slate-500 hover:text-white transition-colors p-1.5 rounded-lg hover:bg-white/5"
+        aria-label="Cerrar modal"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+
+      <h3 id="modal-title" class="font-oswald font-bold text-white text-xl mb-1">Añadir recordatorio</h3>
+      <p class="text-slate-500 text-xs font-mono mb-7 leading-relaxed">
+        {matchTitle} &middot; <span class="capitalize">{dateStrUTC}</span> &middot; {timeStrUTC}
+      </p>
+
+      <div class="space-y-3">
+
+        <!-- Google Calendar -->
+        <a
+          href={gcUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="flex items-center gap-4 w-full bg-slate-800 hover:bg-slate-750 border border-slate-700 hover:border-blue-400/50 rounded-xl px-4 py-4 transition-all group"
+        >
+          <span class="text-2xl shrink-0" aria-hidden="true">📅</span>
+          <div class="text-left min-w-0">
+            <div class="text-white text-sm font-semibold group-hover:text-blue-400 transition-colors">Google Calendar</div>
+            <div class="text-slate-500 text-xs">Abre en Google Calendar</div>
+          </div>
+          <svg class="w-4 h-4 text-slate-600 ml-auto shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+          </svg>
+        </a>
+
+        <!-- Outlook Web -->
+        <a
+          href={outlookUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="flex items-center gap-4 w-full bg-slate-800 hover:bg-slate-750 border border-slate-700 hover:border-blue-500/50 rounded-xl px-4 py-4 transition-all group"
+        >
+          <span class="text-2xl shrink-0" aria-hidden="true">🗓️</span>
+          <div class="text-left min-w-0">
+            <div class="text-white text-sm font-semibold group-hover:text-blue-500 transition-colors">Outlook Calendar</div>
+            <div class="text-slate-500 text-xs">Abre en Outlook Web</div>
+          </div>
+          <svg class="w-4 h-4 text-slate-600 ml-auto shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+          </svg>
+        </a>
+
+        <!-- Download ICS -->
+        <button
+          id="btn-ics"
+          class="flex items-center gap-4 w-full bg-slate-800 hover:bg-slate-750 border border-slate-700 hover:border-green-400/50 rounded-xl px-4 py-4 transition-all group text-left"
+        >
+          <span class="text-2xl shrink-0" aria-hidden="true">📲</span>
+          <div class="text-left min-w-0">
+            <div class="text-white text-sm font-semibold group-hover:text-green-400 transition-colors">Apple / Outlook App</div>
+            <div class="text-slate-500 text-xs">Descarga archivo .ics</div>
+          </div>
+          <svg class="w-4 h-4 text-slate-600 ml-auto shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+          </svg>
+        </button>
+
+        <!-- Browser Notification -->
+        <button
+          id="btn-notif"
+          class="flex items-center gap-4 w-full bg-slate-800 hover:bg-slate-750 border border-slate-700 hover:border-gold/50 rounded-xl px-4 py-4 transition-all group text-left"
+        >
+          <span class="text-2xl shrink-0" aria-hidden="true">🔔</span>
+          <div class="text-left min-w-0">
+            <div class="text-white text-sm font-semibold group-hover:text-gold transition-colors">Notificación del navegador</div>
+            <div id="notif-status" class="text-slate-500 text-xs">Te avisamos 1 hora antes del partido</div>
+          </div>
+          <div id="notif-check" class="ml-auto shrink-0 hidden">
+            <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+          </div>
+        </button>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== LINKS DE NAVEGACIÓN ===== -->
+  <div class="max-w-4xl mx-auto px-4 pb-8 flex flex-wrap gap-3 justify-center">
+    <a
+      href={`/sedes/${m.sedeSlug}`}
+      class="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-gold transition-colors font-mono border border-slate-700 hover:border-gold/40 px-5 py-2.5 rounded-full"
+    >
+      📍 Ver información de {sedeName} →
+    </a>
+    <a
+      href="/calendario"
+      class="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-gold transition-colors font-mono border border-slate-700 hover:border-gold/40 px-5 py-2.5 rounded-full"
+    >
+      📆 Calendario completo →
+    </a>
+  </div>
+
+  <!-- Ad Slot bottom -->
+  <div class="max-w-4xl mx-auto px-4 mb-8">
+    <AdSlot slot="9012345678" format="horizontal" label="Publicidad" />
+  </div>
+
+</Layout>
+
+<!-- Client-side scripts (define:vars passes server data to client) -->
+<script
+  define:vars={{
+    matchUtc: m.utc,
+    matchId: m.id,
+    matchTitle,
+    matchPhase: m.fase,
+    sedeName,
+  }}
+>
+  // --- Local time display ---
+  const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const localTimeEl = document.getElementById('local-time-note');
+  if (localTimeEl) {
+    const d = new Date(matchUtc);
+    const local = d.toLocaleString('es', {
+      weekday: 'short', day: 'numeric', month: 'short',
+      hour: '2-digit', minute: '2-digit', timeZone: tz, hour12: false,
+    });
+    localTimeEl.textContent = `Tu hora local (${tz}): ${local}`;
+  }
+
+  // --- Countdown ---
+  function pad2(n) { return String(n).padStart(2, '0'); }
+  function updateCountdown() {
+    const ms = new Date(matchUtc).getTime() - Date.now();
+    const el = document.getElementById('countdown');
+    if (!el) return;
+    if (ms <= 0) {
+      el.innerHTML = '<div class="col-span-4 text-center py-2"><span class="font-oswald text-gold text-xl">¡El partido ya comenzó! ⚽</span></div>';
+      return;
+    }
+    const t = Math.floor(ms / 1000);
+    el.querySelector('.count-d').textContent = pad2(Math.floor(t / 86400));
+    el.querySelector('.count-h').textContent = pad2(Math.floor((t % 86400) / 3600));
+    el.querySelector('.count-m').textContent = pad2(Math.floor((t % 3600) / 60));
+    el.querySelector('.count-s').textContent = pad2(t % 60);
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  // --- Modal open/close ---
+  const modal    = document.getElementById('reminder-modal');
+  const btnOpen  = document.getElementById('btn-recordar');
+  const btnClose = document.getElementById('modal-close');
+  const backdrop = document.getElementById('modal-backdrop');
+
+  function openModal() {
+    modal?.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+    btnClose?.focus();
+  }
+  function closeModal() {
+    modal?.classList.add('hidden');
+    document.body.style.overflow = '';
+    btnOpen?.focus();
+  }
+
+  btnOpen?.addEventListener('click', openModal);
+  btnClose?.addEventListener('click', closeModal);
+  backdrop?.addEventListener('click', closeModal);
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+  // --- ICS Download ---
+  document.getElementById('btn-ics')?.addEventListener('click', () => {
+    const start = new Date(matchUtc).toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+    const endD  = new Date(new Date(matchUtc).getTime() + 2 * 3600000);
+    const end   = endD.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+    const stamp = new Date().toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+    const ics = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//Mundial2026//mundial26horarios.com//ES',
+      'CALSCALE:GREGORIAN',
+      'METHOD:PUBLISH',
+      'BEGIN:VEVENT',
+      `UID:${matchId}@mundial26horarios.com`,
+      `DTSTAMP:${stamp}`,
+      `DTSTART:${start}`,
+      `DTEND:${end}`,
+      `SUMMARY:⚽ ${matchTitle} — Mundial FIFA 2026`,
+      `DESCRIPTION:${matchPhase} del Mundial FIFA 2026\\nSede: ${sedeName}\\nMás info: https://mundial26horarios.com/partidos/${matchId}`,
+      `LOCATION:${sedeName}\\, FIFA World Cup 2026`,
+      'END:VEVENT',
+      'END:VCALENDAR',
+    ].join('\r\n');
+
+    const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href     = url;
+    a.download = `partido-${matchId}-mundial2026.ics`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+
+  // --- Browser Notification ---
+  document.getElementById('btn-notif')?.addEventListener('click', async () => {
+    const statusEl = document.getElementById('notif-status');
+    const checkEl  = document.getElementById('notif-check');
+
+    if (!('Notification' in window)) {
+      if (statusEl) statusEl.textContent = 'Tu navegador no admite notificaciones.';
+      return;
+    }
+    if (Notification.permission === 'denied') {
+      if (statusEl) statusEl.textContent = 'Notificaciones bloqueadas. Actívalas en la configuración del navegador.';
+      return;
+    }
+
+    const perm = await Notification.requestPermission();
+    if (perm !== 'granted') {
+      if (statusEl) statusEl.textContent = 'Permiso denegado. Inténtalo de nuevo.';
+      return;
+    }
+
+    const matchTime    = new Date(matchUtc).getTime();
+    const reminderTime = matchTime - 3600000; // 1h before
+    const delay        = reminderTime - Date.now();
+
+    if (delay > 0) {
+      setTimeout(() => {
+        new Notification(`⚽ ${matchTitle} comienza en 1 hora`, {
+          body: `${matchPhase} · Mundial FIFA 2026\nSede: ${sedeName}`,
+          icon: '/favicon.svg',
+          tag: `partido-${matchId}`,
+        });
+      }, delay);
+      if (statusEl) statusEl.textContent = '✓ Recordatorio activado — te avisamos 1 hora antes';
+      if (checkEl)  checkEl.classList.remove('hidden');
+    } else {
+      // Match is very soon or already started
+      new Notification(`⚽ ¡${matchTitle} comienza pronto!`, {
+        body: `${matchPhase} · Mundial FIFA 2026`,
+        icon: '/favicon.svg',
+        tag: `partido-${matchId}`,
+      });
+      if (statusEl) statusEl.textContent = '✓ ¡Notificación enviada!';
+      if (checkEl)  checkEl.classList.remove('hidden');
+    }
+  });
+</script>
