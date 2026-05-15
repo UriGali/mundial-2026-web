@@ -1,0 +1,183 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const title       = 'Quiénes Somos | Mundial 2026 — Guía para Fans';
+const description = 'Somos un grupo de apasionados del fútbol que creamos esta guía para facilitar toda la información del Mundial FIFA 2026: horarios, sedes, canales de TV y mucho más.';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'AboutPage',
+  'name': 'Quiénes Somos — Mundial 2026',
+  'description': description,
+  'url': 'https://mundial26horarios.com/quienes-somos',
+  'publisher': {
+    '@type': 'Organization',
+    'name': 'Mundial 2026 — Guía para Fans',
+    'url': 'https://mundial26horarios.com',
+  },
+};
+
+const values = [
+  {
+    icon: '⚽',
+    title: 'Pasión antes que todo',
+    text: 'Este proyecto nació de una conversación entre amigos en un bar mientras veíamos un partido. Nadie nos paga por hacerlo — lo hacemos porque el fútbol nos mueve.',
+  },
+  {
+    icon: '✅',
+    title: 'Datos verificados',
+    text: 'Cada horario, cada sede y cada canal de TV está contrastado con fuentes oficiales de FIFA y las propias cadenas de televisión. Si algo cambia, lo actualizamos.',
+  },
+  {
+    icon: '📱',
+    title: 'Pensado para el móvil',
+    text: 'La mayoría de vosotros consultan el horario de un partido justo antes de que empiece, desde el sofá o en el bar. Por eso cada página carga en menos de 2 segundos.',
+  },
+  {
+    icon: '🌎',
+    title: 'Para toda la comunidad',
+    text: 'Hispanohablantes de México, Argentina, España, Colombia, Chile... este Mundial es de todos. Nuestra guía también. Los horarios se adaptan automáticamente a tu zona horaria.',
+  },
+];
+---
+
+<Layout
+  title={title}
+  description={description}
+  jsonLd={jsonLd}
+  canonicalURL="https://mundial26horarios.com/quienes-somos"
+>
+
+  <!-- ===== HERO ===== -->
+  <section
+    class="relative py-20 sm:py-28 px-4 overflow-hidden"
+    style="background: linear-gradient(180deg, #080d28 0%, #020617 100%);"
+    aria-labelledby="qs-heading"
+  >
+    <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] rounded-full opacity-[0.07]" style="background: radial-gradient(ellipse, #d4af37 0%, transparent 70%);"></div>
+    </div>
+
+    <div class="relative max-w-3xl mx-auto text-center">
+      <p class="font-oswald text-xs tracking-[0.2em] text-gold uppercase mb-4">El equipo detrás de la guía</p>
+      <h1
+        id="qs-heading"
+        class="font-oswald font-bold text-white mb-6"
+        style="font-size: clamp(2rem, 5vw, 3.2rem); line-height: 1.1;"
+      >
+        Somos fans del fútbol,<br class="hidden sm:block" /> como tú
+      </h1>
+      <p class="text-slate-400 text-base sm:text-lg leading-relaxed max-w-xl mx-auto">
+        Creamos esta guía para que nadie se pierda ni un minuto del Mundial 2026. Horarios, sedes, canales de TV y recordatorios — todo en un solo lugar.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== FOTO ===== -->
+  <section class="px-4 -mt-6" aria-hidden="false">
+    <div class="max-w-4xl mx-auto">
+      <div class="rounded-3xl overflow-hidden border border-slate-700/40 shadow-[0_20px_80px_rgba(0,0,0,0.6)]" style="aspect-ratio: 16/7;">
+        <img
+          src="https://picsum.photos/seed/futbol-fans-mundial/1200/525"
+          alt="Grupo de personas siguiendo el fútbol con entusiasmo"
+          class="w-full h-full object-cover"
+          width="1200"
+          height="525"
+          loading="eager"
+          decoding="async"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TEXTO PRINCIPAL ===== -->
+  <section class="py-16 px-4" aria-labelledby="historia-heading">
+    <div class="max-w-3xl mx-auto">
+
+      <div class="prose prose-invert prose-lg max-w-none space-y-6 text-slate-300 leading-relaxed">
+
+        <h2 id="historia-heading" class="font-oswald font-bold text-white text-2xl sm:text-3xl mb-6">
+          Cómo nació todo esto
+        </h2>
+
+        <p>
+          Era 2022, Qatar, cuartos de final. Teníamos cuatro pestañas abiertas buscando a qué hora empezaba el partido en México, si lo daban en abierto en España y dónde ver el replay. Ahí dijimos: <strong class="text-white">tiene que haber algo mejor.</strong>
+        </p>
+
+        <p>
+          Somos un grupo pequeño de apasionados del fútbol — periodistas, diseñadores y desarrolladores — que decidimos hacer esa herramienta nosotros mismos, a tiempo para el Mundial 2026. No somos un medio de comunicación grande ni tenemos el presupuesto de una multinacional. Somos gente que le dedicamos nuestras noches y fines de semana a esto porque creemos que la información sobre el fútbol debería ser <strong class="text-white">libre, clara y accesible para todos.</strong>
+        </p>
+
+        <p>
+          En <strong class="text-white">mundial26horarios.com</strong> encontrarás el horario de cada partido adaptado a tu zona horaria, los canales de TV donde se emite en tu país, información detallada de cada sede y un recordatorio para que nunca más se te pase un partido importante.
+        </p>
+
+        <p>
+          El Mundial 2026 es histórico: 48 selecciones, 3 países anfitriones, 16 sedes repartidas entre Estados Unidos, México y Canadá. Más partidos, más sorpresas, más momentos que recordar. Queremos que tú estés ahí para todos ellos.
+        </p>
+
+        <p class="text-slate-400 italic border-l-2 border-gold/40 pl-5">
+          "El fútbol es lo único que nos une a todos, sin importar de dónde seamos. El Mundial es la prueba de eso."
+        </p>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== VALORES ===== -->
+  <section class="py-12 px-4" aria-labelledby="valores-heading">
+    <div class="max-w-4xl mx-auto">
+
+      <h2 id="valores-heading" class="font-oswald font-bold text-white text-2xl sm:text-3xl mb-10 text-center">
+        Lo que nos guía
+      </h2>
+
+      <div class="grid gap-5 sm:grid-cols-2">
+        {values.map(v => (
+          <div class="flex gap-5 bg-slate-900 border border-slate-700/60 rounded-2xl p-6">
+            <span class="text-3xl shrink-0 mt-0.5" role="img" aria-label={v.title}>{v.icon}</span>
+            <div>
+              <h3 class="font-oswald font-bold text-white text-lg mb-2">{v.title}</h3>
+              <p class="text-slate-400 text-sm leading-relaxed">{v.text}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== CTA ===== -->
+  <section class="py-14 px-4">
+    <div class="max-w-2xl mx-auto text-center">
+      <div
+        class="rounded-3xl border border-gold/20 p-10 sm:p-14"
+        style="background: linear-gradient(135deg, #0a1020 0%, #0f1a35 60%, #0a1020 100%);"
+      >
+        <div class="text-4xl mb-4" aria-hidden="true">🏆</div>
+        <h2 class="font-oswald font-bold text-white text-2xl sm:text-3xl mb-4">
+          ¿Listo para el Mundial?
+        </h2>
+        <p class="text-slate-400 text-sm mb-8 leading-relaxed max-w-sm mx-auto">
+          Consulta el calendario completo, activa tus recordatorios y no te pierdas ni un partido.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-3 justify-center">
+          <a
+            href="/calendario"
+            class="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full font-oswald font-bold text-slate-950 text-base transition-all hover:scale-105"
+            style="background-image: linear-gradient(105deg,#b8922a 0%,#d4af37 40%,#f5d97a 60%,#d4af37 80%,#b8922a 100%);"
+          >
+            📆 Ver el calendario
+          </a>
+          <a
+            href="/blog/guia-completa"
+            class="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full font-oswald font-bold text-white text-base border border-slate-600 hover:border-gold/50 transition-all hover:scale-105"
+          >
+            📖 Guía completa
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</Layout>

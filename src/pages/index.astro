@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import AdSlot from '../components/AdSlot.astro';
 import NearestMatches from '../components/NearestMatches.astro';
+import MatchesGrid from '../components/MatchesGrid.astro';
 
 const title       = 'Mundial 2026 — Guía Completa | Sedes, Entradas y Equipos';
 const description = 'Todo sobre el Mundial FIFA 2026: sedes en USA, México y Canadá, cómo comprar entradas, equipos clasificados, calendario y guía de viaje. ¡El torneo más grande de la historia!';
@@ -287,6 +288,11 @@ const categorias = [
       </svg>
     </a>
   </section>
+
+  <!-- ===================================================
+       PRÓXIMOS 6 PARTIDOS (MatchesGrid)
+  ==================================================== -->
+  <MatchesGrid />
 
   <!-- ===================================================
        BANNER DE DATOS RÁPIDOS

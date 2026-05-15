@@ -1,0 +1,115 @@
+---
+import { MATCHES } from '../data/matches';
+
+// Computed at build time — shows next 6 upcoming matches
+const now = new Date();
+const upcoming = MATCHES
+  .filter(m => new Date(m.utc) > now)
+  .sort((a, b) => new Date(a.utc).getTime() - new Date(b.utc).getTime())
+  .slice(0, 6);
+
+function fmtDate(utc: string) {
+  const d = new Date(utc);
+  return d.toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC' });
+}
+function fmtTime(utc: string) {
+  const d = new Date(utc);
+  return d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' }) + ' UTC';
+}
+function isKnockout(fase: string) {
+  return !fase.startsWith('Grupo');
+}
+---
+
+<section class="py-14 px-4 sm:px-6 lg:px-8" aria-labelledby="matches-grid-heading">
+  <div class="max-w-6xl mx-auto">
+
+    <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
+      <div>
+        <p class="font-oswald text-xs tracking-[0.2em] text-gold uppercase mb-2">Agenda · Mundial 2026</p>
+        <h2
+          id="matches-grid-heading"
+          class="font-oswald font-bold text-white"
+          style="font-size: clamp(1.5rem, 3.5vw, 2.2rem);"
+        >
+          Próximos 6 Partidos
+        </h2>
+      </div>
+      <a
+        href="/calendario"
+        class="shrink-0 inline-flex items-center gap-2 text-xs font-mono text-slate-500 hover:text-gold border border-slate-700 hover:border-gold/40 px-4 py-2 rounded-full transition-colors"
+      >
+        Ver calendario completo →
+      </a>
+    </div>
+
+    {upcoming.length === 0 ? (
+      <p class="text-center text-slate-600 font-mono text-sm py-12">
+        El Mundial 2026 ha concluido. ¡Gracias por seguirlo con nosotros! ⚽
+      </p>
+    ) : (
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {upcoming.map(m => {
+          const knockout = isKnockout(m.fase);
+          const isFinal  = m.id === 'f01';
+          return (
+            <a
+              href={`/partidos/${m.id}`}
+              class="group flex flex-col bg-slate-900 border border-slate-700/60 hover:border-gold/40 rounded-2xl overflow-hidden transition-all hover:shadow-[0_0_28px_rgba(212,175,55,0.1)] hover:-translate-y-0.5"
+              aria-label={`${m.e1} vs ${m.e2}, ${m.fase}`}
+            >
+              <!-- Phase + date header -->
+              <div class="px-4 py-2.5 border-b border-slate-800 flex items-center justify-between gap-2">
+                <span class={`font-oswald text-[10px] tracking-[0.15em] uppercase px-2 py-0.5 rounded shrink-0 ${isFinal ? 'bg-gold/20 text-gold' : knockout ? 'bg-purple-500/15 text-purple-400' : 'bg-slate-800 text-green-400'}`}>
+                  {m.fase}
+                </span>
+                <span class="text-slate-600 font-mono text-[10px] text-right truncate">
+                  <span class="capitalize">{fmtDate(m.utc)}</span>
+                </span>
+              </div>
+
+              <!-- Teams -->
+              <div class="px-4 py-5 flex items-center gap-3 flex-1">
+                <div class="flex-1 text-center min-w-0">
+                  <div class="text-3xl mb-1.5" role="img" aria-label={m.e1}>{m.f1}</div>
+                  <div class="text-white font-semibold text-xs leading-tight truncate">{m.e1}</div>
+                </div>
+                <div class="shrink-0 text-slate-600 font-mono text-xs font-bold">VS</div>
+                <div class="flex-1 text-center min-w-0">
+                  <div class="text-3xl mb-1.5" role="img" aria-label={m.e2}>{m.f2}</div>
+                  <div class="text-white font-semibold text-xs leading-tight truncate">{m.e2}</div>
+                </div>
+              </div>
+
+              <!-- Time + TV channels -->
+              <div class="px-4 pb-4 space-y-2.5">
+                <div class="flex items-center justify-between text-[11px] font-mono text-slate-500">
+                  <span>⏰ {fmtTime(m.utc)}</span>
+                  <span class="text-slate-700 group-hover:text-gold transition-colors">Ver partido →</span>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                  <div class="flex items-center gap-1.5 bg-slate-800/70 border border-slate-700/50 rounded-lg px-2.5 py-2">
+                    <span class="text-sm shrink-0" aria-hidden="true">🇺🇸</span>
+                    <div class="min-w-0">
+                      <div class="text-[9px] text-slate-600 uppercase tracking-wider leading-none mb-0.5">USA</div>
+                      <div class="text-[11px] text-slate-300 font-medium truncate leading-tight">Telemundo</div>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-1.5 bg-slate-800/70 border border-slate-700/50 rounded-lg px-2.5 py-2">
+                    <span class="text-sm shrink-0" aria-hidden="true">🇲🇽</span>
+                    <div class="min-w-0">
+                      <div class="text-[9px] text-slate-600 uppercase tracking-wider leading-none mb-0.5">México</div>
+                      <div class="text-[11px] text-slate-300 font-medium truncate leading-tight">TUDN</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    )}
+
+  </div>
+</section>

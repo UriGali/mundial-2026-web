@@ -23,6 +23,9 @@ export default defineConfig({
         if (url.includes('/horarios/')) {
           return { ...item, changefreq: 'weekly',  priority: 0.9, lastmod };
         }
+        if (url.includes('/partidos/')) {
+          return { ...item, changefreq: 'weekly',  priority: 0.8, lastmod };
+        }
         if (url.includes('/sedes/')) {
           return { ...item, changefreq: 'monthly', priority: 0.7, lastmod };
         }
