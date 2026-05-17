@@ -293,28 +293,44 @@ const jsonLd = {
             <!-- Day cells -->
             <div class="grid grid-cols-7">
               {JUNE_CELLS.map((day, i) => {
-                const iso     = day ? isoDate(2026, 6, day) : '';
-                const matches = day ? (matchesByDate.get(iso) ?? []) : [];
+                const iso      = day ? isoDate(2026, 6, day) : '';
+                const matches  = day ? (matchesByDate.get(iso) ?? []) : [];
                 const hasMatch = matches.length > 0;
                 const isFinal  = matches.some(m => m.id === 'f01');
                 const borderR  = (i + 1) % 7 !== 0 ? 'border-r' : '';
                 const borderB  = i < JUNE_CELLS.length - 7 ? 'border-b' : '';
                 return (
-                  <div class={`${borderR} ${borderB} border-slate-800/50 min-h-[72px] p-1.5 relative`}>
+                  <div class={`${borderR} ${borderB} border-slate-800/50 min-h-[90px] p-1 sm:p-1.5 relative flex flex-col ${isFinal ? 'bg-gold/5' : hasMatch ? 'bg-green-950/20' : ''}`}>
                     {day && (
                       hasMatch ? (
-                        <a href={`#${iso}`} class="block h-full group">
-                          <span class={`inline-flex items-center justify-center w-7 h-7 rounded-full font-mono text-sm font-bold transition-all ${isFinal ? 'bg-gold text-slate-950' : 'bg-green-500/20 text-green-300 group-hover:bg-green-500/30'}`}>
+                        <div class="flex flex-col h-full gap-0.5">
+                          <span class={`inline-flex items-center justify-center w-6 h-6 rounded-full font-mono text-xs font-bold self-start ${isFinal ? 'bg-gold text-slate-950' : 'bg-green-500/20 text-green-300'}`}>
                             {day}
                           </span>
-                          <div class="mt-1 grid grid-cols-4 leading-none">
-                            {matches.flatMap(m => [m.f1, m.f2]).map((flag, i) => (
-                              <span class="text-xs text-center">{flag}</span>
+                          <div class="flex flex-col gap-0.5 flex-1 justify-center">
+                            {matches.map(m => (
+                              <a
+                                href={`/partidos/${m.id}`}
+                                class="flex flex-col items-center rounded px-0.5 py-0.5 hover:bg-white/5 transition-colors"
+                                aria-label={`${m.e1} vs ${m.e2}`}
+                              >
+                                <div class="flex items-center gap-px leading-none">
+                                  <span class="text-sm sm:text-base">{m.f1}</span>
+                                  <span class="text-[6px] sm:text-[7px] text-slate-600 font-mono px-px">vs</span>
+                                  <span class="text-sm sm:text-base">{m.f2}</span>
+                                </div>
+                                <span
+                                  class="text-[7px] sm:text-[8px] font-mono text-slate-500 leading-none cal-time"
+                                  data-utc={`${m.fechaISO}T${m.horaUTC}:00Z`}
+                                >
+                                  {m.horaUTC}
+                                </span>
+                              </a>
                             ))}
                           </div>
-                        </a>
+                        </div>
                       ) : (
-                        <span class="font-mono text-sm text-slate-700">{day}</span>
+                        <span class="font-mono text-xs text-slate-800">{day}</span>
                       )
                     )}
                   </div>
@@ -342,28 +358,44 @@ const jsonLd = {
             </div>
             <div class="grid grid-cols-7">
               {JULY_CELLS.map((day, i) => {
-                const iso     = day ? isoDate(2026, 7, day) : '';
-                const matches = day ? (matchesByDate.get(iso) ?? []) : [];
+                const iso      = day ? isoDate(2026, 7, day) : '';
+                const matches  = day ? (matchesByDate.get(iso) ?? []) : [];
                 const hasMatch = matches.length > 0;
                 const isFinal  = matches.some(m => m.id === 'f01');
                 const borderR  = (i + 1) % 7 !== 0 ? 'border-r' : '';
                 const borderB  = i < JULY_CELLS.length - 7 ? 'border-b' : '';
                 return (
-                  <div class={`${borderR} ${borderB} border-slate-800/50 min-h-[72px] p-1.5 relative`}>
+                  <div class={`${borderR} ${borderB} border-slate-800/50 min-h-[90px] p-1 sm:p-1.5 relative flex flex-col ${isFinal ? 'bg-gold/5' : hasMatch ? 'bg-green-950/20' : ''}`}>
                     {day && (
                       hasMatch ? (
-                        <a href={`#${iso}`} class="block h-full group">
-                          <span class={`inline-flex items-center justify-center w-7 h-7 rounded-full font-mono text-sm font-bold transition-all ${isFinal ? 'bg-gold text-slate-950 shadow-gold-sm' : 'bg-green-500/20 text-green-300 group-hover:bg-green-500/30'}`}>
+                        <div class="flex flex-col h-full gap-0.5">
+                          <span class={`inline-flex items-center justify-center w-6 h-6 rounded-full font-mono text-xs font-bold self-start ${isFinal ? 'bg-gold text-slate-950' : 'bg-green-500/20 text-green-300'}`}>
                             {day}
                           </span>
-                          <div class="mt-1 grid grid-cols-4 leading-none">
-                            {matches.flatMap(m => [m.f1, m.f2]).map((flag, i) => (
-                              <span class="text-xs text-center">{flag}</span>
+                          <div class="flex flex-col gap-0.5 flex-1 justify-center">
+                            {matches.map(m => (
+                              <a
+                                href={`/partidos/${m.id}`}
+                                class="flex flex-col items-center rounded px-0.5 py-0.5 hover:bg-white/5 transition-colors"
+                                aria-label={`${m.e1} vs ${m.e2}`}
+                              >
+                                <div class="flex items-center gap-px leading-none">
+                                  <span class="text-sm sm:text-base">{m.f1}</span>
+                                  <span class="text-[6px] sm:text-[7px] text-slate-600 font-mono px-px">vs</span>
+                                  <span class="text-sm sm:text-base">{m.f2}</span>
+                                </div>
+                                <span
+                                  class="text-[7px] sm:text-[8px] font-mono text-slate-500 leading-none cal-time"
+                                  data-utc={`${m.fechaISO}T${m.horaUTC}:00Z`}
+                                >
+                                  {m.horaUTC}
+                                </span>
+                              </a>
                             ))}
                           </div>
-                        </a>
+                        </div>
                       ) : (
-                        <span class="font-mono text-sm text-slate-700">{day}</span>
+                        <span class="font-mono text-xs text-slate-800">{day}</span>
                       )
                     )}
                   </div>
@@ -385,8 +417,8 @@ const jsonLd = {
           <span class="inline-block w-5 h-5 rounded-full bg-gold"></span>
           Gran Final
         </span>
-        <span class="flex items-center gap-2.5 text-slate-600">
-          Haz clic en un día para ver los partidos · Número = total de partidos ese día
+        <span class="flex items-center gap-1.5 text-slate-600">
+          Hora mostrada en tu zona horaria local
         </span>
       </div>
     </section>
@@ -610,3 +642,13 @@ const jsonLd = {
   </div>
 
 </Layout>
+
+<script>
+  // Convierte horas UTC a la zona horaria local del visitante
+  document.querySelectorAll<HTMLElement>('.cal-time[data-utc]').forEach(el => {
+    try {
+      const d = new Date(el.dataset.utc!);
+      el.textContent = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+    } catch (_) {}
+  });
+</script>
