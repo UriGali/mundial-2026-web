@@ -309,16 +309,11 @@ const jsonLd = {
                           </span>
                           <div class="mt-1 space-y-0.5">
                             {matches.map(m => (
-                              <div class="text-[9px] leading-tight text-slate-400 truncate font-mono">
+                              <div class="text-sm leading-tight">
                                 {m.f1}{m.f2}
                               </div>
                             ))}
                           </div>
-                          {matches.length > 1 && (
-                            <span class="absolute bottom-1 right-1 bg-green-900/60 text-green-400 text-[8px] font-mono font-bold px-1 rounded">
-                              ×{matches.length}
-                            </span>
-                          )}
                         </a>
                       ) : (
                         <span class="font-mono text-sm text-slate-700">{day}</span>
@@ -365,16 +360,11 @@ const jsonLd = {
                           </span>
                           <div class="mt-1 space-y-0.5">
                             {matches.map(m => (
-                              <div class="text-[9px] leading-tight text-slate-400 truncate font-mono">
+                              <div class="text-sm leading-tight">
                                 {m.f1}{m.f2}
                               </div>
                             ))}
                           </div>
-                          {matches.length > 1 && (
-                            <span class="absolute bottom-1 right-1 bg-green-900/60 text-green-400 text-[8px] font-mono font-bold px-1 rounded">
-                              ×{matches.length}
-                            </span>
-                          )}
                         </a>
                       ) : (
                         <span class="font-mono text-sm text-slate-700">{day}</span>
