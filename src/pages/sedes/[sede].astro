@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import AdSlot from '../../components/AdSlot.astro';
+import FAQ   from '../../components/FAQ.astro';
 
 // ── Interfaces ────────────────────────────────────────────────────────────────
 interface Transporte {
@@ -1896,6 +1897,39 @@ const title        = `${ciudad} — Sede Mundial 2026 | ${estadio}, Transporte y
 const description  = `Guía completa de ${ciudad} como sede del Mundial FIFA 2026: ${estadio} (cap. ${capacidad}), cómo llegar en metro/autobús/rideshare, mejores hoteles cercanos y la Fan Zone oficial.`;
 const canonicalURL = `https://mundial26horarios.com/sedes/${slug}`;
 
+const faqItems = [
+  {
+    q: `¿Qué partidos del Mundial 2026 se juegan en ${estadio}?`,
+    a: `${estadio} de ${ciudad} alberga partidos de ${fase} del Mundial FIFA 2026. Con capacidad para ${capacidad} espectadores, es uno de los recintos del torneo. Consulta el calendario completo en nuestra sección de partidos.`,
+  },
+  {
+    q: `¿Cómo llegar a ${estadio} el día del partido?`,
+    a: transportes.length > 0
+      ? `La opción más recomendada es ${transportes[0].metodo.toLowerCase()}: ${transportes[0].descripcion}. ${transportes[0].detalle} Tiempo estimado: ${transportes[0].tiempo}. Coste aproximado: ${transportes[0].costo}. Se aconseja evitar el coche privado por la alta demanda de aparcamiento.`
+      : `Consulta las opciones de transporte público disponibles en ${ciudad} para llegar al ${estadio} sin contratiempos.`,
+  },
+  {
+    q: `¿Cuál es la capacidad del ${estadio}?`,
+    a: `${estadio} tiene capacidad para ${capacidad} espectadores, siendo uno de los estadios más grandes de ${pais} y del Mundial 2026.`,
+  },
+  {
+    q: '¿A qué hora abren las puertas del estadio el día del partido?',
+    a: `Las puertas de ${estadio} abren entre 2,5 y 3 horas antes del inicio del partido. FIFA recomienda llegar con al menos 90 minutos de antelación para pasar los controles de seguridad con comodidad y encontrar tu asiento.`,
+  },
+  {
+    q: '¿Puedo llevar comida o bebida al estadio?',
+    a: 'Según la normativa FIFA, no está permitido introducir alimentos ni bebidas del exterior. Dentro del estadio encontrarás múltiples puestos de comida, bebidas no alcohólicas y recuerdos oficiales. Sí se permite agua sellada en botellas de hasta 500 ml sin tapa metálica.',
+  },
+  {
+    q: `¿Hay Fan Zone oficial cerca de ${estadio}?`,
+    a: `Sí. ${ciudad} contará con una Fan Zone oficial de FIFA con pantallas gigantes para los partidos, música en vivo, actividades para toda la familia y gastronomía local. Ideal para quienes no tienen entrada. Consulta el apartado de Fan Zone de esta guía para ubicación y horarios.`,
+  },
+  {
+    q: '¿Se pueden comprar entradas en la taquilla del estadio el día del partido?',
+    a: 'No. Todas las entradas para el Mundial 2026 se venden exclusivamente a través del portal oficial de FIFA (FIFA.com). No habrá venta en taquilla. Las entradas son nominativas y personales. Evita revendedores no autorizados.',
+  },
+];
+
 const jsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
@@ -1932,6 +1966,14 @@ const jsonLd = {
         { '@type': 'ListItem', position: 2, name: 'Sedes',  item: 'https://mundial26horarios.com/sedes' },
         { '@type': 'ListItem', position: 3, name: ciudad,   item: canonicalURL },
       ],
+    },
+    {
+      '@type': 'FAQPage',
+      mainEntity: faqItems.map(({ q, a }) => ({
+        '@type': 'Question',
+        name: q,
+        acceptedAnswer: { '@type': 'Answer', text: a },
+      })),
     },
   ],
 };
@@ -2323,5 +2365,14 @@ const jsonLd = {
       </div>
     </div>
   </section>
+
+  <!-- ===== FAQ ===== -->
+  <div style="background:#020617;">
+    <FAQ
+      items={faqItems}
+      heading={`Preguntas sobre ${ciudad}`}
+      sub={`Todo sobre ${estadio} — Mundial 2026`}
+    />
+  </div>
 
 </Layout>

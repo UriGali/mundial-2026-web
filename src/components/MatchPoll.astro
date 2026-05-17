@@ -1,0 +1,140 @@
+---
+interface Props {
+  matchId: string;
+  team1:   string;
+  flag1:   string;
+  team2:   string;
+  flag2:   string;
+}
+const { matchId, team1, flag1, team2, flag2 } = Astro.props;
+const isPorDefinir = team1 === 'Por definir';
+---
+
+<section class="py-12 px-4" aria-labelledby={`poll-title-${matchId}`}>
+  <div class="max-w-xl mx-auto">
+    <div class="bg-slate-900 border border-slate-700/60 rounded-2xl overflow-hidden">
+
+      <div class="px-6 pt-6 pb-3 text-center">
+        <p class="font-oswald text-xs tracking-[0.2em] text-gold uppercase mb-1">Encuesta en vivo</p>
+        <h2 id={`poll-title-${matchId}`} class="font-oswald font-bold text-white text-xl sm:text-2xl">
+          ¿Quién ganará este partido?
+        </h2>
+      </div>
+
+      {isPorDefinir ? (
+        <p class="text-center text-slate-500 text-sm font-mono px-6 pb-6 pt-2">
+          La encuesta estará disponible cuando se conozcan los equipos.
+        </p>
+      ) : (
+        <div class="px-6 pb-6 pt-2">
+          <div id={`poll-btns-${matchId}`} class="grid grid-cols-3 gap-2 mb-3">
+            <button data-vote="1" class="poll-btn flex flex-col items-center gap-2 py-4 px-2 rounded-xl bg-slate-800 border border-slate-700 hover:border-gold/60 hover:bg-slate-800/80 transition-all group">
+              <span class="text-3xl">{flag1}</span>
+              <span class="text-white text-xs font-semibold text-center leading-tight group-hover:text-gold transition-colors">{team1}</span>
+            </button>
+            <button data-vote="x" class="poll-btn flex flex-col items-center gap-2 py-4 px-2 rounded-xl bg-slate-800 border border-slate-700 hover:border-slate-500 transition-all">
+              <span class="text-3xl">🤝</span>
+              <span class="text-slate-400 text-xs font-semibold">Empate</span>
+            </button>
+            <button data-vote="2" class="poll-btn flex flex-col items-center gap-2 py-4 px-2 rounded-xl bg-slate-800 border border-slate-700 hover:border-gold/60 hover:bg-slate-800/80 transition-all group">
+              <span class="text-3xl">{flag2}</span>
+              <span class="text-white text-xs font-semibold text-center leading-tight group-hover:text-gold transition-colors">{team2}</span>
+            </button>
+          </div>
+
+          <div id={`poll-results-${matchId}`} class="hidden space-y-3 mb-3"></div>
+          <p id={`poll-count-${matchId}`} class="text-center text-slate-600 text-xs font-mono"></p>
+        </div>
+      )}
+
+    </div>
+  </div>
+</section>
+
+<script define:vars={{ matchId, t1: team1, f1: flag1, t2: team2, f2: flag2 }}>
+  function hashOf(s) {
+    let h = 0;
+    for (let i = 0; i < s.length; i++) h = (Math.imul(31, h) + s.charCodeAt(i)) | 0;
+    return Math.abs(h);
+  }
+
+  const seed  = hashOf(matchId);
+  const BASE1 = 40 + (seed % 25);
+  const BASEX = 12 + (seed % 12);
+  const BASE2 = 100 - BASE1 - BASEX;
+  const KEY   = 'poll_' + matchId;
+
+  const btnsEl    = document.getElementById('poll-btns-'    + matchId);
+  const resultsEl = document.getElementById('poll-results-' + matchId);
+  const countEl   = document.getElementById('poll-count-'   + matchId);
+
+  function load() {
+    try {
+      const r = JSON.parse(localStorage.getItem(KEY) || 'null');
+      if (r) return r;
+    } catch {}
+    return { v1: BASE1, vx: BASEX, v2: BASE2, voted: null };
+  }
+
+  function save(v) {
+    try { localStorage.setItem(KEY, JSON.stringify(v)); } catch {}
+  }
+
+  function show(votes, highlight) {
+    const total = votes.v1 + votes.vx + votes.v2;
+    const p1 = Math.round(votes.v1 / total * 100);
+    const px = Math.round(votes.vx / total * 100);
+    const p2 = 100 - p1 - px;
+    const rows = [
+      { key: '1', label: t1, flag: f1, pct: p1, bar: 'bg-gold/70'        },
+      { key: 'x', label: 'Empate',    flag: '🤝', pct: px, bar: 'bg-slate-500'    },
+      { key: '2', label: t2, flag: f2, pct: p2, bar: 'bg-green-500/70'    },
+    ];
+    if (btnsEl) btnsEl.classList.add('hidden');
+    if (resultsEl) {
+      resultsEl.classList.remove('hidden');
+      resultsEl.innerHTML = rows.map(r => `
+        <div class="flex items-center gap-3">
+          <span class="text-xl shrink-0 w-7 text-center">${r.flag}</span>
+          <div class="flex-1 min-w-0">
+            <div class="flex justify-between mb-1">
+              <span class="text-xs font-semibold truncate pr-2 ${r.key === highlight ? 'text-gold' : 'text-white'}">${r.label}${r.key === highlight ? ' ✓' : ''}</span>
+              <span class="text-xs font-mono font-bold shrink-0 ${r.key === highlight ? 'text-gold' : 'text-slate-400'}">${r.pct}%</span>
+            </div>
+            <div class="h-2 rounded-full bg-slate-800 overflow-hidden">
+              <div class="${r.bar} h-full rounded-full" style="width:0%" data-target="${r.pct}"></div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+      setTimeout(() => {
+        resultsEl.querySelectorAll('[data-target]').forEach(bar => {
+          bar.style.transition = 'width 0.7s ease-out';
+          bar.style.width = bar.dataset.target + '%';
+        });
+      }, 60);
+    }
+    if (countEl) countEl.textContent = total.toLocaleString('es') + ' votos';
+  }
+
+  const state = load();
+  if (state.voted) {
+    show(state, state.voted);
+  } else if (countEl) {
+    countEl.textContent = (state.v1 + state.vx + state.v2).toLocaleString('es') + ' votos';
+  }
+
+  btnsEl?.querySelectorAll('.poll-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const current = load();
+      if (current.voted) return;
+      const v = btn.dataset.vote;
+      if (v === '1') current.v1++;
+      else if (v === 'x') current.vx++;
+      else current.v2++;
+      current.voted = v;
+      save(current);
+      show(current, v);
+    });
+  });
+</script>

@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import AdSlot from '../../components/AdSlot.astro';
+import MatchPoll from '../../components/MatchPoll.astro';
 import { MATCHES } from '../../data/matches';
 import type { Match } from '../../data/matches';
 
@@ -13,6 +14,15 @@ const { match: m } = Astro.props;
 
 const sedeName = m.sedeSlug.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase());
 const matchDate = new Date(m.utc);
+
+// Next match chronologically
+const sortedMatches = [...MATCHES].sort((a, b) => new Date(a.utc).getTime() - new Date(b.utc).getTime());
+const currentIdx    = sortedMatches.findIndex(m2 => m2.id === m.id);
+const nextMatch     = currentIdx >= 0 && currentIdx < sortedMatches.length - 1 ? sortedMatches[currentIdx + 1] : null;
+const nextMatchDate = nextMatch ? new Date(nextMatch.utc) : null;
+const nextDateStr   = nextMatchDate
+  ? nextMatchDate.toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC' })
+  : '';
 
 const dateStrUTC = matchDate.toLocaleDateString('es-ES', {
   weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC',
@@ -249,6 +259,9 @@ const TV_CHANNELS = [
     </div>
   </section>
 
+  <!-- ===== ENCUESTA ===== -->
+  <MatchPoll matchId={m.id} team1={m.e1} flag1={m.f1} team2={m.e2} flag2={m.f2} />
+
   <!-- ===== RECORDAR PARTIDO CTA ===== -->
   <section class="py-12 px-4" aria-labelledby="recordar-heading">
     <div class="max-w-2xl mx-auto">
@@ -402,6 +415,45 @@ const TV_CHANNELS = [
   <div class="max-w-4xl mx-auto px-4 mb-8">
     <AdSlot slot="9012345678" format="horizontal" label="Publicidad" />
   </div>
+
+  <!-- ===== SIGUIENTE PARTIDO ===== -->
+  {nextMatch && (
+    <section class="pb-16 px-4" aria-label="Siguiente partido">
+      <div class="max-w-2xl mx-auto">
+        <p class="text-center font-oswald text-xs tracking-[0.2em] text-slate-600 uppercase mb-3">Continúa explorando</p>
+        <a
+          href={`/partidos/${nextMatch.id}`}
+          class="group flex flex-col sm:flex-row items-center justify-between gap-5 p-6 bg-slate-900 border border-slate-700/60 hover:border-gold/50 rounded-2xl transition-all duration-300 hover:shadow-[0_0_30px_rgba(212,175,55,0.08)]"
+          aria-label={`Siguiente partido: ${nextMatch.e1} vs ${nextMatch.e2}`}
+        >
+          <div class="text-center sm:text-left shrink-0">
+            <p class="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-0.5">Siguiente partido →</p>
+            <p class="font-oswald text-xs text-gold capitalize">{nextMatch.fase}</p>
+            <p class="text-slate-600 text-[10px] font-mono mt-0.5 capitalize">{nextDateStr}</p>
+          </div>
+
+          <div class="flex items-center gap-5 flex-1 justify-center">
+            <div class="text-center">
+              <div class="text-4xl mb-1">{nextMatch.f1}</div>
+              <div class="text-white text-xs font-semibold leading-tight max-w-[70px] text-center">{nextMatch.e1}</div>
+            </div>
+            <div class="font-oswald font-bold text-xl text-slate-700 group-hover:text-gold transition-colors">VS</div>
+            <div class="text-center">
+              <div class="text-4xl mb-1">{nextMatch.f2}</div>
+              <div class="text-white text-xs font-semibold leading-tight max-w-[70px] text-center">{nextMatch.e2}</div>
+            </div>
+          </div>
+
+          <div class="shrink-0 flex items-center gap-1.5 font-oswald font-bold text-sm text-slate-500 group-hover:text-gold transition-colors group-hover:gap-2.5 duration-200">
+            Ver partido
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+          </div>
+        </a>
+      </div>
+    </section>
+  )}
 
 </Layout>
 
