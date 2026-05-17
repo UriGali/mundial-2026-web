@@ -299,39 +299,31 @@ const jsonLd = {
                 const isFinal  = matches.some(m => m.id === 'f01');
                 const borderR  = (i + 1) % 7 !== 0 ? 'border-r' : '';
                 const borderB  = i < JUNE_CELLS.length - 7 ? 'border-b' : '';
+                const mData    = hasMatch ? JSON.stringify(matches.map(m => ({
+                  id: m.id, e1: m.e1, f1: m.f1, e2: m.e2, f2: m.f2,
+                  utc: `${m.fechaISO}T${m.horaUTC}:00Z`, fase: m.fase,
+                }))) : null;
                 return (
-                  <div class={`${borderR} ${borderB} border-slate-800/50 min-h-[90px] p-1 sm:p-1.5 relative flex flex-col ${isFinal ? 'bg-gold/5' : hasMatch ? 'bg-green-950/20' : ''}`}>
+                  <div
+                    class={`${borderR} ${borderB} border-slate-800/50 aspect-square overflow-hidden p-1 flex flex-col ${isFinal ? 'bg-gold/5' : hasMatch ? 'bg-green-950/20' : ''} ${hasMatch ? 'cal-day-cell cursor-pointer select-none' : ''}`}
+                    data-label={hasMatch ? formatFecha(iso) : null}
+                    data-matches={mData}
+                  >
                     {day && (
-                      hasMatch ? (
-                        <div class="flex flex-col h-full gap-0.5">
-                          <span class={`inline-flex items-center justify-center w-6 h-6 rounded-full font-mono text-xs font-bold self-start ${isFinal ? 'bg-gold text-slate-950' : 'bg-green-500/20 text-green-300'}`}>
-                            {day}
-                          </span>
-                          <div class="flex flex-col gap-0.5 flex-1 justify-center">
-                            {matches.map(m => (
-                              <a
-                                href={`/partidos/${m.id}`}
-                                class="flex flex-col items-center rounded px-0.5 py-0.5 hover:bg-white/5 transition-colors"
-                                aria-label={`${m.e1} vs ${m.e2}`}
-                              >
-                                <div class="flex items-center gap-px leading-none">
-                                  <span class="text-sm sm:text-base">{m.f1}</span>
-                                  <span class="text-[6px] sm:text-[7px] text-slate-600 font-mono px-px">vs</span>
-                                  <span class="text-sm sm:text-base">{m.f2}</span>
-                                </div>
-                                <span
-                                  class="text-[7px] sm:text-[8px] font-mono text-slate-500 leading-none cal-time"
-                                  data-utc={`${m.fechaISO}T${m.horaUTC}:00Z`}
-                                >
-                                  {m.horaUTC}
-                                </span>
-                              </a>
-                            ))}
+                      <div class="flex flex-col h-full">
+                        <span class={`text-[9px] sm:text-[11px] font-mono font-bold leading-none self-start ${hasMatch ? (isFinal ? 'text-gold' : 'text-green-300') : 'text-slate-700'}`}>
+                          {day}
+                        </span>
+                        {hasMatch && (
+                          <div class="flex-1 flex items-center justify-center mt-0.5">
+                            <div class="flex flex-wrap justify-center gap-px">
+                              {matches.flatMap(m => [m.f1, m.f2]).slice(0, 8).map(flag => (
+                                <span class="text-[10px] sm:text-xs leading-none">{flag}</span>
+                              ))}
+                            </div>
                           </div>
-                        </div>
-                      ) : (
-                        <span class="font-mono text-xs text-slate-800">{day}</span>
-                      )
+                        )}
+                      </div>
                     )}
                   </div>
                 );
@@ -364,39 +356,31 @@ const jsonLd = {
                 const isFinal  = matches.some(m => m.id === 'f01');
                 const borderR  = (i + 1) % 7 !== 0 ? 'border-r' : '';
                 const borderB  = i < JULY_CELLS.length - 7 ? 'border-b' : '';
+                const mData    = hasMatch ? JSON.stringify(matches.map(m => ({
+                  id: m.id, e1: m.e1, f1: m.f1, e2: m.e2, f2: m.f2,
+                  utc: `${m.fechaISO}T${m.horaUTC}:00Z`, fase: m.fase,
+                }))) : null;
                 return (
-                  <div class={`${borderR} ${borderB} border-slate-800/50 min-h-[90px] p-1 sm:p-1.5 relative flex flex-col ${isFinal ? 'bg-gold/5' : hasMatch ? 'bg-green-950/20' : ''}`}>
+                  <div
+                    class={`${borderR} ${borderB} border-slate-800/50 aspect-square overflow-hidden p-1 flex flex-col ${isFinal ? 'bg-gold/5' : hasMatch ? 'bg-green-950/20' : ''} ${hasMatch ? 'cal-day-cell cursor-pointer select-none' : ''}`}
+                    data-label={hasMatch ? formatFecha(iso) : null}
+                    data-matches={mData}
+                  >
                     {day && (
-                      hasMatch ? (
-                        <div class="flex flex-col h-full gap-0.5">
-                          <span class={`inline-flex items-center justify-center w-6 h-6 rounded-full font-mono text-xs font-bold self-start ${isFinal ? 'bg-gold text-slate-950' : 'bg-green-500/20 text-green-300'}`}>
-                            {day}
-                          </span>
-                          <div class="flex flex-col gap-0.5 flex-1 justify-center">
-                            {matches.map(m => (
-                              <a
-                                href={`/partidos/${m.id}`}
-                                class="flex flex-col items-center rounded px-0.5 py-0.5 hover:bg-white/5 transition-colors"
-                                aria-label={`${m.e1} vs ${m.e2}`}
-                              >
-                                <div class="flex items-center gap-px leading-none">
-                                  <span class="text-sm sm:text-base">{m.f1}</span>
-                                  <span class="text-[6px] sm:text-[7px] text-slate-600 font-mono px-px">vs</span>
-                                  <span class="text-sm sm:text-base">{m.f2}</span>
-                                </div>
-                                <span
-                                  class="text-[7px] sm:text-[8px] font-mono text-slate-500 leading-none cal-time"
-                                  data-utc={`${m.fechaISO}T${m.horaUTC}:00Z`}
-                                >
-                                  {m.horaUTC}
-                                </span>
-                              </a>
-                            ))}
+                      <div class="flex flex-col h-full">
+                        <span class={`text-[9px] sm:text-[11px] font-mono font-bold leading-none self-start ${hasMatch ? (isFinal ? 'text-gold' : 'text-green-300') : 'text-slate-700'}`}>
+                          {day}
+                        </span>
+                        {hasMatch && (
+                          <div class="flex-1 flex items-center justify-center mt-0.5">
+                            <div class="flex flex-wrap justify-center gap-px">
+                              {matches.flatMap(m => [m.f1, m.f2]).slice(0, 8).map(flag => (
+                                <span class="text-[10px] sm:text-xs leading-none">{flag}</span>
+                              ))}
+                            </div>
                           </div>
-                        </div>
-                      ) : (
-                        <span class="font-mono text-xs text-slate-800">{day}</span>
-                      )
+                        )}
+                      </div>
                     )}
                   </div>
                 );
@@ -418,7 +402,7 @@ const jsonLd = {
           Gran Final
         </span>
         <span class="flex items-center gap-1.5 text-slate-600">
-          Hora mostrada en tu zona horaria local
+          Pasa el cursor (o toca) para ver detalles del partido
         </span>
       </div>
     </section>
@@ -641,14 +625,107 @@ const jsonLd = {
 
   </div>
 
+  <!-- Popover flotante del calendario (rellenado por JS) -->
+  <div
+    id="cal-pop"
+    class="fixed z-[9999] hidden w-72 rounded-2xl shadow-2xl p-3 text-white pointer-events-auto"
+    style="backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);background:rgba(10,15,30,0.93);border:1px solid rgba(100,116,139,0.4);"
+  ></div>
+
 </Layout>
 
 <script>
-  // Convierte horas UTC a la zona horaria local del visitante
-  document.querySelectorAll<HTMLElement>('.cal-time[data-utc]').forEach(el => {
-    try {
-      const d = new Date(el.dataset.utc!);
-      el.textContent = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
-    } catch (_) {}
+(function () {
+  var pop = document.getElementById('cal-pop');
+  if (!pop) return;
+
+  var hideTimer = null;
+  var openCell  = null;
+
+  function show(cell) {
+    clearTimeout(hideTimer);
+    openCell = cell;
+
+    var matches = [];
+    try { matches = JSON.parse(cell.dataset.matches || '[]'); } catch(e) {}
+    var label = cell.dataset.label || '';
+
+    var html = '<div style="font-size:10px;font-family:monospace;color:#94a3b8;text-transform:uppercase;letter-spacing:.08em;padding-bottom:8px;margin-bottom:6px;border-bottom:1px solid rgba(148,163,184,.15)">' + label + '</div>';
+
+    for (var i = 0; i < matches.length; i++) {
+      var m    = matches[i];
+      var time = '—';
+      try { time = new Date(m.utc).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }); } catch(e) {}
+      var isFinal = m.id === 'f01';
+      var timeColor = isFinal ? '#d4af37' : '#4ade80';
+      html +=
+        '<a href="/partidos/' + m.id + '" '
+        + 'style="display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:10px;text-decoration:none;margin-bottom:2px;transition:background .12s" '
+        + 'onmouseover="this.style.background=\'rgba(255,255,255,.07)\'" '
+        + 'onmouseout="this.style.background=\'\'">'
+          + '<span style="font-size:20px;line-height:1;flex-shrink:0">' + m.f1 + '</span>'
+          + '<div style="flex:1;min-width:0;overflow:hidden">'
+            + '<div style="display:flex;align-items:center;gap:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:11px;font-weight:600;color:#f1f5f9">'
+              + '<span style="overflow:hidden;text-overflow:ellipsis">' + m.e1 + '</span>'
+              + '<span style="color:#475569;font-family:monospace;font-size:9px;flex-shrink:0;padding:0 2px">vs</span>'
+              + '<span style="overflow:hidden;text-overflow:ellipsis">' + m.e2 + '</span>'
+            + '</div>'
+            + '<div style="font-size:10px;font-family:monospace;color:#64748b;margin-top:2px;white-space:nowrap">'
+              + m.fase + ' &middot; <span style="color:' + timeColor + '">' + time + '</span>'
+            + '</div>'
+          + '</div>'
+          + '<span style="font-size:20px;line-height:1;flex-shrink:0">' + m.f2 + '</span>'
+          + '<span style="font-size:11px;font-family:monospace;color:#d4af37;flex-shrink:0;margin-left:2px;opacity:.7">→</span>'
+        + '</a>';
+    }
+
+    pop.innerHTML = html;
+
+    // Posición: centrado sobre la celda, evitando bordes de pantalla
+    var rect = cell.getBoundingClientRect();
+    var pw   = 288;
+    var ph   = 36 + matches.length * 52;
+    var vw   = window.innerWidth;
+    var vh   = window.innerHeight;
+    var left = rect.left + rect.width / 2 - pw / 2;
+    var top  = rect.top - ph - 10 + window.scrollY;
+
+    // Si no cabe arriba, va abajo
+    if (rect.top - ph - 10 < 8) top = rect.bottom + 10 + window.scrollY;
+    // Clamp horizontal
+    if (left < 8) left = 8;
+    if (left + pw > vw - 8) left = vw - pw - 8;
+
+    pop.style.left = left + 'px';
+    pop.style.top  = top  + 'px';
+    pop.classList.remove('hidden');
+  }
+
+  function hide() {
+    hideTimer = setTimeout(function () { pop.classList.add('hidden'); openCell = null; }, 160);
+  }
+
+  var cells = document.querySelectorAll('.cal-day-cell');
+
+  cells.forEach(function (c) {
+    c.addEventListener('mouseenter', function () { show(c); });
+    c.addEventListener('mouseleave', hide);
+    c.addEventListener('click', function (e) {
+      e.stopPropagation();
+      if (!pop.classList.contains('hidden') && openCell === c) {
+        pop.classList.add('hidden'); openCell = null;
+      } else {
+        show(c);
+      }
+    });
   });
+
+  pop.addEventListener('mouseenter', function () { clearTimeout(hideTimer); });
+  pop.addEventListener('mouseleave', hide);
+  pop.addEventListener('click', function (e) { e.stopPropagation(); });
+
+  document.addEventListener('click', function () {
+    if (!pop.classList.contains('hidden')) { pop.classList.add('hidden'); openCell = null; }
+  });
+})();
 </script>
