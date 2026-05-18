@@ -1,3 +1,14 @@
+/** Centralized feed list — shared by pages and the smart-redeploy cron check. */
+export const RSS_FEEDS = [
+  // Targeted: convocatorias y listas (máxima relevancia en mayo-junio 2026)
+  'https://news.google.com/rss/search?q=mundial+2026+%22convocatoria%22&hl=es&gl=ES&ceid=ES:es',
+  'https://news.google.com/rss/search?q=mundial+2026+%22lista%22&hl=es&gl=ES&ceid=ES:es',
+  'https://news.google.com/rss/search?q=%22world+cup+2026%22+%22squad%22&hl=en&gl=US&ceid=US:en',
+  // Broad coverage
+  'https://news.google.com/rss/search?q=mundial+2026+FIFA&hl=es&gl=ES&ceid=ES:es',
+  'https://news.google.com/rss/search?q=%22world+cup+2026%22&hl=en&gl=US&ceid=US:en',
+];
+
 export interface RssItem {
   title: string;
   link: string;

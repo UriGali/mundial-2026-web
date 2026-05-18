@@ -3,6 +3,9 @@ import Layout from '../layouts/Layout.astro';
 import AdSlot from '../components/AdSlot.astro';
 import NearestMatches from '../components/NearestMatches.astro';
 import MatchesGrid from '../components/MatchesGrid.astro';
+import { fetchMultipleFeeds, RSS_FEEDS } from '../lib/fetchRss';
+
+const latestNews = (await fetchMultipleFeeds(RSS_FEEDS, 1))[0] ?? null;
 
 const title       = 'Mundial 2026 — Guía Completa | Sedes, Entradas y Equipos';
 const description = 'Todo sobre el Mundial FIFA 2026: sedes en USA, México y Canadá, cómo comprar entradas, equipos clasificados, calendario y guía de viaje. ¡El torneo más grande de la historia!';
@@ -288,6 +291,44 @@ const categorias = [
       </svg>
     </a>
   </section>
+
+  <!-- ===================================================
+       ÚLTIMA HORA — Banner de noticia más reciente
+  ==================================================== -->
+  {latestNews && (
+    <a
+      href={latestNews.link}
+      target="_blank"
+      rel="noopener noreferrer nofollow"
+      class="block w-full group"
+      style="background: rgba(220,38,38,0.06); border-bottom: 1px solid rgba(220,38,38,0.18);"
+      aria-label={`Última hora: ${latestNews.title}`}
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex items-center gap-3 min-w-0">
+        <!-- Ping rojo pulsante -->
+        <span class="relative flex items-center shrink-0" aria-hidden="true">
+          <span class="absolute inline-flex h-3 w-3 rounded-full bg-red-500 opacity-75 animate-ping"></span>
+          <span class="relative inline-flex h-3 w-3 rounded-full bg-red-500"></span>
+        </span>
+        <!-- Label -->
+        <span class="text-xs font-bold uppercase tracking-[0.18em] text-red-400 shrink-0 font-oswald">ÚLTIMA HORA</span>
+        <!-- Separador -->
+        <span class="text-white/20 shrink-0" aria-hidden="true">·</span>
+        <!-- Titular -->
+        <span class="text-sm text-slate-300 group-hover:text-white transition-colors truncate flex-1 min-w-0">
+          {latestNews.title}
+        </span>
+        <!-- Fecha (solo desktop) -->
+        {latestNews.dateLabel && (
+          <span class="text-xs text-slate-600 shrink-0 hidden md:block">{latestNews.dateLabel}</span>
+        )}
+        <!-- Flecha -->
+        <svg class="w-3.5 h-3.5 text-slate-600 group-hover:text-red-400 transition-colors shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+        </svg>
+      </div>
+    </a>
+  )}
 
   <!-- ===================================================
        PRÓXIMOS 6 PARTIDOS (MatchesGrid)

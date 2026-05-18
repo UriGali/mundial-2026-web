@@ -1,14 +1,10 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import AdSlot from '../../components/AdSlot.astro';
-import { fetchMultipleFeeds } from '../../lib/fetchRss';
+import { fetchMultipleFeeds, RSS_FEEDS } from '../../lib/fetchRss';
 
 // Fetched at BUILD TIME — refreshed on every redeploy
-const RSS_FEEDS = [
-  'https://news.google.com/rss/search?q=mundial+2026+FIFA&hl=es&gl=ES&ceid=ES:es',
-  'https://news.google.com/rss/search?q="world+cup+2026"&hl=es&gl=ES&ceid=ES:es',
-];
-const rssItems = await fetchMultipleFeeds(RSS_FEEDS, 5);
+const rssItems = await fetchMultipleFeeds(RSS_FEEDS, 4);
 
 const title       = 'Noticias del Mundial 2026 — Últimas novedades FIFA';
 const description = 'Últimas noticias del Mundial FIFA 2026: avances en sedes, sorteo de grupos, guías para aficionados y todo lo que necesitas saber antes del torneo.';
