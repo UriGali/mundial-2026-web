@@ -1013,3 +1013,18 @@ const categorias = [
   updateCountdown();
   setInterval(updateCountdown, 1000);
 </script>
+
+<!-- Background refresh: triggers a redeploy when the build is >3 h old -->
+<script define:vars={{ BUILD_TIME: new Date().toISOString() }}>
+  const THREE_HOURS = 3 * 60 * 60 * 1000;
+  try {
+    const buildAge   = Date.now() - new Date(BUILD_TIME).getTime();
+    if (buildAge < THREE_HOURS) throw new Error('build fresh');
+
+    const lastCheck  = parseInt(sessionStorage.getItem('_nr') || '0', 10);
+    if (Date.now() - lastCheck < THREE_HOURS) throw new Error('checked recently');
+
+    sessionStorage.setItem('_nr', String(Date.now()));
+    fetch('/api/refresh-news').catch(() => {});
+  } catch (_) { /* silent */ }
+</script>
