@@ -23,8 +23,19 @@ export default defineConfig({
         if (url.includes('/horarios/')) {
           return { ...item, changefreq: 'weekly',  priority: 0.9, lastmod };
         }
+        // /noticias/[pais]/[slug] — artículos individuales de selecciones
+        if (/\/noticias\/[^/]+\/[^/]+/.test(url)) {
+          return { ...item, changefreq: 'daily',   priority: 0.85, lastmod };
+        }
         if (url.includes('/partidos/')) {
           return { ...item, changefreq: 'weekly',  priority: 0.8, lastmod };
+        }
+        // /noticias/selecciones — hub de selecciones
+        if (url.includes('/noticias/selecciones')) {
+          return { ...item, changefreq: 'daily',   priority: 0.8, lastmod };
+        }
+        if (url.includes('/noticias/')) {
+          return { ...item, changefreq: 'weekly',  priority: 0.7, lastmod };
         }
         if (url.includes('/sedes/')) {
           return { ...item, changefreq: 'monthly', priority: 0.7, lastmod };

@@ -1,0 +1,311 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import MatchPoll from '../../../components/MatchPoll.astro';
+import { fetchMultipleFeeds, RSS_FEEDS, slugify } from '../../../lib/fetchRss';
+import type { RssItem } from '../../../lib/fetchRss';
+import { MATCHES } from '../../../data/matches';
+
+export async function getStaticPaths() {
+  const items = await fetchMultipleFeeds(RSS_FEEDS, 5);
+  const seen = new Set<string>();
+
+  return items
+    .filter(item => item.pais)
+    .reduce<{ params: { pais: string; slug: string }; props: { item: RssItem } }[]>(
+      (paths, item) => {
+        const pais = item.pais!;
+        const slug = slugify(item.title);
+        const key  = `${pais}/${slug}`;
+        if (!seen.has(key)) {
+          seen.add(key);
+          paths.push({ params: { pais, slug }, props: { item } });
+        }
+        return paths;
+      },
+      [],
+    );
+}
+
+interface Props { item: RssItem; }
+const { item }                    = Astro.props;
+const { pais, slug: currentSlug } = Astro.params;
+
+const PAISES_LABEL: Record<string, { name: string; flag: string }> = {
+  mexico:     { name: 'México',     flag: '🇲🇽' },
+  usa:        { name: 'USA',        flag: '🇺🇸' },
+  espana:     { name: 'España',     flag: '🇪🇸' },
+  argentina:  { name: 'Argentina',  flag: '🇦🇷' },
+  brasil:     { name: 'Brasil',     flag: '🇧🇷' },
+  francia:    { name: 'Francia',    flag: '🇫🇷' },
+  alemania:   { name: 'Alemania',   flag: '🇩🇪' },
+  inglaterra: { name: 'Inglaterra', flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿' },
+  portugal:   { name: 'Portugal',   flag: '🇵🇹' },
+  uruguay:    { name: 'Uruguay',    flag: '🇺🇾' },
+  canada:     { name: 'Canadá',     flag: '🇨🇦' },
+  marruecos:  { name: 'Marruecos',  flag: '🇲🇦' },
+  japon:      { name: 'Japón',      flag: '🇯🇵' },
+  colombia:   { name: 'Colombia',   flag: '🇨🇴' },
+  ecuador:    { name: 'Ecuador',    flag: '🇪🇨' },
+};
+
+const PAIS_TO_EQUIPO: Record<string, string[]> = {
+  mexico:     ['México'],
+  usa:        ['USA'],
+  espana:     ['España'],
+  argentina:  ['Argentina'],
+  brasil:     ['Brasil'],
+  francia:    ['Francia'],
+  alemania:   ['Alemania'],
+  inglaterra: ['Inglaterra'],
+  portugal:   ['Portugal'],
+  uruguay:    ['Uruguay'],
+  canada:     ['Canadá'],
+  marruecos:  ['Marruecos'],
+  japon:      ['Japón'],
+  colombia:   ['Colombia'],
+  ecuador:    ['Ecuador'],
+};
+
+const paisLabel = PAISES_LABEL[pais] ?? { name: pais, flag: '🌍' };
+const equipos   = PAIS_TO_EQUIPO[pais] ?? [];
+
+const buildTime = new Date();
+const nextMatch = MATCHES
+  .filter(m => equipos.some(e => m.e1 === e || m.e2 === e))
+  .filter(m => new Date(m.utc) >= buildTime)
+  .sort((a, b) => new Date(a.utc).getTime() - new Date(b.utc).getTime())[0] ?? null;
+
+const nextMatchDate = nextMatch
+  ? new Date(nextMatch.utc).toLocaleDateString('es-ES', {
+      weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC',
+    })
+  : null;
+const nextMatchTime = nextMatch
+  ? new Date(nextMatch.utc).toLocaleTimeString('es-ES', {
+      hour: '2-digit', minute: '2-digit', timeZone: 'UTC',
+    }) + ' UTC'
+  : null;
+const nextMatchSede = nextMatch
+  ? nextMatch.sedeSlug.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase())
+  : null;
+
+const canonicalURL  = `https://mundial26horarios.com/noticias/${pais}/${currentSlug}`;
+const pageTitle     = `${item.title} | ${paisLabel.flag} ${paisLabel.name} · Mundial 2026`;
+const metaDesc      = item.description
+  ? item.description.substring(0, 160)
+  : `Noticias de ${paisLabel.name} en el Mundial 2026: ${item.title}`;
+const keywords      = `${paisLabel.name.toLowerCase()} mundial 2026, noticias ${paisLabel.name.toLowerCase()} world cup, convocatoria ${paisLabel.name.toLowerCase()} 2026`;
+
+const pubDate = item.pubDate ? new Date(item.pubDate).toISOString() : new Date().toISOString();
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'NewsArticle',
+  headline: item.title,
+  description: metaDesc,
+  url: canonicalURL,
+  datePublished: pubDate,
+  dateModified:  pubDate,
+  author: {
+    '@type': 'Organization',
+    name: item.source,
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Mundial 2026 — Guía para Fans',
+    url: 'https://mundial26horarios.com',
+  },
+  inLanguage: 'es',
+  about: {
+    '@type': 'SportsTeam',
+    name: paisLabel.name,
+    sport: 'Fútbol',
+  },
+};
+---
+
+<Layout
+  title={pageTitle}
+  description={metaDesc}
+  keywords={keywords}
+  canonicalURL={canonicalURL}
+  jsonLd={jsonLd}
+>
+
+  <!-- Breadcrumb -->
+  <nav
+    class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-2"
+    aria-label="Breadcrumb"
+  >
+    <ol class="flex items-center gap-1.5 text-xs text-slate-500 flex-wrap">
+      <li><a href="/" class="hover:text-gold transition-colors">Inicio</a></li>
+      <li aria-hidden="true" class="text-slate-700">/</li>
+      <li><a href="/noticias" class="hover:text-gold transition-colors">Noticias</a></li>
+      <li aria-hidden="true" class="text-slate-700">/</li>
+      <li><a href="/noticias/selecciones" class="hover:text-gold transition-colors">Selecciones</a></li>
+      <li aria-hidden="true" class="text-slate-700">/</li>
+      <li class="font-medium" style="color:#d4af37;">{paisLabel.flag} {paisLabel.name}</li>
+    </ol>
+  </nav>
+
+  <article class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- Header del artículo -->
+    <header class="mb-8">
+      <div class="flex flex-wrap items-center gap-2 mb-5">
+        <a
+          href={`/noticias/selecciones`}
+          class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest px-3 py-1.5 rounded-full transition-colors hover:brightness-110"
+          style="background: rgba(212,175,55,0.1); color: #d4af37; border: 1px solid rgba(212,175,55,0.25);"
+        >
+          <span aria-hidden="true">{paisLabel.flag}</span>
+          {paisLabel.name}
+        </a>
+        <span class="text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full text-slate-400 border border-white/10">
+          Mundial 2026
+        </span>
+        {item.dateLabel && (
+          <span class="text-xs text-slate-500 ml-auto">{item.dateLabel}</span>
+        )}
+      </div>
+
+      <h1 class="font-oswald font-bold text-3xl sm:text-4xl text-white leading-tight mb-5">
+        {item.title}
+      </h1>
+
+      <div
+        class="flex items-center gap-3 text-xs text-slate-500 pt-4 border-t"
+        style="border-color: rgba(255,255,255,0.08);"
+      >
+        <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
+        </svg>
+        <span>{item.source}</span>
+        <span aria-hidden="true" class="text-slate-700">·</span>
+        <span>Fuente externa</span>
+      </div>
+    </header>
+
+    <!-- Resumen del artículo -->
+    {item.description && (
+      <div
+        class="rounded-xl p-5 sm:p-6 mb-6 border"
+        style="background: #0f172a; border-color: rgba(212,175,55,0.12);"
+      >
+        <p
+          class="text-[10px] font-bold uppercase tracking-[0.2em] mb-3"
+          style="color: #d4af37;"
+        >
+          Resumen
+        </p>
+        <p class="text-slate-300 text-base leading-relaxed">{item.description}</p>
+      </div>
+    )}
+
+    <!-- CTA artículo original -->
+    <a
+      href={item.link}
+      target="_blank"
+      rel="noopener noreferrer nofollow"
+      class="flex items-center justify-center gap-2.5 w-full rounded-xl py-3.5 font-oswald font-semibold tracking-wider text-sm uppercase mb-8 transition-all duration-200 hover:scale-[1.015] hover:shadow-lg"
+      style="background-image: linear-gradient(105deg,#b8922a 0%,#d4af37 40%,#f5d97a 60%,#d4af37 80%,#b8922a 100%); color: #0a0f1a;"
+    >
+      Leer artículo completo en {item.source}
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+      </svg>
+    </a>
+
+    <!-- Ad slot 1 — entre contenido y partido -->
+    <AdSlot slot="1122334455" format="horizontal" label="Publicidad" />
+
+    <!-- Próximo partido de esta selección -->
+    {nextMatch && (
+      <section aria-labelledby="proximo-partido-heading" class="mt-10">
+        <p
+          id="proximo-partido-heading"
+          class="font-oswald text-xs uppercase tracking-[0.2em] mb-4 flex items-center gap-2"
+          style="color: #d4af37;"
+        >
+          <span class="w-1 h-4 rounded-full shrink-0" style="background:#d4af37;" aria-hidden="true"></span>
+          Próximo partido de {paisLabel.flag} {paisLabel.name}
+        </p>
+
+        <!-- Match card -->
+        <div
+          class="rounded-2xl p-6 border mb-1"
+          style="background: #0f172a; border-color: rgba(212,175,55,0.2);"
+        >
+          <div class="flex items-center justify-between gap-4 mb-5">
+            <div class="flex flex-col items-center gap-2 flex-1 text-center">
+              <span class="text-5xl leading-none" aria-hidden="true">{nextMatch.f1}</span>
+              <span class="font-oswald font-bold text-white text-sm sm:text-base leading-tight">{nextMatch.e1}</span>
+            </div>
+            <div class="text-center shrink-0 px-2">
+              <span class="font-oswald font-bold text-slate-600 text-2xl">VS</span>
+              <p class="text-xs text-slate-600 mt-2">{nextMatch.fase}</p>
+            </div>
+            <div class="flex flex-col items-center gap-2 flex-1 text-center">
+              <span class="text-5xl leading-none" aria-hidden="true">{nextMatch.f2}</span>
+              <span class="font-oswald font-bold text-white text-sm sm:text-base leading-tight">{nextMatch.e2}</span>
+            </div>
+          </div>
+          <div
+            class="text-center border-t pt-4"
+            style="border-color: rgba(255,255,255,0.06);"
+          >
+            <p class="text-sm text-slate-300 capitalize font-medium">{nextMatchDate}</p>
+            <p class="text-xs text-slate-500 mt-1">{nextMatchTime} · {nextMatchSede}</p>
+            <a
+              href={`/partidos/${nextMatch.id}`}
+              class="inline-block mt-3 text-xs font-medium px-4 py-1.5 rounded-full border transition-all hover:scale-105"
+              style="border-color: rgba(212,175,55,0.3); color: #d4af37; background: rgba(212,175,55,0.05);"
+            >
+              Ver partido →
+            </a>
+          </div>
+        </div>
+
+        <!-- Encuesta del partido -->
+        <MatchPoll
+          matchId={nextMatch.id}
+          team1={nextMatch.e1}
+          flag1={nextMatch.f1}
+          team2={nextMatch.e2}
+          flag2={nextMatch.f2}
+        />
+      </section>
+    )}
+
+    <!-- Ad slot 2 — al pie del artículo -->
+    <AdSlot slot="5544332211" format="horizontal" label="Publicidad" />
+
+    <!-- Navegación de retorno -->
+    <nav class="mt-8 flex flex-wrap gap-3" aria-label="Navegación relacionada">
+      <a
+        href="/noticias/selecciones"
+        class="text-sm font-medium px-5 py-2.5 rounded-full border transition-all hover:scale-105"
+        style="border-color: rgba(212,175,55,0.35); color: #d4af37; background: rgba(212,175,55,0.05);"
+      >
+        ← Todas las selecciones
+      </a>
+      <a
+        href="/noticias"
+        class="text-sm font-medium px-5 py-2.5 rounded-full border transition-all hover:scale-105"
+        style="border-color: rgba(255,255,255,0.1); color: #94a3b8; background: transparent;"
+      >
+        Últimas noticias
+      </a>
+      <a
+        href="/calendario"
+        class="text-sm font-medium px-5 py-2.5 rounded-full border transition-all hover:scale-105"
+        style="border-color: rgba(255,255,255,0.1); color: #94a3b8; background: transparent;"
+      >
+        Calendario
+      </a>
+    </nav>
+
+  </article>
+
+</Layout>

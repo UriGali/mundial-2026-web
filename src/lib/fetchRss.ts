@@ -9,6 +9,48 @@ export const RSS_FEEDS = [
   'https://news.google.com/rss/search?q=%22world+cup+2026%22&hl=en&gl=US&ceid=US:en',
 ];
 
+// Order matters: more specific terms first to avoid misclassification
+const PAIS_KEYWORDS: Record<string, string[]> = {
+  mexico:     ['méxico', 'mexico', 'el tri', 'tricolor', 'fmf'],
+  usa:        ['usmnt', 'estados unidos', 'united states', 'u.s. men', 'us soccer'],
+  espana:     ['españa', 'espana', 'la roja', 'rfef', 'spain', 'selección española'],
+  argentina:  ['argentina', 'argentino', 'albiceleste', 'afa'],
+  brasil:     ['brasil', 'brazil', 'seleção', 'canarinha', 'cbf', 'brasileño'],
+  francia:    ['francia', 'les bleus', 'france', 'fff'],
+  alemania:   ['alemania', 'mannschaft', 'germany', 'dfb'],
+  inglaterra: ['inglaterra', 'three lions', 'england', 'fa cup'],
+  portugal:   ['portugal', 'portuguesa', 'fpf'],
+  uruguay:    ['uruguay', 'celeste uruguaya'],
+  canada:     ['canadá', 'canada soccer', 'csa'],
+  marruecos:  ['marruecos', 'atlas lions', 'morocco'],
+  japon:      ['japón', 'japon', 'samurai blue', 'jfa'],
+  colombia:   ['colombia', 'cafeteros', 'fcf'],
+  ecuador:    ['ecuador', 'tricolor ecuatoriano'],
+};
+
+/** Detects the country associated with a news item by scanning its text. */
+export function detectPais(title: string, description: string): string | undefined {
+  const text = `${title} ${description}`.toLowerCase();
+  for (const [pais, keywords] of Object.entries(PAIS_KEYWORDS)) {
+    if (keywords.some(k => text.includes(k))) return pais;
+  }
+  return undefined;
+}
+
+/** Converts a title into a URL-safe slug (max 80 chars). */
+export function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .substring(0, 80)
+    .replace(/^-+|-+$/g, '');
+}
+
 export interface RssItem {
   title: string;
   link: string;
@@ -16,6 +58,7 @@ export interface RssItem {
   pubDate: string;
   source: string;
   dateLabel: string;
+  pais?: string;
 }
 
 function stripCdata(raw: string): string {
@@ -71,13 +114,15 @@ export async function fetchRssNews(url: string, limit = 8): Promise<RssItem[]> {
       const pubDate   = extractTag(item, 'pubDate');
       const source    = extractTag(item, 'source') || new URL(url).hostname;
 
+      const cleanTitle = title.substring(0, 120);
       items.push({
-        title:       title.substring(0, 120),
+        title:       cleanTitle,
         link:        link.trim(),
         description: cleanDesc.trim(),
         pubDate,
         source,
         dateLabel:   formatDate(pubDate),
+        pais:        detectPais(cleanTitle, cleanDesc),
       });
     }
     return items;

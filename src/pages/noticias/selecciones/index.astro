@@ -1,0 +1,224 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import { fetchMultipleFeeds, RSS_FEEDS, slugify } from '../../../lib/fetchRss';
+
+const allItems = await fetchMultipleFeeds(RSS_FEEDS, 5);
+
+// Group by pais
+const byPais = new Map<string, typeof allItems>();
+for (const item of allItems.filter(i => i.pais)) {
+  const p = item.pais!;
+  if (!byPais.has(p)) byPais.set(p, []);
+  byPais.get(p)!.push(item);
+}
+
+const PAISES = [
+  { slug: 'mexico',     name: 'México',     flag: '🇲🇽' },
+  { slug: 'usa',        name: 'USA',        flag: '🇺🇸' },
+  { slug: 'espana',     name: 'España',     flag: '🇪🇸' },
+  { slug: 'argentina',  name: 'Argentina',  flag: '🇦🇷' },
+  { slug: 'brasil',     name: 'Brasil',     flag: '🇧🇷' },
+  { slug: 'francia',    name: 'Francia',    flag: '🇫🇷' },
+  { slug: 'alemania',   name: 'Alemania',   flag: '🇩🇪' },
+  { slug: 'inglaterra', name: 'Inglaterra', flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿' },
+  { slug: 'portugal',   name: 'Portugal',   flag: '🇵🇹' },
+  { slug: 'uruguay',    name: 'Uruguay',    flag: '🇺🇾' },
+  { slug: 'canada',     name: 'Canadá',     flag: '🇨🇦' },
+  { slug: 'marruecos',  name: 'Marruecos',  flag: '🇲🇦' },
+  { slug: 'japon',      name: 'Japón',      flag: '🇯🇵' },
+  { slug: 'colombia',   name: 'Colombia',   flag: '🇨🇴' },
+  { slug: 'ecuador',    name: 'Ecuador',    flag: '🇪🇨' },
+];
+
+// Append any pais detected in the RSS but not in the featured list
+const featuredSlugs = new Set(PAISES.map(p => p.slug));
+for (const [slug] of byPais) {
+  if (!featuredSlugs.has(slug)) {
+    PAISES.push({ slug, name: slug.charAt(0).toUpperCase() + slug.slice(1), flag: '🌍' });
+  }
+}
+
+// Total de noticias clasificadas para mostrar en el hero
+const totalNoticias = [...byPais.values()].reduce((n, arr) => n + arr.length, 0);
+
+const title       = 'Noticias por Selección — Mundial 2026 | Convocatorias y novedades';
+const description = 'Sigue las últimas noticias de cada selección en el Mundial 2026: convocatorias, listas de jugadores y novedades de México, USA, España, Argentina y más.';
+const canonicalURL = 'https://mundial26horarios.com/noticias/selecciones';
+const keywords    = 'noticias selecciones mundial 2026, convocatoria mexico mundial 2026, usmnt world cup 2026, argentina mundial 2026, espana mundial 2026';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: title,
+  description,
+  url: canonicalURL,
+  inLanguage: 'es',
+};
+---
+
+<Layout {title} {description} {keywords} canonicalURL={canonicalURL} jsonLd={jsonLd}>
+
+  <!-- Hero -->
+  <div
+    class="pt-14 pb-12 px-4 sm:px-6 lg:px-8"
+    style="background: linear-gradient(160deg, #020617 0%, #0f172a 100%);"
+  >
+    <div class="max-w-7xl mx-auto">
+      <!-- Breadcrumb -->
+      <nav class="mb-5" aria-label="Breadcrumb">
+        <ol class="flex items-center gap-1.5 text-xs text-slate-600 flex-wrap">
+          <li><a href="/" class="hover:text-gold transition-colors">Inicio</a></li>
+          <li aria-hidden="true">/</li>
+          <li><a href="/noticias" class="hover:text-gold transition-colors">Noticias</a></li>
+          <li aria-hidden="true">/</li>
+          <li class="font-medium" style="color:#d4af37;">Selecciones</li>
+        </ol>
+      </nav>
+
+      <p class="font-oswald text-xs uppercase tracking-[0.2em] mb-3" style="color: #d4af37;">
+        Noticias · Mundial 2026
+      </p>
+      <h1 class="font-oswald font-bold text-4xl sm:text-5xl text-white leading-tight mb-3">
+        Noticias por<br/>
+        <span
+          class="bg-clip-text text-transparent"
+          style="background-image: linear-gradient(105deg,#b8922a,#d4af37,#f5d97a,#d4af37,#b8922a);"
+        >Selección</span>
+      </h1>
+      <p class="text-slate-400 text-base max-w-xl mb-6">
+        Convocatorias, listas y últimas novedades clasificadas por país para el Mundial FIFA 2026.
+      </p>
+
+      <!-- Stats chips -->
+      <div class="flex flex-wrap gap-3">
+        <div
+          class="flex items-center gap-2 rounded-full px-4 py-1.5 border text-sm"
+          style="background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.08);"
+        >
+          <span class="font-oswald font-bold" style="color:#d4af37;">{byPais.size}</span>
+          <span class="text-slate-400">selecciones con noticias</span>
+        </div>
+        <div
+          class="flex items-center gap-2 rounded-full px-4 py-1.5 border text-sm"
+          style="background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.08);"
+        >
+          <span class="font-oswald font-bold" style="color:#d4af37;">{totalNoticias}</span>
+          <span class="text-slate-400">artículos clasificados</span>
+        </div>
+        <div
+          class="flex items-center gap-2 rounded-full px-4 py-1.5 border text-sm"
+          style="background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.08);"
+        >
+          <span class="relative flex items-center mr-0.5" aria-hidden="true">
+            <span class="absolute inline-flex h-2 w-2 rounded-full bg-green-400 opacity-75 animate-ping"></span>
+            <span class="relative inline-flex h-2 w-2 rounded-full bg-green-400"></span>
+          </span>
+          <span class="text-slate-400">Actualizado en cada build</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+    <AdSlot slot="9988776655" format="horizontal" label="Publicidad" />
+
+    <!-- Grid de selecciones -->
+    <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      {PAISES.map(pais => {
+        const items  = byPais.get(pais.slug) ?? [];
+        const hasNews = items.length > 0;
+        return (
+          <div
+            class={`rounded-2xl border overflow-hidden transition-all duration-200 ${hasNews ? 'hover:border-gold/30' : ''}`}
+            style={`background: #0f172a; border-color: ${hasNews ? 'rgba(212,175,55,0.18)' : 'rgba(255,255,255,0.06)'};`}
+          >
+            <!-- Header de país -->
+            <div
+              class="px-5 py-4 flex items-center gap-3 border-b"
+              style={`background: ${hasNews ? 'rgba(212,175,55,0.04)' : 'rgba(255,255,255,0.02)'}; border-color: inherit;`}
+            >
+              <span class="text-3xl leading-none select-none" aria-hidden="true">{pais.flag}</span>
+              <div class="flex-1 min-w-0">
+                <h2 class="font-oswald font-bold text-white text-lg leading-tight">{pais.name}</h2>
+                <p class="text-xs text-slate-500 mt-0.5">
+                  {hasNews
+                    ? `${items.length} noticia${items.length > 1 ? 's' : ''} reciente${items.length > 1 ? 's' : ''}`
+                    : 'Sin noticias en este build'}
+                </p>
+              </div>
+              {hasNews && (
+                <span
+                  class="text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full shrink-0"
+                  style="background: rgba(212,175,55,0.12); color: #d4af37; border: 1px solid rgba(212,175,55,0.2);"
+                >
+                  NUEVO
+                </span>
+              )}
+            </div>
+
+            <!-- Lista de noticias -->
+            <div class="px-5 py-4">
+              {hasNews ? (
+                <ul class="space-y-3">
+                  {items.slice(0, 4).map(item => (
+                    <li>
+                      <a
+                        href={`/noticias/${pais.slug}/${slugify(item.title)}`}
+                        class="group flex items-start gap-2.5 text-sm leading-snug"
+                      >
+                        <span
+                          class="mt-[5px] shrink-0 w-1.5 h-1.5 rounded-full transition-colors"
+                          style="background: rgba(212,175,55,0.5);"
+                          aria-hidden="true"
+                        ></span>
+                        <span class="text-slate-300 group-hover:text-white transition-colors line-clamp-2">
+                          {item.title}
+                        </span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p class="text-sm text-slate-600 italic leading-relaxed">
+                  Las noticias de {pais.name} aparecerán aquí tras el próximo build.
+                </p>
+              )}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+
+    <!-- Ad slot inferior -->
+    <AdSlot slot="5566778899" format="horizontal" label="Publicidad" />
+
+    <!-- CTA links -->
+    <div class="mt-8 flex flex-wrap gap-3">
+      <a
+        href="/noticias"
+        class="text-sm font-medium px-5 py-2.5 rounded-full border transition-all hover:scale-105"
+        style="border-color: rgba(212,175,55,0.35); color: #d4af37; background: rgba(212,175,55,0.05);"
+      >
+        ← Todas las noticias
+      </a>
+      <a
+        href="/calendario"
+        class="text-sm font-medium px-5 py-2.5 rounded-full border transition-all hover:scale-105"
+        style="border-color: rgba(255,255,255,0.1); color: #94a3b8; background: transparent;"
+      >
+        Calendario de partidos
+      </a>
+      <a
+        href="/grupos"
+        class="text-sm font-medium px-5 py-2.5 rounded-full border transition-all hover:scale-105"
+        style="border-color: rgba(255,255,255,0.1); color: #94a3b8; background: transparent;"
+      >
+        Ver grupos
+      </a>
+    </div>
+
+  </div>
+
+</Layout>
